@@ -1,13 +1,13 @@
-.App {
+.User {
   text-align: center;
 }
 
-.App-logo {
+.User-logo {
   height: 40vmin;
 }
 
-.App-header {
-  background-color: white;
+.User-header {
+  background-color: black;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -17,6 +17,7 @@
   color: #282c34;
 }
 
-.App-link {
+.User-link {
   color: #09d3ac;
 }
+
