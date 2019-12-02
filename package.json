@@ -28,5 +28,18 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "Please create feature branches and then use pull requests to merge to master branch.\r Read more on https://guides.github.com/introduction/flow/.",
+  "main": "index.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nikolockenvitz/dhbw-project-frontend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nikolockenvitz/dhbw-project-frontend/issues"
+  },
+  "homepage": "https://github.com/nikolockenvitz/dhbw-project-frontend#readme"
 }
