@@ -1,23 +1,22 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
+import '../node_modules/bootstrap/dist/css/bootstrap.css'
+import '../node_modules/bootstrap/dist/js/bootstrap.js'
+import { Route, BrowserRouter as Router } from 'react-router-dom'
 import App from './App'
-import Users from './Components/users/users'
+import Kurse from './Components/kurse/Kurse'
+import Dozenten from './Components/dozenten/Dozenten'
+import Modulkatalog from './Components/modulkatalog/Modulkatalog'
+
 
 const routing = (
   <Router>
     <div>
-    <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/users">Users</Link>
-        </li>
-      </ul>
       <Route exact path="/" component={App} />
-      <Route path="/users" component={Users} />
+      <Route path="/kurse" component={Kurse} />
+      <Route path="/dozenten" component={Dozenten} />
+      <Route path='/modulkatalog' component={Modulkatalog} />
     </div>
   </Router>
 )
