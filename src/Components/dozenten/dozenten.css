@@ -1,0 +1,13 @@
+table{
+  width: 100%;
+}
+.tableHeaderRow{
+  font-weight: bold;
+  background-color: red;
+  color: white;
+  border: black;
+}
+td{
+  border-bottom: 2px solid black;
+
+}
