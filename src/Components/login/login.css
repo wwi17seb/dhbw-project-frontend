@@ -1,0 +1,25 @@
+.card {
+    margin-left: auto;
+    margin-right: auto;
+    width: 30rem;
+    opacity: 0.95;
+}
+
+.container {
+    margin-top: 5rem;
+}
+
+.background {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: auto;
+    min-height: 50rem;
+    box-shadow: 0 0 2rem 2rem white inset;
+}
+
+.logo {
+    width: 18rem;
+    height: 18rem;
+    text-align: center;
+}

@@ -8,6 +8,8 @@ import App from './App'
 import Kurse from './Components/kurse/Kurse'
 import Dozenten from './Components/dozenten/Dozenten'
 import Modulkatalog from './Components/modulkatalog/Modulkatalog'
+import Login from './Components/login/Login'
+import Nav from './Components/nav/Nav'
 
 
 const routing = (
@@ -17,6 +19,7 @@ const routing = (
       <Route path="/kurse" component={Kurse} />
       <Route path="/dozenten" component={Dozenten} />
       <Route path='/modulkatalog' component={Modulkatalog} />
+      <Route path='/login' component={Login} />
     </div>
   </Router>
 )
