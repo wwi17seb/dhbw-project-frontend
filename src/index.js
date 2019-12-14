@@ -10,7 +10,7 @@ import Dozenten from './Components/dozenten/Dozenten'
 import Modulkatalog from './Components/modulkatalog/Modulkatalog'
 import Login from './Components/login/Login'
 import Nav from './Components/nav/Nav'
-import ResetPassword from './Components/resetPass/forgotPassword'
+import ResetPassword from './Components/login/forgotPassword'
 
 
 const routing = (
