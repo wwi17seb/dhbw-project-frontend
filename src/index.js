@@ -10,6 +10,7 @@ import Dozenten from './Components/dozenten/Dozenten'
 import Modulkatalog from './Components/modulkatalog/Modulkatalog'
 import Login from './Components/login/Login'
 import Nav from './Components/nav/Nav'
+import ResetPassword from './Components/resetPass/forgotPassword'
 
 
 const routing = (
@@ -20,6 +21,7 @@ const routing = (
       <Route path="/dozenten" component={Dozenten} />
       <Route path='/modulkatalog' component={Modulkatalog} />
       <Route path='/login' component={Login} />
+      <Route path="/reset" exact component={ResetPassword}/>
     </div>
   </Router>
 )
