@@ -119,7 +119,7 @@ export default function Nav() {
                     </IconButton>
                     <Typography variant="h6" noWrap>
                         ExoPlan
-          </Typography>
+        </Typography>
                 </Toolbar>
             </AppBar>
             <Drawer
