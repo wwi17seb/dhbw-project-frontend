@@ -8,15 +8,19 @@ import App from './App'
 import Kurse from './Components/kurse/Kurse'
 import Dozenten from './Components/dozenten/Dozenten'
 import Modulkatalog from './Components/modulkatalog/Modulkatalog'
+import Login from './Components/login/Login'
+import ResetPassword from './Components/login/forgotPassword'
 
 
 const routing = (
   <Router>
     <div>
-      <Route exact path="/" component={App} />
+      <Route path="/home" component={App} />
       <Route path="/kurse" component={Kurse} />
       <Route path="/dozenten" component={Dozenten} />
       <Route path='/modulkatalog' component={Modulkatalog} />
+      <Route exact path='/' component={Login} />
+      <Route path="/reset" exact component={ResetPassword} />
     </div>
   </Router>
 )
