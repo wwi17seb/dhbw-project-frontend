@@ -18,7 +18,7 @@
     background-size: cover;
     margin: auto;
     min-height: 100vh;
-    box-shadow: 0 0 2rem 2rem white inset;
+    box-shadow: 0 0 1rem 1rem white inset;
 }
 
 .logo {
@@ -27,9 +27,27 @@
     text-align: center;
 }
 
+.form-control:focus {
+    border-color: #e30613;
+    box-shadow: 0 0 0 0.2rem rgba(227, 6, 19, 0.25);
+} 
+
 .btn_dhbw {
     background-color: #e30613;
     color: white;
+}
+
+.btn_dhbw:hover {
+    background-color: white;
+}
+
+.loginLink {
+    text-decoration: none;
+}
+
+.loginLink:hover {
+    color: #4a5358;
+    text-decoration: none;
 }
 
 .bg-card-background{

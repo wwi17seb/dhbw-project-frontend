@@ -9,7 +9,6 @@ import Kurse from './Components/kurse/Kurse'
 import Dozenten from './Components/dozenten/Dozenten'
 import Modulkatalog from './Components/modulkatalog/Modulkatalog'
 import Login from './Components/login/Login'
-import Nav from './Components/nav/Nav'
 import ResetPassword from './Components/login/forgotPassword'
 
 
@@ -21,7 +20,7 @@ const routing = (
       <Route path="/dozenten" component={Dozenten} />
       <Route path='/modulkatalog' component={Modulkatalog} />
       <Route exact path='/' component={Login} />
-      <Route path="/reset" exact component={ResetPassword}/>
+      <Route path="/reset" exact component={ResetPassword} />
     </div>
   </Router>
 )

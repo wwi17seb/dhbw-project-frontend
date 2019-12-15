@@ -10,11 +10,9 @@ class Login extends Component {
             <div className='background' style={{ backgroundImage: `url(${Background})` }}>
                 <div className='container'>
                     <div className="card bg-card-background border-danger text-light">
-                        <div className='card-header'>
-                            <h2 class="card-header" className='text-center'>ExoPlan Login</h2>
-                        </div>
                         <img className='logo mx-auto' src={Logo} alt='DHBW Logo'></img>
                         <div className="card-body">
+                            <h1 className='text-center text-dark'>ExoPlan Login</h1>
                             <form>
                                 <div className="form-group">
                                     <label class="card-label" forhtml="exampleInputEmail1">E-Mail:</label>
@@ -25,8 +23,8 @@ class Login extends Component {
                                     <input type="password" className="form-control" id="exampleInputPassword1" />
                                     <Link to="/reset">Passwort vergessen?</Link>
                                 </div>
-                                <Link to="/home">
-                                    <button type="submit" className="btn btn-block btn_dhbw">Login</button> 
+                                <Link className='loginLink' to="/home">
+                                    <button type="submit" className="btn btn-block btn_dhbw">Login</button>
                                 </Link>
                             </form>
                         </div>
