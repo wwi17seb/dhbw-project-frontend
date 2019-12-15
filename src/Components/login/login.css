@@ -6,7 +6,10 @@
 }
 
 .container {
-    margin-top: 5rem;
+    padding-top: 5rem; /*vertical Alignment needed*/
+    margin: auto;
+    width: 100%;
+    height: 100%;
 }
 
 .background {
@@ -14,7 +17,7 @@
     background-repeat: no-repeat;
     background-size: cover;
     margin: auto;
-    min-height: 50rem;
+    min-height: 100vh;
     box-shadow: 0 0 2rem 2rem white inset;
 }
 
@@ -22,4 +25,20 @@
     width: 18rem;
     height: 18rem;
     text-align: center;
+}
+
+.btn_dhbw {
+    background-color: #e30613;
+    color: white;
+}
+
+.bg-card-background{
+    background-color: lightgrey;
+}
+
+.card-header{
+    color:#4a5358
+}
+.card-label{
+    color:#4a5358
 }
