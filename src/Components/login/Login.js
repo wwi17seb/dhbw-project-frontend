@@ -9,7 +9,7 @@ class Login extends Component {
         return (
             <div className='background' style={{ backgroundImage: `url(${Background})` }}>
                 <div className='container'>
-                    <div className="card bg-card-background border-danger text-light">
+                    <div className="card bg-card-background text-light">
                         <img className='logo mx-auto' src={Logo} alt='DHBW Logo'></img>
                         <div className="card-body">
                             <h1 className='text-center text-dark'>ExoPlan Login</h1>
@@ -30,7 +30,7 @@ class Login extends Component {
                         </div>
                     </div>
                 </div>
-            </div >
+            </div>
         )
     }
 }
