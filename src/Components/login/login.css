@@ -5,17 +5,20 @@
     opacity: 0.95;
 }
 
-/*.container {
-    margin-top: 5rem;
-}*/
+.container {
+    padding-top: 5rem; /*vertical Alignment needed*/
+    margin: auto;
+    width: 100%;
+    height: 100%;
+}
 
 .background {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     margin: auto;
-    min-height: 50rem;
-    /*box-shadow: 0 0 2rem 2rem white inset;*/
+    min-height: 100vh;
+    box-shadow: 0 0 2rem 2rem white inset;
 }
 
 .logo {
@@ -27,4 +30,15 @@
 .btn_dhbw {
     background-color: #e30613;
     color: white;
+}
+
+.bg-card-background{
+    background-color: lightgrey;
+}
+
+.card-header{
+    color:#4a5358
+}
+.card-label{
+    color:#4a5358
 }
