@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import '../login/login.css'
 import Background from '../../images/dhbw_campus2.jpg'
-import Paper from '@material-ui/core/Paper'
 import Logo from '../../images/dhbw_logo.png'
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 
 class Login extends Component {
     render() {
@@ -19,7 +17,7 @@ class Login extends Component {
                         <div className="card-body">
                             <form>
                                 <div className="form-group">
-                                    <label forhtml="exampleInputEmail1">Email Adresse:</label>
+                                    <label forhtml="exampleInputEmail1">E-Mail:</label>
                                     <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
                                 </div>
                                 <div className="form-group">
@@ -27,18 +25,15 @@ class Login extends Component {
                                     <input type="password" className="form-control" id="exampleInputPassword1" />
                                     <Link to="/reset">Passwort vergessen?</Link>
                                 </div>
-                                <button type="submit" onClick="loginToHome()" className="btn btn-block btn-danger">Login</button>
+                                <Link to="/home">
+                                    <button type="submit" className="btn btn-block btn_dhbw">Login</button> 
+                                </Link>
                             </form>
                         </div>
                     </div>
                 </div>
             </div >
         )
-    }
-    loginToHome(){
-        let history = useHistory();
-        //funktioniert noch nicht aber soll wahrscheinlich auch anders gemacht werden
-        history.push("http://localhost:3000/")
     }
 }
 

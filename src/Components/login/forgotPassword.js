@@ -161,7 +161,7 @@ export default class ResetPassword extends Component {
         <Icon glyph="ok" />
         <p>Your password has been reset.</p>
         <p>
-          <Link to="/login">
+          <Link to="/">
             Click here to login with your new credentials.
           </Link>
         </p>

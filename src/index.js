@@ -16,11 +16,11 @@ import ResetPassword from './Components/login/forgotPassword'
 const routing = (
   <Router>
     <div>
-      <Route exact path="/" component={App} />
+      <Route path="/home" component={App} />
       <Route path="/kurse" component={Kurse} />
       <Route path="/dozenten" component={Dozenten} />
       <Route path='/modulkatalog' component={Modulkatalog} />
-      <Route path='/login' component={Login} />
+      <Route exact path='/' component={Login} />
       <Route path="/reset" exact component={ResetPassword}/>
     </div>
   </Router>
