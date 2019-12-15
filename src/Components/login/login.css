@@ -17,13 +17,12 @@
     background-repeat: no-repeat;
     background-size: cover;
     margin: auto;
-    min-height: 100vh;
-    box-shadow: 0 0 1rem 1rem white inset;
+    min-height: 100vh;    
 }
 
 .logo {
-    width: 18rem;
-    height: 18rem;
+    width: 10rem;
+    height: 10rem;
     text-align: center;
 }
 
@@ -39,6 +38,7 @@
 
 .btn_dhbw:hover {
     background-color: white;
+    border-color: #e30613;
 }
 
 .loginLink {
