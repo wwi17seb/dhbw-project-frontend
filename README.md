@@ -3,6 +3,16 @@
 Please create feature branches and then use pull requests to merge to master branch.
 Read more on https://guides.github.com/introduction/flow/.
 
+# Installation
+```
+npm install
+```
+
+# Run the Application
+```
+npm run start
+```
+
 # Build a new docker image
 
 build the docker container
