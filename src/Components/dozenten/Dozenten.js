@@ -1,4 +1,12 @@
 import React, { forwardRef } from 'react';
+import { Link } from 'react-router-dom';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -17,9 +25,40 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import './dozenten.css';
 import MaterialTable from 'material-table';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import GroupIcon from '@material-ui/icons/Group';
+import ReceiptIcon from '@material-ui/icons/Receipt';
+import TodayIcon from '@material-ui/icons/Today';
 
+const drawerWidth = 240;
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+  },
+  appBar: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  toolbar: theme.mixins.toolbar,
+  content: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing(3),
+  },
+}));
 
 export default function DozentenTable() {
+    const classes = useStyles();
     const tableIcons = {
         Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
         Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -80,6 +119,53 @@ export default function DozentenTable() {
         ],
     });
     return (
+    
+      <div className={classes.root}>
+        <AppBar style={{background: 'red'}} position="fixed" className={classes.appBar}>
+      
+      <Toolbar>
+          <Typography variant="h6" noWrap>
+            ExoPlan
+          </Typography>
+        </Toolbar>
+        </AppBar>
+        <Drawer
+      className={classes.drawer}
+      variant="permanent"
+      classes={{
+        paper: classes.drawerPaper,
+      }}
+      anchor="left"
+    >
+      <div className={classes.toolbar} />
+      <List>
+                   <ListItem>
+                      <ListItemIcon>
+                          <Link to='/kurse'><TodayIcon></TodayIcon></Link>
+                      </ListItemIcon>
+                      <ListItemText>
+                          <Link to='kurse'>Kurse</Link>
+                      </ListItemText>
+                  </ListItem>
+                  <ListItem>
+                      <ListItemIcon>
+                          <Link to='/dozenten'><GroupIcon></GroupIcon></Link>
+                      </ListItemIcon>
+                      <ListItemText>
+                          <Link to='/dozenten'>Dozenten</Link>
+                      </ListItemText>
+                  </ListItem>
+                  <ListItem>
+                      <ListItemIcon>
+                          <Link to='/modulkatalog'><ReceiptIcon></ReceiptIcon></Link>
+                      </ListItemIcon>
+                      <ListItemText>
+                          <Link to='/modulkatalog'>Modulkatalog</Link>
+                      </ListItemText>
+                  </ListItem>
+              </List>
+      
+    </Drawer>
         <MaterialTable
             actions={[
                 {
@@ -130,5 +216,8 @@ export default function DozentenTable() {
                     }),
             }}
         />
+       
+       
+        </div>
     )
 }
