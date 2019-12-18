@@ -1,4 +1,12 @@
 import React, { forwardRef } from 'react';
+import { Link } from 'react-router-dom';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -17,9 +25,20 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import './dozenten.css';
 import MaterialTable from 'material-table';
+import Nav from '../nav/Nav';
 
+const useStyles = makeStyles(theme => ({
+    root: {
+      display: 'flex',
+    },toolbar: theme.mixins.toolbar,
+    content: {
+        flexGrow: 1,
+        backgroundColor: theme.palette.background.default,
+        padding: theme.spacing(3),
+      }}));
 
 export default function DozentenTable() {
+    const classes = useStyles();
     const tableIcons = {
         Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
         Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -80,6 +99,11 @@ export default function DozentenTable() {
         ],
     });
     return (
+    
+      <div className={classes.root}>
+          <Nav></Nav>
+          <main className = {classes.content}>
+          <div className = {classes.toolbar}/>
         <MaterialTable
             actions={[
                 {
@@ -130,5 +154,8 @@ export default function DozentenTable() {
                     }),
             }}
         />
+       
+       </main>
+        </div>
     )
 }

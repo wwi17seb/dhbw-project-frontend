@@ -2,10 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
+import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import Nav from '../nav/Nav';
+
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -39,11 +43,14 @@ function a11yProps(index) {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1,
-    width: '100%',
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
+    display: 'flex',
+  },toolbar: theme.mixins.toolbar,
+  content: {
+      flexGrow: 1,
+      backgroundColor: theme.palette.background.default,
+      padding: theme.spacing(3),
+    }}));
+
 
 export default function ScrollableTabsButtonAuto() {
   const classes = useStyles();
@@ -67,7 +74,10 @@ export default function ScrollableTabsButtonAuto() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="default">
+      <Nav></Nav>
+   <main className = {classes.content}>
+              <div className = {classes.toolbar}/>   
+<Paper>
         <Tabs
           value={value}
           onChange={handleChange}
@@ -79,8 +89,9 @@ export default function ScrollableTabsButtonAuto() {
         >
           {finalTabLabels}
         </Tabs>
-      </AppBar>
+        </Paper>
       {finalTabPanels}
+      </main>
     </div>
   );
 }
