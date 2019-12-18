@@ -36,20 +36,22 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
   },
   toolbar: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-    padding: theme.spacing(3),
-  },
 }));
 
 export default function PermanentDrawerLeft() {
   const classes = useStyles();
+  
+  /*
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const handleListItemClick = (event, index) => {
+    setSelectedIndex(index);
+    //window.location.href=links[index];
+  };*/
 
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar style={{background: 'red'}} position="fixed" className={classes.appBar}>
+      <AppBar style={{background: '#323e46'}} position="fixed" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" noWrap>
             ExoPlan
@@ -66,28 +68,31 @@ export default function PermanentDrawerLeft() {
       >
         <div className={classes.toolbar} />
         <List>
-                     <ListItem>
-                        <ListItemIcon>
-                            <Link to='/kurse'><TodayIcon></TodayIcon></Link>
-                        </ListItemIcon>
+                     <ListItem button={true} 
+                        divider={true} 
+                        //selected={selectedIndex === 0} 
+                        //onClick={event => handleListItemClick(event, 0)}
+                        component={Link} to='/kurse'>
                         <ListItemText>
-                            <Link to='kurse'>Kurse</Link>
+                            Kurse
                         </ListItemText>
                     </ListItem>
-                    <ListItem>
-                        <ListItemIcon>
-                            <Link to='/dozenten'><GroupIcon></GroupIcon></Link>
-                        </ListItemIcon>
+                    <ListItem button={true} 
+                        divider={true} 
+                        //selected={selectedIndex === 1} 
+                        //onClick={event => handleListItemClick(event, 1)}
+                        component={Link} to='/dozenten'>
                         <ListItemText>
-                            <Link to='/dozenten'>Dozenten</Link>
+                            Dozenten
                         </ListItemText>
                     </ListItem>
-                    <ListItem>
-                        <ListItemIcon>
-                            <Link to='/modulkatalog'><ReceiptIcon></ReceiptIcon></Link>
-                        </ListItemIcon>
+                    <ListItem button={true} 
+                        divider={true} 
+                        //selected={selectedIndex === 2} 
+                        //onClick={event => handleListItemClick(event, 2)}
+                        component={Link} to='/modulkatalog'>
                         <ListItemText>
-                            <Link to='/modulkatalog'>Modulkatalog</Link>
+                            Modulkatalog
                         </ListItemText>
                     </ListItem>
                 </List>
