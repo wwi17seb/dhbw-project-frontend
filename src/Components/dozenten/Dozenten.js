@@ -25,37 +25,17 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import './dozenten.css';
 import MaterialTable from 'material-table';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import GroupIcon from '@material-ui/icons/Group';
-import ReceiptIcon from '@material-ui/icons/Receipt';
-import TodayIcon from '@material-ui/icons/Today';
-
-const drawerWidth = 240;
+import Nav from '../nav/Nav';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-  },
-  appBar: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  toolbar: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-    padding: theme.spacing(3),
-  },
-}));
+    root: {
+      display: 'flex',
+    },toolbar: theme.mixins.toolbar,
+    content: {
+        flexGrow: 1,
+        backgroundColor: theme.palette.background.default,
+        padding: theme.spacing(3),
+      }}));
 
 export default function DozentenTable() {
     const classes = useStyles();
@@ -121,51 +101,9 @@ export default function DozentenTable() {
     return (
     
       <div className={classes.root}>
-        <AppBar style={{background: 'red'}} position="fixed" className={classes.appBar}>
-      
-      <Toolbar>
-          <Typography variant="h6" noWrap>
-            ExoPlan
-          </Typography>
-        </Toolbar>
-        </AppBar>
-        <Drawer
-      className={classes.drawer}
-      variant="permanent"
-      classes={{
-        paper: classes.drawerPaper,
-      }}
-      anchor="left"
-    >
-      <div className={classes.toolbar} />
-      <List>
-                   <ListItem>
-                      <ListItemIcon>
-                          <Link to='/kurse'><TodayIcon></TodayIcon></Link>
-                      </ListItemIcon>
-                      <ListItemText>
-                          <Link to='kurse'>Kurse</Link>
-                      </ListItemText>
-                  </ListItem>
-                  <ListItem>
-                      <ListItemIcon>
-                          <Link to='/dozenten'><GroupIcon></GroupIcon></Link>
-                      </ListItemIcon>
-                      <ListItemText>
-                          <Link to='/dozenten'>Dozenten</Link>
-                      </ListItemText>
-                  </ListItem>
-                  <ListItem>
-                      <ListItemIcon>
-                          <Link to='/modulkatalog'><ReceiptIcon></ReceiptIcon></Link>
-                      </ListItemIcon>
-                      <ListItemText>
-                          <Link to='/modulkatalog'>Modulkatalog</Link>
-                      </ListItemText>
-                  </ListItem>
-              </List>
-      
-    </Drawer>
+          <Nav></Nav>
+          <main className = {classes.content}>
+          <div className = {classes.toolbar}/>
         <MaterialTable
             actions={[
                 {
@@ -217,7 +155,7 @@ export default function DozentenTable() {
             }}
         />
        
-       
+       </main>
         </div>
     )
 }

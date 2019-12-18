@@ -26,8 +26,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
   },
   appBar: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
+    zIndex: theme.zIndex.drawer + 1,
   },
   drawer: {
     width: drawerWidth,
@@ -94,15 +93,6 @@ export default function PermanentDrawerLeft() {
                 </List>
         
       </Drawer>
-            <main className={classes.content}>
-                <div className={classes.toolbar} />
-                <Typography paragraph>
-                    Wilkommen bei ExoPlan, der Planungssoftware für Hochschulen.
-        </Typography>
-                <Typography paragraph>
-                    Nutzen sie die Menünavigation auf der linken Seite um die einzelnen Funktionen nutzen zu können.
-        </Typography>
-            </main>
-        </div>
+      </div>
     );
 }
