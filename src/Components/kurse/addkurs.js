@@ -49,16 +49,16 @@ export default function CenteredGrid() {
                 <Grid item xs={12}>
                     <Paper className={classes.paper}>
                         <div className={classes.block}>
-                            <h4>Bitte geben Sie den Namen des Kurses an:</h4>
+                            <h5>Bitte geben Sie den Namen des Kurses an:</h5>
                             <TextField required id="kursname-input" label="Kursname" variant="outlined" />
                         </div>
                         <div className={classes.block}>
-                            <h4>Bitte geben Sie den Studiengang und Studienrichtung an:</h4>
+                            <h5>Bitte geben Sie den Studiengang und Studienrichtung an:</h5>
                             <StudiengangAuswahl></StudiengangAuswahl>
                             <StudienrichtungAuswahl></StudienrichtungAuswahl>
                         </div>
                         <div className={classes.block}>
-                            <h4>Bitte geben Sie den Jahrgang des Kurses an:</h4>
+                            <h5>Bitte geben Sie den Jahrgang des Kurses an:</h5>
                             <TextField required id="jahrgang-input" label="Jahrgang" defaultValue="2020" variant="outlined" />
                         </div>
                         <div className={classes.block}>
