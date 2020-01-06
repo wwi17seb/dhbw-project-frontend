@@ -61,7 +61,7 @@ export default function ScrollableTabsButtonAuto() {
     setValue(newValue);
   };
 
-  const tabLabels = ["Übersicht", "Kurs Hinzufügen"];
+  const tabLabels = ["Übersicht", "ABC17DEF", "Kurs Hinzufügen"];
   const finalTabLabels = [];
   const finalTabPanels = [];
   const finalPanelContent = ["Übersicht", <AddKurs></AddKurs>];
