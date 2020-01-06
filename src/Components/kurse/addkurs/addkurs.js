@@ -76,7 +76,7 @@ export default function CenteredGrid() {
     const [yearerror, setYearError] = React.useState(false)
     const YearOnChange = event => {
         var value = event.target.value
-        var reg = new RegExp('^\\d\\d\\d\\d');
+        var reg = new RegExp('^\\d{4}$');
         var res = value.match(reg)
         if (res === null) {
             setYearError(true)
