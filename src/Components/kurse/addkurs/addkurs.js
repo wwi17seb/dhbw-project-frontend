@@ -32,6 +32,7 @@ export default function CenteredGrid() {
 
     const [open, setOpen] = React.useState(false);
 
+
     //Event für submit button. gibt aktuell die Werte der Eingabefelder aus, wenn diese nicht leer sind
     //TODO: eingabeüberprüfung erweitern -> evtl leere Inputs markieren
     const ClickSubmit = () => {
@@ -71,6 +72,40 @@ export default function CenteredGrid() {
         setOpen(false);
     };
 
+    const [yeartext, setYearText] = React.useState("")
+    const [yearerror, setYearError] = React.useState(false)
+    const YearOnChange = event => {
+        var value = event.target.value
+        var reg = new RegExp('^\\d\\d\\d\\d');
+        var res = value.match(reg)
+        if (res === null) {
+            setYearError(true)
+            setYearText("Wert muss vierstellige Zahl sein")
+        } else {
+            setYearError(false)
+            setYearText("")
+        }
+    }
+
+    const [nametext, setNameText] = React.useState("")
+    const [nameerror, setNameError] = React.useState(false)
+    const NameOnChange = event => {
+        var value = event.target.value
+        var reg = new RegExp('^[a-zA-Z0-9]+$');
+        var res = value.match(reg)
+        if (res === null && value != "") {
+            setNameError(true)
+            setNameText("Keine Sonderzeichen")
+        } else if (value === "") {
+            setNameError(true)
+            setNameText("Feld darf nicht leer sein")
+        }
+        else {
+            setNameError(false)
+            setNameText("")
+        }
+    }
+
     //Gibt alle Eingabefelder für das hinzufügen eines Kurses zurück.
     return (
         <div className={classes.root}>
@@ -80,11 +115,11 @@ export default function CenteredGrid() {
                     <Paper className={classes.paper}>
                         <div className={classes.block}>
                             <h5>Bitte geben Sie den Namen des Kurses an:</h5>
-                            <TextField required id="kursname-input" label="Kursname" variant="outlined" />
+                            <TextField required error={nameerror} onChange={NameOnChange} id="kursname-input" label="Kursname" defaultValue="Kursname" variant="outlined" helperText={nametext} />
                         </div>
                         <div className={classes.block}>
                             <h5>Bitte geben Sie den Jahrgang des Kurses an:</h5>
-                            <TextField required id="jahrgang-input" label="Jahrgang" defaultValue="2020" variant="outlined" />
+                            <TextField required error={yearerror} onChange={YearOnChange} id="jahrgang-input" label="Jahrgang" defaultValue="2020" variant="outlined" helperText={yeartext} />
                         </div>
                         <div className={classes.block}>
                             <h5>Bitte geben Sie den Studiengang und Studienrichtung an:</h5>

@@ -7,7 +7,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Nav from '../nav/Nav';
-import AddKurs from './addkurs'
+import AddKurs from './addkurs/addkurs'
 
 
 

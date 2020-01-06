@@ -8,7 +8,7 @@ import Select from '@material-ui/core/Select';
 const useStyles = makeStyles(theme => ({
     formControl: {
         margin: 20,
-        minWidth: 120,
+        minWidth: 150,
     },
 }));
 
@@ -39,6 +39,7 @@ const StudienrichtungAuswahl = () => {
             <Select
                 labelId="studienrichtung-label"
                 id="studienrichtung-select"
+
                 value={studienrichtung}
                 onChange={handleChange}
             >
