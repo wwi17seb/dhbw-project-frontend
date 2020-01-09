@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Nav from '../nav/Nav';
 import AddKurs from './addkurs/addkurs'
+import AddTabContent from './addTabContent/addTabContent'
 
 
 
@@ -64,8 +65,10 @@ export default function ScrollableTabsButtonAuto() {
   const tabLabels = ["Übersicht", "ABC17DEF", "Kurs Hinzufügen"];
   const finalTabLabels = [];
   const finalTabPanels = [];
-  const finalPanelContent = ["Übersicht", "Kurs ABC17DEF", <AddKurs></AddKurs>];
+  const finalPanelContent = ["Übersicht", <AddTabContent></AddTabContent>, <AddKurs></AddKurs>];
   let tabIndex = 0;
+
+
 
   for (let tabLabel of tabLabels) {
     finalTabLabels.push(<Tab key={tabIndex} label={tabLabel} {...a11yProps({ tabIndex })} />);
