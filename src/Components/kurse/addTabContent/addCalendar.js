@@ -29,7 +29,7 @@ function getData(_, requestOptions) {
 const currentDate = new Date(2019, 11, 23);
 const views = ['day', 'workWeek', 'month'];
 
-const AddCalender = () => {
+const AddCalendar = () => {
     const classes = useStyles();
     return (
       <Paper>
@@ -70,4 +70,4 @@ const AddCalender = () => {
     )
 }
 
-export default AddCalender
+export default AddCalendar
