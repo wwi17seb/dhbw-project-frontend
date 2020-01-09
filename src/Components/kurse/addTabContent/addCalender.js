@@ -1,12 +1,13 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import CustomStore from 'devextreme/data/custom_store';
+import Paper from '@material-ui/core/Paper';
 import { ViewState } from '@devexpress/dx-react-scheduler';
-import { Scheduler, MonthView, Appointments, ViewSwitcher, Toolbar, DayView, WeekView} from '@devexpress/dx-react-scheduler-material-ui';
+import { Scheduler, MonthView, Appointments, ViewSwitcher, Toolbar, DayView, WeekView, AppointmentTooltip} from '@devexpress/dx-react-scheduler-material-ui';
 
 const useStyles = makeStyles(theme => ({
     formControl: {
-        margin: 20,
+        margin: 0,
         minWidth: 150,
     },
 }));
@@ -25,14 +26,13 @@ function getData(_, requestOptions) {
   const dataSource = new CustomStore({
     load: (options) => getData(options, { showDeleted: false })
   });
-console.log(dataSource)
 const currentDate = new Date(2019, 11, 23);
 const views = ['day', 'workWeek', 'month'];
 
 const AddCalender = () => {
     const classes = useStyles();
-
     return (
+      <Paper>
         <Scheduler
           data={[
             { startDate: '2020-1-9 7:00', endDate: '2020-1-9 8:00', title: 'Test' },
@@ -51,25 +51,22 @@ const AddCalender = () => {
           timeZone="Europe/Berlin">
           <ViewState
             defaultCurrentDate="2020-01-09"
-            defaultCurrentViewName="Week"
-          />
-
+            defaultCurrentViewName="Month"/>
           <DayView
             startDayHour={9}
-            endDayHour={18}
-          />
+            endDayHour={18}/>
           <WeekView
             startDayHour={9}
-            endDayHour={19}
-          />
+            endDayHour={19}/>
           <MonthView
             startDayHour={9}
-            endDayHour={19}
-          />
+            endDayHour={19}/>
           <Appointments />
+          <AppointmentTooltip />
           <Toolbar />
           <ViewSwitcher />
         </Scheduler>
+        </Paper>
     )
 }
 
