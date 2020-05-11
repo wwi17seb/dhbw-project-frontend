@@ -18,6 +18,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import GroupIcon from '@material-ui/icons/Group';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import TodayIcon from '@material-ui/icons/Today';
+import Logo from '../../images/ExoPlanLogo_transparent.png';
+import "./nav.css";
 
 const drawerWidth = 240;
 
@@ -53,9 +55,7 @@ export default function PermanentDrawerLeft() {
       <CssBaseline />
       <AppBar style={{background: '#323e46'}} position="fixed" className={classes.appBar}>
         <Toolbar>
-          <Typography variant="h6" noWrap>
-            ExoPlan
-          </Typography>
+        <img src={Logo} class="NavBarLogo"></img>
         </Toolbar>
       </AppBar>
       <Drawer
