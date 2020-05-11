@@ -55,7 +55,7 @@ export default function PermanentDrawerLeft() {
       <CssBaseline />
       <AppBar style={{background: '#323e46'}} position="fixed" className={classes.appBar}>
         <Toolbar>
-        <img src={Logo} class="NavBarLogo"></img>
+        <img src={Logo} alt="ExoPlan Logo" class="NavBarLogo"></img>
         </Toolbar>
       </AppBar>
       <Drawer
