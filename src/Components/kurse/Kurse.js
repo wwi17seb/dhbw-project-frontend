@@ -7,6 +7,8 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Nav from '../nav/Nav';
+import AddKurs from './addkurs/addkurs'
+import AddTabContent from './addTabContent/addTabContent'
 
 
 
@@ -43,12 +45,13 @@ function a11yProps(index) {
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-  },toolbar: theme.mixins.toolbar,
+  }, toolbar: theme.mixins.toolbar,
   content: {
-      flexGrow: 1,
-      backgroundColor: theme.palette.background.default,
-      padding: theme.spacing(3),
-    }}));
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing(3),
+  }
+}));
 
 
 export default function ScrollableTabsButtonAuto() {
@@ -59,37 +62,39 @@ export default function ScrollableTabsButtonAuto() {
     setValue(newValue);
   };
 
-  const tabLabels = ["Übersicht", "WWI 17 SEB", "WWI 18 SEA", "Hinzufügen"];
+  const tabLabels = ["Übersicht", "ABC17DEF", "Kurs Hinzufügen"];
   const finalTabLabels = [];
   const finalTabPanels = [];
-  const finalPanelContent = ["Übersicht", "WWI 17 SEB", "WWI 18 SEA", "Hinzufügen"];
+  const finalPanelContent = ["Übersicht", <AddTabContent></AddTabContent>, <AddKurs></AddKurs>];
   let tabIndex = 0;
 
+
+
   for (let tabLabel of tabLabels) {
-    finalTabLabels.push(<Tab label={tabLabel} {...a11yProps({tabIndex})} />);
-    finalTabPanels.push(<TabPanel value={value} index={tabIndex}> {finalPanelContent[tabIndex]} </TabPanel>)
+    finalTabLabels.push(<Tab key={tabIndex} label={tabLabel} {...a11yProps({ tabIndex })} />);
+    finalTabPanels.push(<TabPanel key={tabIndex} value={value} index={tabIndex}> {finalPanelContent[tabIndex]} </TabPanel>)
     tabIndex++;
   }
 
   return (
     <div className={classes.root}>
       <Nav></Nav>
-   <main className = {classes.content}>
-              <div className = {classes.toolbar}/>   
-<Paper>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          variant="scrollable"
-          scrollButtons="auto"
-          aria-label="scrollable auto tabs example"
-        >
-          {finalTabLabels}
-        </Tabs>
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        <Paper>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            variant="scrollable"
+            scrollButtons="auto"
+            aria-label="scrollable auto tabs example"
+          >
+            {finalTabLabels}
+          </Tabs>
         </Paper>
-      {finalTabPanels}
+        {finalTabPanels}
       </main>
     </div>
   );
