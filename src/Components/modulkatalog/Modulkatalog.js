@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Nav from '../nav/Nav';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { Grid, Card, CardContent } from '@material-ui/core';
 import './modulkatalog.css';
