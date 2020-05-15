@@ -31,12 +31,12 @@ class Login extends Component {
                                 </div> : null}
                             <form>
                                 <div className="form-group">
-                                    <label className="card-label" forhtml="exampleInputEmail1">E-Mail:</label>
-                                    <input type="email" className="form-control" onChange={this.handleEmail} id="exampleInputEmail1" aria-describedby="emailHelp" />
+                                    <label className="card-label" forhtml="InputUsername">Username:</label>
+                                    <input type="text" className="form-control" onChange={this.handleEmail} id="InputUsername" aria-describedby="usernameHelp" />
                                 </div>
                                 <div className="form-group">
-                                    <label className="card-label" forhtml="exampleInputPassword1">Passwort:</label>
-                                    <input type="password" onChange={this.handlePassword} className="form-control" id="exampleInputPassword1" />
+                                    <label className="card-label" forhtml="InputPassword">Passwort:</label>
+                                    <input type="password" onChange={this.handlePassword} className="form-control" id="InputPassword" />
                                     <Link to="/reset">Passwort vergessen?</Link>
                                 </div>
                                 <button type="submit" onClick={this.handleLogin} className=" loginLink btn btn-block btn_dhbw">Login</button>
