@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.7.2",
     "@material-ui/icons": "^4.5.1",
+    "axios": "^0.19.2",
     "bootstrap": "^4.3.1",
     "clsx": "^1.0.4",
     "jquery": "^3.4.1",
@@ -40,6 +41,7 @@
       "last 1 safari version"
     ]
   },
+  "proxy": "http://localhost:3000",
   "description": "Please create feature branches and then use pull requests to merge to master branch.\r Read more on https://guides.github.com/introduction/flow/.",
   "main": "index.js",
   "devDependencies": {},
