@@ -23,7 +23,7 @@ class Login extends Component {
                                     <input type="password" className="form-control" id="exampleInputPassword1" />
                                     <Link to="/reset">Passwort vergessen?</Link>
                                 </div>
-                                <Link className='loginLink' to="/home">
+                                <Link className='loginLink' to="/kurse">
                                     <button type="submit" className="btn btn-block btn_dhbw">Login</button>
                                 </Link>
                             </form>
