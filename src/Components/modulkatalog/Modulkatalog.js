@@ -34,10 +34,31 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-
+const moduleList = [
+  "Wirtschaftsinformatik Software Engineering",
+  "Wirtschaftsinformatik Sales & Consulting",
+  "Wirtschaftsinformatik Application Management",
+  "Wirtschaftsinformatik Data Science",
+  "Digitale Medien",
+  "BWL",
+  "BWL Logistik",
+  "Wirtschaft Unternehmenswirtschaft"
+];
 
 export default function ModulkatalogTable() {
   const classes = useStyles();
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const [searchResults, setSearchResults] = React.useState([]);
+  const handleSearch = event => {
+    setSearchTerm(event.target.value);
+  };
+  React.useEffect(() => {
+    const results = moduleList.filter(modul =>
+      modul.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setSearchResults(results);
+  }, [searchTerm]);
+
   return (
     <div className={classes.root} >
       <Nav></Nav>
@@ -47,23 +68,33 @@ export default function ModulkatalogTable() {
           Modulkataloge
         </Typography>
         <form className={classes.searchForm}>
-          <Typography variant='h6'>Suchen Sie hier nach Modulkatalogen: </Typography>
+          <Typography variant='h6'>
+            Suchen Sie hier nach Modulkatalogen: </Typography>
           <Grid container spacing={4}>
             <Grid item md={5} sm={12}>
-              <label className="card-label" forhtml="inputStudiengang">Studiengang:</label>
-              <input type="text" className="form-control" id="inputStudiengang" />
+              {/* <label className="card-label" forhtml="inputStudiengang">Studiengang:</label> */}
+              <input type="text" value={searchTerm} onChange={handleSearch} className="form-control" id="inputStudiengang" />
             </Grid>
-            <Grid item md={5} sm={12}>
+            {/* <Grid item md={5} sm={12}>
               <label className="card-label" forhtml="inputSpezialisierung">Spezialisierung:</label>
               <input type="text" className="form-control" id="inputSpezialisierung" />
-            </Grid>
-            <Grid item md={2} sm={12}>
+            </Grid> */}
+            {/* <Grid item md={2} sm={12}>
               <button className='btn_dhbw btn'>Suchen</button>
-            </Grid>
+            </Grid> */}
           </Grid>
         </form>
         <Grid container justify='center' spacing={3} className={classes.grid}>
-          <Grid container item xl={3} sm={3} justify='center'>
+        {(searchResults).map(modulname => 
+        <Grid container item xl={3} sm={3} justify='center'>
+        <Card className={classes.card}>
+          <CardContent className={classes.cardContent}>
+            <Typography className={classes.cardText}>{modulname}</Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+      )}
+          {/* <Grid container item xl={3} sm={3} justify='center'>
             <Card className={classes.card}>
               <CardContent className={classes.cardContent}>
                 <Typography className={classes.cardText}>Wirtschaftsinformatik Software Engineering</Typography>
@@ -118,7 +149,7 @@ export default function ModulkatalogTable() {
                 <Typography className={classes.cardText}>Wirtschaft Unternehmenswirtschaft</Typography>
               </CardContent>
             </Card>
-          </Grid>
+          </Grid> */}
         </Grid>
       </main>
     </div>
