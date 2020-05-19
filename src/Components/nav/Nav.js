@@ -80,7 +80,7 @@ export default function PermanentDrawerLeft() {
                     <ListItem button={true} 
                         divider={true} 
                         //selected={selectedIndex === 1} 
-                        //onClick={event => handleListItemClick(event, 1)}
+                        //onClick={event => handleLecturerLoad(event, 1)}
                         component={Link} to='/dozenten'>
                         <ListItemText>
                             Dozenten
