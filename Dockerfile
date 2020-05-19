@@ -1,20 +1,21 @@
-FROM node:12.2.0-alpine
+FROM node:13.12.0-alpine as build
 
-# Create app directory
-WORKDIR /usr/src/app
+WORKDIR /app
+ENV PATH /app/node_modules/.bin:$PATH
+COPY package.json ./
+COPY package-lock.json ./
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
+RUN apk --no-cache add --virtual builds-deps build-base python
 
-RUN npm install
+RUN npm ci --silent
 RUN npm install react-scripts@3.0.1 -g --silent
-# If you are building your code for production
-# RUN npm ci --only=production
 
-# Bundle app source
-COPY . .
+COPY . ./
 
-EXPOSE 3000
-CMD [ "npm", "start" ]
+RUN npm run build
+
+FROM nginx:stable-alpine
+COPY --from=build /app/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
