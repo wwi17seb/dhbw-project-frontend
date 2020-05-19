@@ -39,6 +39,7 @@ class Login extends Component {
                                     <input type="password" onChange={this.handlePassword} className="form-control" id="InputPassword" />
                                     <Link to="/reset">Passwort vergessen?</Link>
                                 </div>
+
                                 <button type="submit" onClick={this.handleLogin} className=" loginLink btn btn-block btn_dhbw">Login</button>
                                 <button type="submit" onClick={this.handleSignUp} className="btn btn-block btn_dhbw loginLink">Registrieren</button>
                             </form>
@@ -60,7 +61,7 @@ class Login extends Component {
             .then(res => {
                 this.setState({ message: res.data.message })
                 this.props.history.push({
-                    pathname: "/home",
+                    pathname: "/kurse",
                     state: { message: "Successfully signed up! Let's get started." }
                 })
             })
@@ -80,7 +81,7 @@ class Login extends Component {
             .then(res => {
                 this.setState({ message: res.data.message })
                 this.props.history.push({
-                    pathname: "/home",
+                    pathname: "/kurse",
                     state: { message: "Successfully logged in! Let's continue." }
                 })
             })
