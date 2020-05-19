@@ -34,12 +34,14 @@
 .btn_dhbw {
     background-color: #e30613;
     color: white;
+    margin-bottom: 1rem;
 }
 
 .btn_dhbw:hover {
     background-color: white;
     border-color: #e30613;
 }
+
 
 .loginLink {
     text-decoration: none;
