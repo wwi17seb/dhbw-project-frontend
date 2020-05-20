@@ -48,13 +48,15 @@ function getData(_, requestOptions) {
     ).then((data) => data.items);
 }
 
-const calendarData = getData(); 
 
-Promise.resolve(calendarData).then(function(value) {
-  formatData(value); 
-}, function(value){
-  
-});
+async function main (){
+  const calendarData = await getData(); 
+  const appointments2 = formatData(calendarData); 
+}
+
+main(); 
+
+
 
 class Appointment {
   constructor(title, startDate, endDate, id, location) {
@@ -66,13 +68,6 @@ class Appointment {
   }
 }
 
-const appointment = {
-  title: undefined,
-  startDate: undefined,
-  endDate: undefined,
-  id: undefined,
-  location: undefined,
-};
 
 function formatData(calendarData){
   
@@ -80,33 +75,34 @@ function formatData(calendarData){
 
   for(let i = 0; i<calendarData.length; i++){
 
-    let test = new Appointment(calendarData[i].summary, calendarData[i].start.dateTime, calendarData[i].end.dateTime, calendarData[i].id, calendarData[i].location); 
+    let test = new Appointment("No title given", undefined, undefined, undefined, "No location given"); 
 
     if(calendarData[i].location){
       test.location = calendarData[i].location;
     }
-    else{
-      test.location = "Generic Event location";
-    }
+
     if(calendarData[i].summary){
       test.title = calendarData[i].summary; 
     }
-    else{
-      test.title = "Generic Event Titel"; 
-    }
+
     test.id = calendarData[i].id; 
-    test.startDate = calendarData[i].start.dateTime; 
-    test.endDate = calendarData[i].end.dateTime; 
-  
+
+    let startDateString = calendarData[i].start.dateTime;
+    test.startDate = new Date(startDateString.substring(0, 4), startDateString.substring(5, 7), startDateString.substring(8, 10), startDateString.substring(11, 13), startDateString.substring(14, 16)); 
+    
+    let endDateString = calendarData[i].end.dateTime; 
+    test.endDate = new Date(endDateString.substring(0, 4), endDateString.substring(5, 7), endDateString.substring(8, 10), endDateString.substring(11, 13), endDateString.substring(14, 16)); 
+    
     appointments.push(test); 
   }
-  console.log(appointments)
+  console.log("test: ", appointments)
+ // appointments2 = appointments; 
   return appointments; 
 }
 
 
-const appointments2 = formatData(calendarData); 
-//console.log(appointments2); 
+
+
 
 
 const containerStyles = theme => ({
