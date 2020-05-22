@@ -46,6 +46,7 @@
       "last 1 safari version"
     ]
   },
+  "proxy": "https://localhost",
   "description": "Please create feature branches and then use pull requests to merge to master branch.\r Read more on https://guides.github.com/introduction/flow/.",
   "main": "index.js",
   "devDependencies": {},
