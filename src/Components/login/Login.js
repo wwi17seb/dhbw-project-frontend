@@ -57,7 +57,7 @@ class Login extends Component {
             password: this.state.password
         };
 
-        axios.post('/signup', data)
+        axios.post('/api/signup', data)
             .then(res => {
                 this.setState({ message: res.data.message })
                 this.props.history.push({
@@ -77,7 +77,7 @@ class Login extends Component {
             password: this.state.password
         };
 
-        axios.post('/login', data)
+        axios.post('/api/login', data)
             .then(res => {
                 this.setState({ message: res.data.message })
                 this.props.history.push({
