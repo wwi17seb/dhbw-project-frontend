@@ -26,6 +26,7 @@ import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import './dozenten.css';
 import MaterialTable from 'material-table';
 import Nav from '../nav/Nav';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -61,41 +62,53 @@ export default function DozentenTable() {
     }
     const [state, setState] = React.useState({
         columns: [
-            { title: 'Vorname', field: 'vorname' },
-            { title: 'Nachname', field: 'nachname' },
-            { title: 'Schwerpunkt', field: 'schwerpunkt' },
-            { title: 'Kontaktdaten', field: 'mail' },
+            { title: 'Vorname', field: 'firstname' },
+            { title: 'Nachname', field: 'lastname' },
+            { title: 'Schwerpunkt', field: 'experience' },
+            { title: 'Kontaktdaten', field: 'email' },
             {
                 title: 'Dozentennummer',
-                field: 'id',
+                field: 'lecturer_id',
                 lookup: { 1: '12345', 2: '67890', 3: '13579' },
             },
         ],
         data: [
             {
-                vorname: 'Michael',
-                nachname: 'Binzen',
-                schwerpunkt: 'Software-Architektur',
-                phone: '017653725528',
-                mail: 'michael.binzen@deutschebahn.de',
-                id: 1,
-            },
-            {
-                vorname: 'Henning',
-                nachname: 'Pagnia',
-                schwerpunkt: 'IT-Sicherheit',
-                phone: '017653725528',
-                mail: 'henning.pagnia@dhbw-mannheim.de',
-                id: 2,
-            },
-            {
-                vorname: 'Michael',
-                nachname: 'Spengler',
-                schwerpunkt: 'Plattformen & Frameworks',
-                phone: '017653725528',
-                mail: 'michael.spengler@sap.com',
-                id: 3,
-            },
+            lecturer_id: '1',
+            firstname: 'Michael',
+            lastname: 'Binzen',
+            academic_title: '',
+            email: 'michael.binzen@deutschebahn.de',
+            salutation: 'Herr',
+            phonenumber: '017653725528',
+            experience: 'Software Engineering',
+            comment: '',
+            is_extern: ''
+        },
+        {
+            lecturer_id: '2',
+            firstname: 'Henning',
+            lastname: 'Pagnia',
+            academic_title: '',
+            email: 'henning.pagnia@dhbw-mannheim.de',
+            salutation: 'Herr',
+            phonenumber: '017653725528',
+            experience: 'IT-Security',
+            comment: '',
+            is_extern: ''
+        },
+        {
+            lecturer_id: '3',
+            firstname: 'Michael',
+            lastname: 'Spengler',
+            academic_title: '',
+            email: 'michael.spengler@sap.com',
+            salutation: 'Herr',
+            phonenumber: '017653725528',
+            experience: 'Plattformen und Frameworks',
+            comment: '',
+            is_extern: ''
+        }
         ],
     });
     return (
@@ -159,3 +172,27 @@ export default function DozentenTable() {
         </div>
     )
 }
+/*
+handleLecturerLoad = (event) => {
+    event.preventDefault();
+    
+
+    axios.get('/lecturers', data)
+        .then(res => {
+            onRowAdd: newData =>
+            new Promise(resolve => {
+                setTimeout(() => {
+                    resolve();
+                    setState(prevState => {
+                        const data = [...prevState.data];
+                        data.push(newData);
+                        return { ...prevState, data };
+                    });
+                }, 600);
+            })
+        })
+        .catch(err => {
+            this.setState({ error: err.response.data.message })
+        });
+}
+*/
