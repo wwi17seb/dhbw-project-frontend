@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -61,8 +61,6 @@ export default function ScrollableTabsButtonAuto(props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  console.log(props.location);
-  console.log(props.location.state.message);
 
   const tabLabels = ["Übersicht", "ABC17DEF", "Kurs Hinzufügen"];
   const finalTabLabels = [];
@@ -77,7 +75,12 @@ export default function ScrollableTabsButtonAuto(props) {
     finalTabPanels.push(<TabPanel key={tabIndex} value={value} index={tabIndex}> {finalPanelContent[tabIndex]} </TabPanel>)
     tabIndex++;
   }
-
+  /* useEffect(() => {
+    console.log(document.getElementById('success-alert'));
+    document.getElementById('success-alert').fadeTo(2000, 500).slideUp(500, function() {
+      document.getElementById('success-alert').slideUp(500);
+    });
+  }); */
   return (
     <div className={classes.root}>
       <Nav></Nav>
@@ -85,7 +88,7 @@ export default function ScrollableTabsButtonAuto(props) {
         <div className={classes.toolbar} />
 
         {props.location.state !== undefined ?
-          <div className="alert alert-success alert-dismissible fade show" role="alert">
+          <div className="alert alert-success alert-dismissible fadeOut" role="alert" id="success-alert">
             <strong>{props.location.state.message}</strong>
             <button type="button" className="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
