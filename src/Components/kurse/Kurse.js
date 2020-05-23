@@ -54,13 +54,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function ScrollableTabsButtonAuto() {
+export default function ScrollableTabsButtonAuto(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  console.log(props.location);
+  console.log(props.location.state.message);
 
   const tabLabels = ["Übersicht", "ABC17DEF", "Kurs Hinzufügen"];
   const finalTabLabels = [];
@@ -81,6 +83,15 @@ export default function ScrollableTabsButtonAuto() {
       <Nav></Nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
+
+        {props.location.state !== undefined ?
+          <div className="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{props.location.state.message}</strong>
+            <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div> : null}
+
         <Paper>
           <Tabs
             value={value}
