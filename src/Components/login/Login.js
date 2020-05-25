@@ -81,7 +81,7 @@ class Login extends Component {
             .then(res => {
                 this.setState({ message: res.data.message })
                 this.props.history.push({
-                    pathname: "/kurse",
+                    pathname: "/kurse", //oder zu der Seite auf der man zuvor war? (bei session timout)
                     state: { message: "Successfully logged in! Let's continue." }
                 })
             })
