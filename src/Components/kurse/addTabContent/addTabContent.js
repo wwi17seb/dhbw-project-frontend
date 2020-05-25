@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import AddCalendar from './addCalendar'
+import AddCourseTable from './addCourseTable'
 
 const useStyles = makeStyles(theme => ({
     formControl: {
@@ -14,7 +15,10 @@ const AddTabContent = () => {
     const classes = useStyles();
 
     return (
+        <>
+        <AddCourseTable></AddCourseTable>
         <AddCalendar></AddCalendar>
+        </>
     )
 }
 
