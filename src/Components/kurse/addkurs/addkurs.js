@@ -7,12 +7,14 @@ import Button from '@material-ui/core/Button';
 import StudiengangAuswahl from './studiengangauswahl'
 import StudienrichtungAuswahl from './studienrichtungauswahl'
 import SemesterAuswahl from './semesterauswahl'
+import SubmitFeedback from './submitfeedback'
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Switch from '@material-ui/core/Switch';
+import { Typography } from '@material-ui/core';
 
 //css klassen, welche hier genutzt werden
 const useStyles = makeStyles(theme => ({
@@ -34,11 +36,16 @@ export default function AddKurs() {
 
     const [open, setOpen] = React.useState(false);
     const [checked, setChecked] = React.useState(false);
+    const [nameValue, setNameValue] = React.useState("")
     const [nametext, setNameText] = React.useState("")
     const [nameerror, setNameError] = React.useState(false)
+    const [yearValue, setYearValue] = React.useState("")
     const [yeartext, setYearText] = React.useState("")
     const [yearerror, setYearError] = React.useState(false)
     const [state, setState] = React.useState({});
+    const [status, setStatus] = React.useState(null);
+    const [statusText, setStatusText] = React.useState(null);
+
 
 
     //Event für submit button. gibt aktuell die Werte der Eingabefelder aus, wenn diese nicht leer sind
@@ -49,29 +56,46 @@ export default function AddKurs() {
         var studiengang = document.getElementById("studiengang-select").innerHTML
         var studienrichtung = document.getElementById("studienrichtung-select").innerHTML
         if (kursname === "" || studiengang === "<span>​</span>" || studienrichtung === "<span>​</span>" || jahrgang === "") {
-            console.log("Nicht alles ausgefüllt")
+            setStatusText("Nicht alles ausgefüllt")
+            setStatus("Halt: ")
+            setTimeout(() => { setStatus(null) }, 2000)
         } else {
-            console.log("Neuer Kurs angelegt mit Werten:")
-            console.log("Kursname: " + kursname)
-            console.log("Studiengang: " + studiengang)
-            console.log("Studienrichtung: " + studienrichtung)
-            console.log("Jahrgang: " + jahrgang)
             setOpen(true);
         }
     }
 
     const NeuerKurs = () => {
-        var kursname = document.getElementById("kursname-input").value
-        var jahrgang = document.getElementById("jahrgang-input").value
+        var kursname = nameValue
+        var jahrgang = yearValue
         var studiengang = document.getElementById("studiengang-select").innerHTML
         var studienrichtung = document.getElementById("studienrichtung-select").innerHTML
+        var semesterAnzahl
+        if (checked) {
+            semesterAnzahl = 7
+        } else {
+            semesterAnzahl = 6
+        }
+        var semesterlist = []
+
+        for (var i = 1; i <= semesterAnzahl; i++) {
+
+            var text = "Semester " + i + ": Von " + state["B" + i].toLocaleDateString('de-DE') + " Bis " + state["E" + i].toLocaleDateString('de-DE')
+            semesterlist.push(
+                <Typography>
+                    {text}
+                </Typography>
+
+            )
+        }
 
         return (
             <div>
                 Kursname: {kursname}<br />
                 Jahrgang: {jahrgang}<br />
                 Studiengang: {studiengang}<br />
-                Studienrichtung: {studienrichtung}
+                Studienrichtung: {studienrichtung}<br />
+                Semesteranzahl: {semesterAnzahl}<br />
+                {semesterlist}
             </div>
         )
     }
@@ -80,11 +104,11 @@ export default function AddKurs() {
         setOpen(false);
     };
 
-
     const YearOnChange = event => {
         var value = event.target.value
         var reg = new RegExp('^\\d{4}$');
         var res = value.match(reg)
+        setYearValue(value)
         if (res === null) {
             setYearError(true)
             setYearText("Wert muss vierstellige Zahl sein")
@@ -94,11 +118,11 @@ export default function AddKurs() {
         }
     }
 
-
     const NameOnChange = event => {
         var value = event.target.value
         var reg = new RegExp('^[a-zA-Z0-9]+$');
         var res = value.match(reg)
+        setNameValue(value)
         if (res === null && value != "") {
             setNameError(true)
             setNameText("Keine Sonderzeichen")
@@ -123,7 +147,7 @@ export default function AddKurs() {
     const handleValues = (state) => {
         setState(state)
     }
-    console.log(state)
+
     //Gibt alle Eingabefelder für das hinzufügen eines Kurses zurück.
     return (
         <div className={classes.root}>
@@ -133,11 +157,11 @@ export default function AddKurs() {
                     <Paper className={classes.paper}>
                         <div className={classes.block}>
                             <h5>Bitte geben Sie den Namen des Kurses an:</h5>
-                            <TextField required error={nameerror} onChange={NameOnChange} id="kursname-input" label="Kursname" defaultValue="Kursname" variant="outlined" helperText={nametext} />
+                            <TextField required value={nameValue} error={nameerror} onChange={NameOnChange} id="kursname-input" label="Kursname" variant="outlined" helperText={nametext} />
                         </div>
                         <div className={classes.block}>
                             <h5>Bitte geben Sie den Jahrgang des Kurses an:</h5>
-                            <TextField required error={yearerror} onChange={YearOnChange} id="jahrgang-input" label="Jahrgang" defaultValue="2020" variant="outlined" helperText={yeartext} />
+                            <TextField required error={yearerror} value={yearValue} onChange={YearOnChange} id="jahrgang-input" label="Jahrgang" variant="outlined" helperText={yeartext} />
                         </div>
                         <div className={classes.block}>
                             <h5>Bitte geben Sie den Studiengang und Studienrichtung an:</h5>
@@ -172,7 +196,7 @@ export default function AddKurs() {
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
                     >
-                        <DialogTitle id="alert-dialog-title">{"Neuer Kurs hinzugefügt:"}</DialogTitle>
+                        <DialogTitle id="alert-dialog-title">{"Kurs mit folgenden Daten hinzufügen?"}</DialogTitle>
                         <DialogContent>
                             <DialogContentText id="alert-dialog-description">
                                 <NeuerKurs></NeuerKurs>
@@ -180,12 +204,16 @@ export default function AddKurs() {
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={handleClose} color="primary" autoFocus>
-                                Ok
+                                Nein
+                            </Button>
+                            <Button onClick={handleClose} color="primary" autoFocus>
+                                Ja
                             </Button>
                         </DialogActions>
                     </Dialog>
                 </Grid>
             </Grid>
+            <SubmitFeedback submit={status} text={statusText}></SubmitFeedback>
         </div>
     );
 }

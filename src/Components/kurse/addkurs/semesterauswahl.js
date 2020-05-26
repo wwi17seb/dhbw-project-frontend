@@ -9,7 +9,9 @@ import {
 } from '@material-ui/pickers';
 import { Typography } from '@material-ui/core';
 
-
+//leider war es mir nicht möglich die Auswahlmenüs auf dynamische Art zu generieren, da auf dynamische Art der State eines einzelnen Auswahlmenüs
+//nicht richtig geändert werden konnte. Ein dynamisches generieren wäre grundsätzlich wünschenswert um den Code klein zu halten und wiederzuverwenden.
+//TODO für die Zukunft: Auswahlmenüs dynamisch entsprechend der Semesteranzahl generieren
 export default function SemesterAuswahl({ handleValues, anzahlSemester }) {
 
     const [valueB1, setValueB1] = useState(new Date());
