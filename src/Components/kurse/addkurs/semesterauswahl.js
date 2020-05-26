@@ -86,10 +86,10 @@ export default function SemesterAuswahl({ handleValues, anzahlSemester }) {
     }
 
     return (
-        <Grid container spacing={2}>
+        <Grid container spacing={3}>
             <Grid item xs={12}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <Grid container spacing={2} alignItems="center">
+                    <Grid container spacing={3} alignItems="center">
                         <Grid item>
                             <Typography variant="subtitle1">{"Semester 1:"}</Typography>
                         </Grid>
@@ -122,7 +122,7 @@ export default function SemesterAuswahl({ handleValues, anzahlSemester }) {
             </Grid>
             <Grid item xs={12}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <Grid container spacing={2} alignItems="center">
+                    <Grid container spacing={3} alignItems="center">
                         <Grid item>
                             <Typography variant="subtitle1">{"Semester 2:"}</Typography>
                         </Grid>
@@ -155,7 +155,7 @@ export default function SemesterAuswahl({ handleValues, anzahlSemester }) {
             </Grid>
             <Grid item xs={12}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <Grid container spacing={2} alignItems="center">
+                    <Grid container spacing={3} alignItems="center">
                         <Grid item>
                             <Typography variant="subtitle1">{"Semester 3:"}</Typography>
                         </Grid>
@@ -188,7 +188,7 @@ export default function SemesterAuswahl({ handleValues, anzahlSemester }) {
             </Grid>
             <Grid item xs={12}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <Grid container spacing={2} alignItems="center">
+                    <Grid container spacing={3} alignItems="center">
                         <Grid item>
                             <Typography variant="subtitle1">{"Semester 4:"}</Typography>
                         </Grid>
@@ -210,7 +210,7 @@ export default function SemesterAuswahl({ handleValues, anzahlSemester }) {
                                 variant="inline"
                                 format="dd.MM.yyyy"
                                 margin="normal"
-                                id="datepickerE1"
+                                id="datepickerE4"
                                 label="Ende Semester 4"
                                 value={valueE4}
                                 onChange={handleE4}
@@ -221,7 +221,7 @@ export default function SemesterAuswahl({ handleValues, anzahlSemester }) {
             </Grid>
             <Grid item xs={12}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <Grid container spacing={2} alignItems="center">
+                    <Grid container spacing={3} alignItems="center">
                         <Grid item>
                             <Typography variant="subtitle1">{"Semester 5:"}</Typography>
                         </Grid>
@@ -254,7 +254,7 @@ export default function SemesterAuswahl({ handleValues, anzahlSemester }) {
             </Grid>
             <Grid item xs={12}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <Grid container spacing={2} alignItems="center">
+                    <Grid container spacing={3} alignItems="center">
                         <Grid item>
                             <Typography variant="subtitle1">{"Semester 6:"}</Typography>
                         </Grid>
@@ -288,7 +288,7 @@ export default function SemesterAuswahl({ handleValues, anzahlSemester }) {
             {anzahlSemester ?
                 <Grid item xs={12}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <Grid container spacing={2} alignItems="center">
+                        <Grid container spacing={3} alignItems="center">
                             <Grid item>
                                 <Typography variant="subtitle1">{"Semester 7:"}</Typography>
                             </Grid>
