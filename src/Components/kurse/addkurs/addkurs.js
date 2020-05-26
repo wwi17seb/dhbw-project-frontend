@@ -15,6 +15,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Switch from '@material-ui/core/Switch';
 import { Typography } from '@material-ui/core';
+import axios from 'axios';
 
 //css klassen, welche hier genutzt werden
 const useStyles = makeStyles(theme => ({
@@ -35,13 +36,11 @@ export default function AddKurs() {
     const classes = useStyles();
 
     const [open, setOpen] = React.useState(false);
+    const [button, setButton] = React.useState(false);
     const [checked, setChecked] = React.useState(false);
     const [nameValue, setNameValue] = React.useState("")
     const [nametext, setNameText] = React.useState("")
     const [nameerror, setNameError] = React.useState(false)
-    const [yearValue, setYearValue] = React.useState("")
-    const [yeartext, setYearText] = React.useState("")
-    const [yearerror, setYearError] = React.useState(false)
     const [state, setState] = React.useState({});
     const [status, setStatus] = React.useState(null);
     const [statusText, setStatusText] = React.useState(null);
@@ -52,10 +51,9 @@ export default function AddKurs() {
     //TODO: eingabeüberprüfung erweitern -> evtl leere Inputs markieren
     const ClickSubmit = () => {
         var kursname = document.getElementById("kursname-input").value
-        var jahrgang = document.getElementById("jahrgang-input").value
         var studiengang = document.getElementById("studiengang-select").innerHTML
         var studienrichtung = document.getElementById("studienrichtung-select").innerHTML
-        if (kursname === "" || studiengang === "<span>​</span>" || studienrichtung === "<span>​</span>" || jahrgang === "") {
+        if (kursname === "" || studiengang === "<span>​</span>" || studienrichtung === "<span>​</span>") {
             setStatusText("Nicht alles ausgefüllt")
             setStatus("Halt: ")
             setTimeout(() => { setStatus(null) }, 2000)
@@ -66,7 +64,6 @@ export default function AddKurs() {
 
     const NeuerKurs = () => {
         var kursname = nameValue
-        var jahrgang = yearValue
         var studiengang = document.getElementById("studiengang-select").innerHTML
         var studienrichtung = document.getElementById("studienrichtung-select").innerHTML
         var semesterAnzahl
@@ -91,7 +88,6 @@ export default function AddKurs() {
         return (
             <div>
                 Kursname: {kursname}<br />
-                Jahrgang: {jahrgang}<br />
                 Studiengang: {studiengang}<br />
                 Studienrichtung: {studienrichtung}<br />
                 Semesteranzahl: {semesterAnzahl}<br />
@@ -104,19 +100,63 @@ export default function AddKurs() {
         setOpen(false);
     };
 
-    const YearOnChange = event => {
-        var value = event.target.value
-        var reg = new RegExp('^\\d{4}$');
-        var res = value.match(reg)
-        setYearValue(value)
-        if (res === null) {
-            setYearError(true)
-            setYearText("Wert muss vierstellige Zahl sein")
+    //returns array with semester objects
+    const getSemesterList = () => {
+        var anz
+        var output = []
+        if (checked) {
+            anz = 7
         } else {
-            setYearError(false)
-            setYearText("")
+            anz = 6
         }
+
+        for (var i = 1; i <= anz; i++) {
+            var semName = ""
+            var dateBegin = state["B" + i].getFullYear() + "-" + (state["B" + i].getMonth() + 1) + "-" + state["B" + i].getDate()
+            var dateEnd = state["E" + i].getFullYear() + "-" + (state["E" + i].getMonth() + 1) + "-" + state["E" + i].getDate()
+            if (state["B" + i].getMonth() > 6) {
+                semName = "WS" + state["B" + i].getFullYear().toString().substring(2) + "/" + (state["B" + i].getFullYear() + 1).toString().substring(2)
+            } else {
+                semName = "SS" + state["B" + i].getFullYear().toString().substring(2)
+            }
+
+            output.push({
+                name: semName,
+                number: i,
+                start_date: dateBegin,
+                end_date: dateEnd
+            })
+        }
+        return output
     }
+
+    const handlePost = (event) => {
+        event.preventDefault();
+        setButton(true)
+        var semesterList = getSemesterList()
+
+        let data = {
+            name: nameValue,
+            majorSubject: document.getElementById("studiengang-select").innerHTML,
+            fieldOfStudy: document.getElementById("studienrichtung-select").innerHTML,
+            semesters: semesterList
+        };
+        axios.post('/api/courses', data)
+            .then(res => {
+                setStatusText(res.statusText)
+                setStatus(res.status)
+                setTimeout(() => { setStatus(null) }, 2000)
+            })
+            .catch(err => {
+                if (err.response) {
+                    setStatusText(err.response.statusText)
+                    setStatus(err.response.status)
+                    setTimeout(() => { setStatus(null) }, 3000)
+                }
+            });
+        setButton(false)
+        setOpen(false);
+    };
 
     const NameOnChange = event => {
         var value = event.target.value
@@ -160,10 +200,6 @@ export default function AddKurs() {
                             <TextField required value={nameValue} error={nameerror} onChange={NameOnChange} id="kursname-input" label="Kursname" variant="outlined" helperText={nametext} />
                         </div>
                         <div className={classes.block}>
-                            <h5>Bitte geben Sie den Jahrgang des Kurses an:</h5>
-                            <TextField required error={yearerror} value={yearValue} onChange={YearOnChange} id="jahrgang-input" label="Jahrgang" variant="outlined" helperText={yeartext} />
-                        </div>
-                        <div className={classes.block}>
                             <h5>Bitte geben Sie den Studiengang und Studienrichtung an:</h5>
                             <StudiengangAuswahl></StudiengangAuswahl>
                             <StudienrichtungAuswahl></StudienrichtungAuswahl>
@@ -185,7 +221,7 @@ export default function AddKurs() {
                         </div>
 
                         <div className={classes.block}>
-                            <Button onClick={ClickSubmit.bind(this)} id="submit-kurs" variant="contained" color="primary">
+                            <Button onClick={ClickSubmit.bind(this)} disabled={button} id="submit-kurs" variant="contained" color="primary">
                                 Submit
                         </Button>
                         </div>
@@ -206,7 +242,7 @@ export default function AddKurs() {
                             <Button onClick={handleClose} color="primary" autoFocus>
                                 Nein
                             </Button>
-                            <Button onClick={handleClose} color="primary" autoFocus>
+                            <Button onClick={handlePost} color="primary" autoFocus>
                                 Ja
                             </Button>
                         </DialogActions>

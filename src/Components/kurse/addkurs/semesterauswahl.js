@@ -46,7 +46,7 @@ export default function SemesterAuswahl({ handleValues, anzahlSemester }) {
     useEffect(() => {
         const state = generateState()
         handleValues(state)
-    }, [valueB1, valueB2, valueB3, valueB4, valueB5, valueB6, valueB7, valueE1, valueE2, valueE3, valueE4, valueE5, valueE6, valueE7]);
+    }, [valueB1, valueB2, valueB3, valueB4, valueB5, valueB6, valueB7, valueE1, valueE2, valueE3, valueE4, valueE5, valueE6, valueE7, anzahlSemester]);
 
     const generateState = () => {
         if (anzahlSemester === true) {
