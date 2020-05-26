@@ -6,11 +6,13 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import StudiengangAuswahl from './studiengangauswahl'
 import StudienrichtungAuswahl from './studienrichtungauswahl'
+import SemesterAuswahl from './semesterauswahl'
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Switch from '@material-ui/core/Switch';
 
 //css klassen, welche hier genutzt werden
 const useStyles = makeStyles(theme => ({
@@ -27,10 +29,16 @@ const useStyles = makeStyles(theme => ({
 
 
 
-export default function CenteredGrid() {
+export default function AddKurs() {
     const classes = useStyles();
 
     const [open, setOpen] = React.useState(false);
+    const [checked, setChecked] = React.useState(false);
+    const [nametext, setNameText] = React.useState("")
+    const [nameerror, setNameError] = React.useState(false)
+    const [yeartext, setYearText] = React.useState("")
+    const [yearerror, setYearError] = React.useState(false)
+    const [state, setState] = React.useState({});
 
 
     //Event für submit button. gibt aktuell die Werte der Eingabefelder aus, wenn diese nicht leer sind
@@ -72,8 +80,7 @@ export default function CenteredGrid() {
         setOpen(false);
     };
 
-    const [yeartext, setYearText] = React.useState("")
-    const [yearerror, setYearError] = React.useState(false)
+
     const YearOnChange = event => {
         var value = event.target.value
         var reg = new RegExp('^\\d{4}$');
@@ -87,8 +94,7 @@ export default function CenteredGrid() {
         }
     }
 
-    const [nametext, setNameText] = React.useState("")
-    const [nameerror, setNameError] = React.useState(false)
+
     const NameOnChange = event => {
         var value = event.target.value
         var reg = new RegExp('^[a-zA-Z0-9]+$');
@@ -106,6 +112,18 @@ export default function CenteredGrid() {
         }
     }
 
+    const checkOnChange = event => {
+        if (checked === true) {
+            setChecked(false)
+        } else {
+            setChecked(true)
+        }
+    }
+
+    const handleValues = (state) => {
+        setState(state)
+    }
+    console.log(state)
     //Gibt alle Eingabefelder für das hinzufügen eines Kurses zurück.
     return (
         <div className={classes.root}>
@@ -125,6 +143,21 @@ export default function CenteredGrid() {
                             <h5>Bitte geben Sie den Studiengang und Studienrichtung an:</h5>
                             <StudiengangAuswahl></StudiengangAuswahl>
                             <StudienrichtungAuswahl></StudienrichtungAuswahl>
+                        </div>
+                        <div className={classes.block}>
+                            <h5>Bitte wählen Sie die Anzahl der Semester aus und geben Sie für jedes Semester die Zeiträume an:</h5>
+                            <Grid container direction="row" justify="flex-start" alignItems="center">
+                                <Grid item>
+                                    6 Semester
+                                </Grid>
+                                <Grid item>
+                                    <Switch checked={checked} onChange={checkOnChange} name="selectSemesterCount" />
+                                </Grid>
+                                <Grid item>
+                                    7 Semester
+                                </Grid>
+                            </Grid>
+                            <SemesterAuswahl handleValues={handleValues} anzahlSemester={checked}></SemesterAuswahl>
                         </div>
 
                         <div className={classes.block}>
