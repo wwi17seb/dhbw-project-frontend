@@ -28,16 +28,14 @@ import Nav from '../../nav/Nav';
 import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
-    root: {
-      display: 'flex',
-    },toolbar: theme.mixins.toolbar,
-    content: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.default,
-        padding: theme.spacing(3),
-      }}));
+    formControl: {
+        margin: 0,
+        minWidth: 150,
+    },
+}));
 
-  export default function KursTable() {
+
+export default function DozentenTable() {
     const classes = useStyles();
     const tableIcons = {
         Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -66,23 +64,30 @@ const useStyles = makeStyles(theme => ({
             { title: 'Kursleistung', field: 'Kursleistung' },
             { title: 'Dozent', field: 'lecturer' },
             { title: 'Status', field: 'Status' },
-            { title: 'Aktion', field: 'Aktion' },
         ],
-      /*   data: [
+      data: [
             {
-                
-               
-        
-                course_id: '0', // Bspw. "1"
-                name: 'KURSNAME', // Bspw. "WWI 17 SE B"
-                directorOfStudies:  '...'
-                
-                majorSubject: 'STUDIENGANG', // Bspw. "Wirtschaftsinformatik"
-                fieldOfStudy: 'STUDIENRICHTUNG' // Bspw. "Software Engineering"
-                
-              
-             
-        ],*/
+            Module: 'Grundlagen BWL',
+            SWS: '40',
+            Kursleistung: 'K oder SE',
+            lecturer: 'Max Mustermann',
+            Status: 'angeschrieben',
+        },
+        {
+            Module: 'Plattformen & Frameworks',
+            SWS: '35',
+            Kursleistung: 'K oder SE',
+            lecturer: 'Erika Musterfrau',
+            Status: 'Termine eingetragen',
+        },
+        {
+            Module: 'Projekt',
+            SWS: '25',
+            Kursleistung: 'P',
+            lecturer: 'Dozent suchen ',
+            Status: 'bestätigt',
+        }
+        ], 
     });
     return (
     
@@ -99,7 +104,7 @@ const useStyles = makeStyles(theme => ({
                 }
             ]}
             icons={tableIcons}
-            title="Dozenten"
+            title=""
             columns={state.columns}
             data={state.data}
             editable={{
@@ -145,3 +150,27 @@ const useStyles = makeStyles(theme => ({
         </div>
     )
 }
+/*
+handleLecturerLoad = (event) => {
+    event.preventDefault();
+    
+
+    axios.get('/lecturers', data)
+        .then(res => {
+            onRowAdd: newData =>
+            new Promise(resolve => {
+                setTimeout(() => {
+                    resolve();
+                    setState(prevState => {
+                        const data = [...prevState.data];
+                        data.push(newData);
+                        return { ...prevState, data };
+                    });
+                }, 600);
+            })
+        })
+        .catch(err => {
+            this.setState({ error: err.response.data.message })
+        });
+}
+*/
