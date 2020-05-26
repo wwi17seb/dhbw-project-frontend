@@ -16,6 +16,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Switch from '@material-ui/core/Switch';
 import { Typography } from '@material-ui/core';
 import axios from 'axios';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 //css klassen, welche hier genutzt werden
 const useStyles = makeStyles(theme => ({
@@ -44,11 +45,8 @@ export default function AddKurs() {
     const [state, setState] = React.useState({});
     const [status, setStatus] = React.useState(null);
     const [statusText, setStatusText] = React.useState(null);
+    const [loading, setLoading] = React.useState(null);
 
-
-
-    //Event für submit button. gibt aktuell die Werte der Eingabefelder aus, wenn diese nicht leer sind
-    //TODO: eingabeüberprüfung erweitern -> evtl leere Inputs markieren
     const ClickSubmit = () => {
         var kursname = document.getElementById("kursname-input").value
         var studiengang = document.getElementById("studiengang-select").innerHTML
@@ -114,8 +112,8 @@ export default function AddKurs() {
             var semName = ""
             var dateBegin = state["B" + i].getFullYear() + "-" + (state["B" + i].getMonth() + 1) + "-" + state["B" + i].getDate()
             var dateEnd = state["E" + i].getFullYear() + "-" + (state["E" + i].getMonth() + 1) + "-" + state["E" + i].getDate()
-            if (state["B" + i].getMonth() > 6) {
-                semName = "WS" + state["B" + i].getFullYear().toString().substring(2) + "/" + (state["B" + i].getFullYear() + 1).toString().substring(2)
+            if (state["B" + i].getFullYear() !== state["E" + i].getFullYear()) {
+                semName = "WS" + state["B" + i].getFullYear().toString().substring(2) + "/" + (state["E" + i].getFullYear()).toString().substring(2)
             } else {
                 semName = "SS" + state["B" + i].getFullYear().toString().substring(2)
             }
@@ -132,6 +130,9 @@ export default function AddKurs() {
 
     const handlePost = (event) => {
         event.preventDefault();
+        if (loading === null) {
+            setLoading(<LinearProgress />)
+        }
         setButton(true)
         var semesterList = getSemesterList()
 
@@ -146,15 +147,18 @@ export default function AddKurs() {
                 setStatusText(res.statusText)
                 setStatus(res.status)
                 setTimeout(() => { setStatus(null) }, 2000)
+                setLoading(null)
+                setButton(false)
             })
             .catch(err => {
                 if (err.response) {
                     setStatusText(err.response.statusText)
                     setStatus(err.response.status)
                     setTimeout(() => { setStatus(null) }, 3000)
+                    setLoading(null)
+                    setButton(false)
                 }
             });
-        setButton(false)
         setOpen(false);
     };
 
@@ -224,6 +228,7 @@ export default function AddKurs() {
                             <Button onClick={ClickSubmit.bind(this)} disabled={button} id="submit-kurs" variant="contained" color="primary">
                                 Submit
                         </Button>
+                            {loading}
                         </div>
                     </Paper>
                     <Dialog
