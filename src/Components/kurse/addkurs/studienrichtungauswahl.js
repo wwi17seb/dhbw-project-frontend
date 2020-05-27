@@ -16,9 +16,6 @@ const useStyles = makeStyles(theme => ({
 export default function StudienrichtungAuswahl({ studiengang, data }) {
     const classes = useStyles();
 
-    //TODO: dynamisches Anfragen der Studienrichtungen für einen Studiengang, nachdem der Studiengang ausgewählt wurde
-    //TODO: Auswahlmenü erst einfügen, nachdem Studiengang ausgewählt wurde
-    const studienrichtungen = ["Software Engineering", "Sales & Consulting", "Data Science"]
     const studienrichtungAuswahl = []
     const [studienrichtung, setStudienrichtung] = React.useState('');
     const [studiengang1, setStudiengang1] = React.useState(studiengang);
