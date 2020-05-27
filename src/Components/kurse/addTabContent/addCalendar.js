@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Paper from '@material-ui/core/Paper';
-import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
+import {TodayButton, DateNavigator} from '@devexpress/dx-react-scheduler-material-ui';
+import {ViewState, EditingState } from '@devexpress/dx-react-scheduler';
 import {
   Scheduler,
   Toolbar,
@@ -36,74 +37,43 @@ import Create from '@material-ui/icons/Create';
 
 import { appointments } from './appointments';
 
-function getData(_, requestOptions) {
-    const PUBLIC_KEY = 'AIzaSyCJrp1GqmuLYSGdv_z-ZVSe2Sl2tLvY8LA',
-      CALENDAR_ID = 'iq90i34lq6v196rqs4986dp370@group.calendar.google.com';
-    const dataUrl = [ 'https://www.googleapis.com/calendar/v3/calendars/',
-      CALENDAR_ID, '/events?key=', PUBLIC_KEY].join('');
-  
-      
-    return fetch(dataUrl, requestOptions).then(
-      (response) => response.json()
-    ).then((data) => data.items);
-}
 
+function formatData(calendarData) {
 
-async function main (){
-  const calendarData = await getData(); 
-  const appointments2 = formatData(calendarData); 
-}
+  let appointments = [];
 
-main(); 
+  for (let i = 0; i < calendarData.length; i++) {
 
+    //let test = new Appointment("No title given", undefined, undefined, undefined, "No location given"); 
+    let test = {
+      title: 'No title given',
+      startDate: undefined,
+      endDate: undefined, 
+      location: 'No location given',
+      id: i, 
+    }
 
-
-class Appointment {
-  constructor(title, startDate, endDate, id, location) {
-    this.title = title;
-    this.startDate = startDate;
-    this.endDate = endDate; 
-    this.id = id;
-    this.location = location;
-  }
-}
-
-
-function formatData(calendarData){
-  
-  let appointments = []; 
-
-  for(let i = 0; i<calendarData.length; i++){
-
-    let test = new Appointment("No title given", undefined, undefined, undefined, "No location given"); 
-
-    if(calendarData[i].location){
+    if (calendarData[i].location) {
       test.location = calendarData[i].location;
     }
 
-    if(calendarData[i].summary){
-      test.title = calendarData[i].summary; 
+    if (calendarData[i].summary) {
+      test.title = calendarData[i].summary;
     }
 
-    test.id = calendarData[i].id; 
+    //test.id = calendarData[i].id;
 
     let startDateString = calendarData[i].start.dateTime;
-    test.startDate = new Date(startDateString.substring(0, 4), startDateString.substring(5, 7), startDateString.substring(8, 10), startDateString.substring(11, 13), startDateString.substring(14, 16)); 
-    
-    let endDateString = calendarData[i].end.dateTime; 
-    test.endDate = new Date(endDateString.substring(0, 4), endDateString.substring(5, 7), endDateString.substring(8, 10), endDateString.substring(11, 13), endDateString.substring(14, 16)); 
-    
-    appointments.push(test); 
+    test.startDate = new Date(startDateString);
+
+    let endDateString = calendarData[i].end.dateTime;
+    test.endDate = new Date(endDateString);
+
+    appointments.push(test);
   }
-  console.log("test: ", appointments)
- // appointments2 = appointments; 
-  return appointments; 
+
+  return appointments;
 }
-
-
-
-
-
 
 const containerStyles = theme => ({
   container: {
@@ -352,7 +322,7 @@ class Demo extends React.PureComponent {
     super(props);
     this.state = {
       data: appointments,
-      currentDate: '2018-06-27',
+      currentDate: '2020-05-12',
       confirmationVisible: false,
       editingFormVisible: false,
       deletedAppointmentId: undefined,
@@ -362,8 +332,10 @@ class Demo extends React.PureComponent {
       startDayHour: 9,
       endDayHour: 19,
       isNewAppointment: false,
+      dataReady: false,
     };
 
+    this.loadData = this.loadData.bind(this);
     this.toggleConfirmationVisible = this.toggleConfirmationVisible.bind(this);
     this.commitDeletedAppointment = this.commitDeletedAppointment.bind(this);
     this.toggleEditingFormVisibility = this.toggleEditingFormVisibility.bind(this);
@@ -372,6 +344,7 @@ class Demo extends React.PureComponent {
     this.onEditingAppointmentChange = this.onEditingAppointmentChange.bind(this);
     this.onAddedAppointmentChange = this.onAddedAppointmentChange.bind(this);
     this.appointmentForm = connectProps(AppointmentFormContainer, () => {
+
       const {
         editingFormVisible,
         editingAppointment,
@@ -381,6 +354,8 @@ class Demo extends React.PureComponent {
         previousAppointment,
       } = this.state;
 
+      this.currentDateChange = (currentDate) => { this.setState({ currentDate }); };
+      
       const currentAppointment = data
         .filter(appointment => editingAppointment && appointment.id === editingAppointment.id)[0]
         || addedAppointment;
@@ -402,6 +377,48 @@ class Demo extends React.PureComponent {
         cancelAppointment,
       };
     });
+  }
+
+  /* componentDidMount() {
+    const PUBLIC_KEY = 'AIzaSyCJrp1GqmuLYSGdv_z-ZVSe2Sl2tLvY8LA',
+      CALENDAR_ID = 'iq90i34lq6v196rqs4986dp370@group.calendar.google.com';
+    const dataUrl = ['https://www.googleapis.com/calendar/v3/calendars/',
+      CALENDAR_ID, '/events?key=', PUBLIC_KEY].join('');
+
+    fetch(dataUrl).then(
+      (response) => response.json()
+    ).then((appointments) => {
+      let {data} = this.state;
+      debugger; 
+      data.splice(0, data.length); 
+      data.push.apply(data, formatData(appointments.items));
+      this.setState({ dataReady: true}) //, data: formatData(appointments.items)
+      console.log(formatData(appointments.items));
+    });
+  } */ 
+
+  componentDidMount(){
+    this.loadData(); 
+  }
+
+  loadData() {
+    const PUBLIC_KEY =  'AIzaSyCJrp1GqmuLYSGdv_z-ZVSe2Sl2tLvY8LA', //'AIzaSyDW9fNZ9R0VhCkBf8KtOqpsTdPAtp6sbD4',
+      CALENDAR_ID = 'iq90i34lq6v196rqs4986dp370@group.calendar.google.com';
+    const dataUrl = ['https://www.googleapis.com/calendar/v3/calendars/',
+      CALENDAR_ID, '/events?key=', PUBLIC_KEY].join('');
+    
+    fetch(dataUrl).then(
+      (response) => response.json()
+    ).then((appointments) => {
+        setTimeout(() => {
+          this.setState({
+            data: formatData(appointments.items), 
+            dataReady: true
+          });
+        }, 600);
+        console.log(this.state.data); 
+      })
+      .catch(() => this.setState({dataReady: true}));
   }
 
   componentDidUpdate() {
@@ -470,6 +487,7 @@ class Demo extends React.PureComponent {
 
   render() {
     const {
+      dataReady,
       currentDate,
       data,
       confirmationVisible,
@@ -479,81 +497,90 @@ class Demo extends React.PureComponent {
     } = this.state;
     const { classes } = this.props;
 
-    return (
-      <Paper>
-        <Scheduler
-          data={data}
-          height={660}
-        >
-          <ViewState
-            currentDate={currentDate}
-          />
-          <EditingState
-            onCommitChanges={this.commitChanges}
-            onEditingAppointmentChange={this.onEditingAppointmentChange}
-            onAddedAppointmentChange={this.onAddedAppointmentChange}
-          />
-          <WeekView
-            startDayHour={startDayHour}
-            endDayHour={endDayHour}
-          />
-          <MonthView />
-          <AllDayPanel />
-          <EditRecurrenceMenu />
-          <Appointments />
-          <AppointmentTooltip
-            showOpenButton
-            showCloseButton
-            showDeleteButton
-          />
-          <Toolbar />
-          <ViewSwitcher />
-          <AppointmentForm
-            overlayComponent={this.appointmentForm}
-            visible={editingFormVisible}
-            onVisibilityChange={this.toggleEditingFormVisibility}
-          />
-          <DragDropProvider />
-        </Scheduler>
+    if (!dataReady) {
+      return (
+        <p>Loading...</p>
+      );
+    } else {
+      return (
+        <Paper>
+          <Scheduler
+            data={data}
+            height={660}
+          >
+            <ViewState
+              currentDate={currentDate}
+              onCurrentDateChange={this.currentDateChange}
+            />
+            <EditingState
+              onCommitChanges={this.commitChanges}
+              onEditingAppointmentChange={this.onEditingAppointmentChange}
+              onAddedAppointmentChange={this.onAddedAppointmentChange}
+            />
+            <WeekView
+              startDayHour={startDayHour}
+              endDayHour={endDayHour}
+            />
+            <MonthView />
+            <AllDayPanel />
+            <EditRecurrenceMenu />
+            <Appointments />
+            <AppointmentTooltip
+              showOpenButton
+              showCloseButton
+              showDeleteButton
+            />
+            <Toolbar />
+            <DateNavigator/>
+            <ViewSwitcher />
+            <TodayButton/>
+            <AppointmentForm
+              overlayComponent={this.appointmentForm}
+              visible={editingFormVisible}
+              onVisibilityChange={this.toggleEditingFormVisibility}
+            />
+            <DragDropProvider />
+          </Scheduler>
 
-        <Dialog
-          open={confirmationVisible}
-          onClose={this.cancelDelete}
-        >
-          <DialogTitle>
-            Delete Appointment
+          <Dialog
+            open={confirmationVisible}
+            onClose={this.cancelDelete}
+          >
+            <DialogTitle>
+              Delete Appointment
           </DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Are you sure you want to delete this appointment?
+            <DialogContent>
+              <DialogContentText>
+                Are you sure you want to delete this appointment?
             </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.toggleConfirmationVisible} color="primary" variant="outlined">
-              Cancel
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.toggleConfirmationVisible} color="primary" variant="outlined">
+                Cancel
             </Button>
-            <Button onClick={this.commitDeletedAppointment} color="secondary" variant="outlined">
-              Delete
+              <Button onClick={this.commitDeletedAppointment} color="secondary" variant="outlined">
+                Delete
             </Button>
-          </DialogActions>
-        </Dialog>
+            </DialogActions>
+          </Dialog>
 
-        <Fab
-          color="secondary"
-          className={classes.addButton}
-          onClick={() => {
-            this.setState({ editingFormVisible: true });
-            this.onEditingAppointmentChange(undefined);
-            this.onAddedAppointmentChange({
-              startDate: new Date(currentDate).setHours(startDayHour),
-              endDate: new Date(currentDate).setHours(startDayHour + 1),
-            });
-          }}
-        >
-          <AddIcon />
-        </Fab>
-      </Paper>
-    );
+          <Fab
+            color="secondary"
+            className={classes.addButton}
+            onClick={() => {
+              this.setState({ editingFormVisible: true });
+              this.onEditingAppointmentChange(undefined);
+              this.onAddedAppointmentChange({
+                startDate: new Date(currentDate).setHours(startDayHour),
+                endDate: new Date(currentDate).setHours(startDayHour + 1),
+              });
+            }}
+          >
+            <AddIcon />
+          </Fab>
+        </Paper>
+      );
+    }
   }
 }
 
