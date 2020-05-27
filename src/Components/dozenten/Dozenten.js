@@ -26,7 +26,8 @@ import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import './dozenten.css';
 import MaterialTable from 'material-table';
 import Nav from '../nav/Nav';
-import axios from 'axios';
+import LecturerList from './lecturerlist'
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -172,27 +173,3 @@ export default function DozentenTable() {
         </div>
     )
 }
-/*
-handleLecturerLoad = (event) => {
-    event.preventDefault();
-    
-
-    axios.get('/lecturers', data)
-        .then(res => {
-            onRowAdd: newData =>
-            new Promise(resolve => {
-                setTimeout(() => {
-                    resolve();
-                    setState(prevState => {
-                        const data = [...prevState.data];
-                        data.push(newData);
-                        return { ...prevState, data };
-                    });
-                }, 600);
-            })
-        })
-        .catch(err => {
-            this.setState({ error: err.response.data.message })
-        });
-}
-*/
