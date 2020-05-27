@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import StudiengangAuswahl from './studiengangauswahl'
-import StudienrichtungAuswahl from './studienrichtungauswahl'
+
 import SemesterAuswahl from './semesterauswahl'
 import SubmitFeedback from './submitfeedback'
 import Dialog from '@material-ui/core/Dialog';
@@ -17,6 +17,7 @@ import Switch from '@material-ui/core/Switch';
 import { Typography } from '@material-ui/core';
 import axios from 'axios';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import * as testdata from "./fieldOfStudiesTestData.json"
 
 //css klassen, welche hier genutzt werden
 const useStyles = makeStyles(theme => ({
@@ -46,7 +47,23 @@ export default function AddKurs() {
     const [status, setStatus] = React.useState(null);
     const [statusText, setStatusText] = React.useState(null);
     const [loading, setLoading] = React.useState(null);
+    const [subjectData, setSubjectData] = React.useState(null);
 
+    //TODO: add parameter withMajorSubjects !!!
+    const loadSubjects = () => {
+        axios.get("/api/fieldOfStudies").then(res => {
+            var data = res.data
+            setSubjectData(data)
+        }).catch(err => {
+            setSubjectData({})
+            console.log("Failed to load subjects!")
+        })
+    }
+
+    if (subjectData === null) {
+        //loadSubjects()
+        setSubjectData(testdata)
+    }
     const ClickSubmit = () => {
         var kursname = document.getElementById("kursname-input").value
         var studiengang = document.getElementById("studiengang-select").innerHTML
@@ -205,8 +222,7 @@ export default function AddKurs() {
                         </div>
                         <div className={classes.block}>
                             <h5>Bitte geben Sie den Studiengang und Studienrichtung an:</h5>
-                            <StudiengangAuswahl></StudiengangAuswahl>
-                            <StudienrichtungAuswahl></StudienrichtungAuswahl>
+                            <StudiengangAuswahl data={subjectData}></StudiengangAuswahl>
                         </div>
                         <div className={classes.block}>
                             <h5>Bitte wählen Sie die Anzahl der Semester aus und geben Sie für jedes Semester die Zeiträume an:</h5>
