@@ -49,9 +49,8 @@ export default function AddKurs() {
     const [loading, setLoading] = React.useState(null);
     const [subjectData, setSubjectData] = React.useState(null);
 
-    //TODO: add parameter withMajorSubjects !!!
     const loadSubjects = () => {
-        axios.get("/api/fieldOfStudies").then(res => {
+        axios.get("/api/fieldOfStudies", { params: { withMajorSubjects: true } }).then(res => {
             var data = res.data
             setSubjectData(data)
         }).catch(err => {
