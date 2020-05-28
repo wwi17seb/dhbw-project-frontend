@@ -26,19 +26,19 @@ export default function Profile(props) {
         <Paper className={classes.paper}>
             <Grid container spacing={2}>
                 <Grid item xs={2}>
-                    <Typography className={classes.title} variant="h5">Tel.: </Typography>
+                    <Typography className={classes.title} variant="h6">Tel.: </Typography>
                 </Grid>
                 <Grid item xs={10}>
                     0178 12345678
                 </Grid>
                 <Grid item xs={2}>
-                    <Typography className={classes.title} variant="h5">Email: </Typography>
+                    <Typography className={classes.title} variant="h6">Email: </Typography>
                 </Grid>
                 <Grid item xs={10}>
                     max.mustermann@email.de
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography variant="h5">Schwerpunkte: </Typography>
+                    <Typography variant="h6">Schwerpunkte: </Typography>
                 </Grid>
                 <Grid item xs={12}>
                     - BWL <br />
