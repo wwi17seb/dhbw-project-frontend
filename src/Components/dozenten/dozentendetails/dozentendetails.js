@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Profile from './profile';
 import Lehre from './lehre';
+import Vita from './vita';
+import Notizen from './notizen';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link1 from '@material-ui/core/Link';
 import { Link } from "react-router-dom";
@@ -67,7 +69,7 @@ export default function DozentenDetails(props) {
     const tabLabels = ["Profil", "Lehre", "Vita", "Notizen"];
     const finalTabLabels = [];
     const finalTabPanels = [];
-    const finalPanelContent = [<Profile></Profile>, <Lehre></Lehre>, "Vita", "Notizen"];
+    const finalPanelContent = [<Profile></Profile>, <Lehre></Lehre>, <Vita></Vita>, <Notizen></Notizen>];
     let tabIndex = 0;
 
     for (let tabLabel of tabLabels) {
