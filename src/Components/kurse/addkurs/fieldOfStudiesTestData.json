@@ -1,0 +1,32 @@
+{
+    "message": "Success",
+    "payload": {
+        "fieldOfStudies": [{
+                "id": 0,
+                "name": "Wirtschaftsinformatik",
+                "majorSubjects": [{
+                        "id": 0,
+                        "name": "SE"
+                    },
+                    {
+                        "id": 1,
+                        "name": "DS"
+                    }
+                ]
+            },
+            {
+                "id": 1,
+                "name": "BWL",
+                "majorSubjects": [{
+                        "id": 3,
+                        "name": "Finance"
+                    },
+                    {
+                        "id": 4,
+                        "name": "Immo"
+                    }
+                ]
+            }
+        ]
+    }
+}
