@@ -402,7 +402,7 @@ class Demo extends React.PureComponent {
   }
 
   loadData() {
-    const PUBLIC_KEY =  'AIzaSyCJrp1GqmuLYSGdv_z-ZVSe2Sl2tLvY8LA', //'AIzaSyDW9fNZ9R0VhCkBf8KtOqpsTdPAtp6sbD4',
+    const PUBLIC_KEY =  'AIzaSyA5OGAMBup2tHpeQvt7EA0w2zR-3ZCQ6-0', //'AIzaSyDW9fNZ9R0VhCkBf8KtOqpsTdPAtp6sbD4',
       CALENDAR_ID = 'iq90i34lq6v196rqs4986dp370@group.calendar.google.com';
     const dataUrl = ['https://www.googleapis.com/calendar/v3/calendars/',
       CALENDAR_ID, '/events?key=', PUBLIC_KEY].join('');
