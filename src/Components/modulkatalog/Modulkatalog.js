@@ -1,6 +1,7 @@
 import React from 'react';
 import Nav from '../nav/Nav';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import { Grid, Card, CardContent } from '@material-ui/core';
 import './modulkatalog.css';
@@ -47,6 +48,7 @@ const moduleList = [
 
 export default function ModulkatalogTable() {
   const classes = useStyles();
+  const history = useHistory();
   const [searchTerm, setSearchTerm] = React.useState("");
   const [searchResults, setSearchResults] = React.useState([]);
   const handleSearch = event => {
@@ -58,6 +60,10 @@ export default function ModulkatalogTable() {
     );
     setSearchResults(results);
   }, [searchTerm]);
+
+  const handleCardClick = () => {
+    history.push('/modulkatalog/details');
+  }
 
   return (
     <div className={classes.root} >
@@ -85,15 +91,17 @@ export default function ModulkatalogTable() {
           </Grid>
         </form>
         <Grid container justify='center' spacing={3} className={classes.grid}>
-        {(searchResults).map(modulname => 
-        <Grid container item xl={3} sm={3} justify='center'>
-        <Card className={classes.card}>
-          <CardContent className={classes.cardContent}>
-            <Typography className={classes.cardText}>{modulname}</Typography>
-          </CardContent>
-        </Card>
-      </Grid>
-      )}
+          {(searchResults).map(modulname =>
+            <Grid container item xl={3} sm={3} className='cards' justify='center'>
+              <div className='carddiv'>
+                <Card className={classes.card} onClick={handleCardClick} >
+                  <CardContent className={classes.cardContent}>
+                    <Typography className={classes.cardText}>{modulname}</Typography>
+                  </CardContent>
+                </Card>
+              </div>
+            </Grid>
+          )}
           {/* <Grid container item xl={3} sm={3} justify='center'>
             <Card className={classes.card}>
               <CardContent className={classes.cardContent}>
