@@ -20,7 +20,7 @@ const routing = (
       <Route path="/kurse" component={Kurse} />
       <Route path="/dozenten" component={Dozenten} />
       <Route exact path='/modulkatalog' component={Modulkatalog} />
-      <Route exact path='/modulkatalog/details' component={ModulkatalogDetail} />
+      <Route exact path='/modulkatalog/details/:name' component={ModulkatalogDetail} />
       <Route exact path='/' component={Login} />
       <Route path="/reset" exact component={ResetPassword} />
     </div>

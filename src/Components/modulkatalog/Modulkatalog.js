@@ -61,8 +61,9 @@ export default function ModulkatalogTable() {
     setSearchResults(results);
   }, [searchTerm]);
 
-  const handleCardClick = () => {
-    history.push('/modulkatalog/details');
+  const handleCardClick = event => {
+    console.log(event.target.textContent);
+    history.push('/modulkatalog/details/'+ event.target.textContent);
   }
 
   return (
@@ -92,9 +93,9 @@ export default function ModulkatalogTable() {
         </form>
         <Grid container justify='center' spacing={3} className={classes.grid}>
           {(searchResults).map(modulname =>
-            <Grid container item xl={3} sm={3} className='cards' justify='center'>
+            <Grid container item xl={3} sm={3} className='cards' justify='center' key={modulname}>
               <div className='carddiv'>
-                <Card className={classes.card} onClick={handleCardClick} >
+                <Card className={classes.card} onClick={handleCardClick}>
                   <CardContent className={classes.cardContent}>
                     <Typography className={classes.cardText}>{modulname}</Typography>
                   </CardContent>
@@ -102,62 +103,6 @@ export default function ModulkatalogTable() {
               </div>
             </Grid>
           )}
-          {/* <Grid container item xl={3} sm={3} justify='center'>
-            <Card className={classes.card}>
-              <CardContent className={classes.cardContent}>
-                <Typography className={classes.cardText}>Wirtschaftsinformatik Software Engineering</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid container item xl={3} sm={3} justify='center'>
-            <Card className={classes.card}>
-              <CardContent className={classes.cardContent}>
-                <Typography className={classes.cardText}>Wirtschaftsinformatik Sales & Consulting </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid container item xl={3} sm={3} justify='center'>
-            <Card className={classes.card}>
-              <CardContent>
-                <Typography className={classes.cardText}>Wirtschaftsinformatik Application Management</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid container item xl={3} sm={3} justify='center'>
-            <Card className={classes.card}>
-              <CardContent>
-                <Typography className={classes.cardText}>Wirtschaftsinformatik Data Science</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid container item xl={3} sm={3} justify='center'>
-            <Card className={classes.card}>
-              <CardContent>
-                <Typography className={classes.cardText}>Digitale Medien</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid container item xl={3} sm={3} justify='center'>
-            <Card className={classes.card}>
-              <CardContent>
-                <Typography className={classes.cardText}>BWL</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid container item xl={3} sm={3} justify='center'>
-            <Card className={classes.card}>
-              <CardContent>
-                <Typography className={classes.cardText}>BWL Logistik</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid container item xl={3} sm={3} justify='center'>
-            <Card className={classes.card}>
-              <CardContent>
-                <Typography className={classes.cardText}>Wirtschaft Unternehmenswirtschaft</Typography>
-              </CardContent>
-            </Card>
-          </Grid> */}
         </Grid>
       </main>
     </div>

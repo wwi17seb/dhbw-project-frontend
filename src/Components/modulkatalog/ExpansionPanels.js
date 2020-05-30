@@ -17,9 +17,9 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function ExpansionPanels() {
+function ExpansionPanels(props) {
     const classes = useStyles();
-
+    var studyName = props.studyName;
     return (
         <div className={classes.root}>
             <ExpansionPanel>
@@ -33,7 +33,7 @@ function ExpansionPanels() {
                 <ExpansionPanelDetails>
                     <Typography>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                        sit amet blandit leo lobortis eget.
+                        sit amet blandit leo lobortis eget. Studium: {studyName}
                     </Typography>
                 </ExpansionPanelDetails>
             </ExpansionPanel>

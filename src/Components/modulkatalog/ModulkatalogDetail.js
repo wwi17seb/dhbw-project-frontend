@@ -17,10 +17,10 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function ModulkatalogDetail() {
+function ModulkatalogDetail(props) {
 
     const classes = useStyles();
-
+    var studyName = props.match.params.name; //the selected course of study 
     return (
         <div className={classes.root} >
             <Nav></Nav>
@@ -31,10 +31,10 @@ function ModulkatalogDetail() {
                         Modulkataloge
                     </Link>
                     <Typography color="inherit" href="/modulkatalog">
-                        Name des Modulkatalogs
+                        {studyName}
                     </Typography>
                 </Breadcrumbs>
-                <ExpansionPanels />
+                <ExpansionPanels studyName={studyName}/>
             </main>
         </div>
 
