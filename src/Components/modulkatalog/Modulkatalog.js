@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import { Grid, Card, CardContent } from '@material-ui/core';
 import './modulkatalog.css';
-
+import withShadow from './withShadow';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,6 +51,7 @@ export default function ModulkatalogTable() {
   const history = useHistory();
   const [searchTerm, setSearchTerm] = React.useState("");
   const [searchResults, setSearchResults] = React.useState([]);
+  const [raised, setRaised] = React.useState(false);
   const handleSearch = event => {
     setSearchTerm(event.target.value);
   };
@@ -64,6 +65,17 @@ export default function ModulkatalogTable() {
   const handleCardClick = event => {
     console.log(event.target.textContent);
     history.push('/modulkatalog/details/'+ event.target.textContent);
+  }
+
+  /* //create your forceUpdate hook
+  function useForceUpdate(){
+    const [value, setValue] = React.useState(0); // integer state
+    return () => setValue(value => ++value); // update the state to force render
+  } */
+  function toggleRaised (event) {
+    //console.log(event.target.style.raised);
+    event.target.style.raised = ! event.target.style.raised;
+    //useForceUpdate();
   }
 
   return (
@@ -92,12 +104,12 @@ export default function ModulkatalogTable() {
           </Grid>
         </form>
         <Grid container justify='center' spacing={3} className={classes.grid}>
-          {(searchResults).map(modulname =>
-            <Grid container item xl={3} sm={3} className='cards' justify='center' key={modulname}>
+          {(searchResults).map(studyName =>
+            <Grid container item xl={3} sm={3} className='cards' justify='center' key={studyName}>
               <div className='carddiv'>
-                <Card className={classes.card} onClick={handleCardClick}>
+              <Card onMouseOver={toggleRaised} onMouseOut={toggleRaised} className={classes.card} onClick={handleCardClick}>
                   <CardContent className={classes.cardContent}>
-                    <Typography className={classes.cardText}>{modulname}</Typography>
+                    <Typography className={classes.cardText}>{studyName}</Typography>
                   </CardContent>
                 </Card>
               </div>
