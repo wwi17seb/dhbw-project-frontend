@@ -5,7 +5,6 @@ import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import { Grid, Card, CardContent } from '@material-ui/core';
 import './modulkatalog.css';
-import withShadow from './withShadow';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -67,15 +66,10 @@ export default function ModulkatalogTable() {
     history.push('/modulkatalog/details/'+ event.target.textContent);
   }
 
-  /* //create your forceUpdate hook
-  function useForceUpdate(){
-    const [value, setValue] = React.useState(0); // integer state
-    return () => setValue(value => ++value); // update the state to force render
-  } */
-  function toggleRaised (event) {
-    //console.log(event.target.style.raised);
-    event.target.style.raised = ! event.target.style.raised;
-    //useForceUpdate();
+  function toggleRaised (event) { //this is supposed to raise the card as a hover effect, but seemingly React doesn't allow DOM attribute manipulation
+    console.log(event.target);
+    event.target.setAttribute("raised", !raised);
+    setRaised(raised => !raised);// update the state to force render
   }
 
   return (
