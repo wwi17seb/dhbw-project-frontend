@@ -1,10 +1,10 @@
 import React from 'react';
 import Nav from '../nav/Nav';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import { Grid, Card, CardContent } from '@material-ui/core';
 import './modulkatalog.css';
-
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -47,8 +47,10 @@ const moduleList = [
 
 export default function ModulkatalogTable() {
   const classes = useStyles();
+  const history = useHistory();
   const [searchTerm, setSearchTerm] = React.useState("");
   const [searchResults, setSearchResults] = React.useState([]);
+  const [raised, setRaised] = React.useState(false);
   const handleSearch = event => {
     setSearchTerm(event.target.value);
   };
@@ -58,6 +60,17 @@ export default function ModulkatalogTable() {
     );
     setSearchResults(results);
   }, [searchTerm]);
+
+  const handleCardClick = event => {
+    console.log(event.target.textContent);
+    history.push('/modulkatalog/details/'+ event.target.textContent);
+  }
+
+  function toggleRaised (event) { //this is supposed to raise the card as a hover effect, but seemingly React doesn't allow DOM attribute manipulation
+    console.log(event.target);
+    event.target.setAttribute("raised", !raised);
+    setRaised(raised => !raised);// update the state to force render
+  }
 
   return (
     <div className={classes.root} >
@@ -85,71 +98,17 @@ export default function ModulkatalogTable() {
           </Grid>
         </form>
         <Grid container justify='center' spacing={3} className={classes.grid}>
-        {(searchResults).map(modulname => 
-        <Grid container item xl={3} sm={3} justify='center'>
-        <Card className={classes.card}>
-          <CardContent className={classes.cardContent}>
-            <Typography className={classes.cardText}>{modulname}</Typography>
-          </CardContent>
-        </Card>
-      </Grid>
-      )}
-          {/* <Grid container item xl={3} sm={3} justify='center'>
-            <Card className={classes.card}>
-              <CardContent className={classes.cardContent}>
-                <Typography className={classes.cardText}>Wirtschaftsinformatik Software Engineering</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid container item xl={3} sm={3} justify='center'>
-            <Card className={classes.card}>
-              <CardContent className={classes.cardContent}>
-                <Typography className={classes.cardText}>Wirtschaftsinformatik Sales & Consulting </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid container item xl={3} sm={3} justify='center'>
-            <Card className={classes.card}>
-              <CardContent>
-                <Typography className={classes.cardText}>Wirtschaftsinformatik Application Management</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid container item xl={3} sm={3} justify='center'>
-            <Card className={classes.card}>
-              <CardContent>
-                <Typography className={classes.cardText}>Wirtschaftsinformatik Data Science</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid container item xl={3} sm={3} justify='center'>
-            <Card className={classes.card}>
-              <CardContent>
-                <Typography className={classes.cardText}>Digitale Medien</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid container item xl={3} sm={3} justify='center'>
-            <Card className={classes.card}>
-              <CardContent>
-                <Typography className={classes.cardText}>BWL</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid container item xl={3} sm={3} justify='center'>
-            <Card className={classes.card}>
-              <CardContent>
-                <Typography className={classes.cardText}>BWL Logistik</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid container item xl={3} sm={3} justify='center'>
-            <Card className={classes.card}>
-              <CardContent>
-                <Typography className={classes.cardText}>Wirtschaft Unternehmenswirtschaft</Typography>
-              </CardContent>
-            </Card>
-          </Grid> */}
+          {(searchResults).map(studyName =>
+            <Grid container item xl={3} sm={3} className='cards' justify='center' key={studyName}>
+              <div className='carddiv'>
+              <Card onMouseOver={toggleRaised} onMouseOut={toggleRaised} className={classes.card} onClick={handleCardClick}>
+                  <CardContent className={classes.cardContent}>
+                    <Typography className={classes.cardText}>{studyName}</Typography>
+                  </CardContent>
+                </Card>
+              </div>
+            </Grid>
+          )}
         </Grid>
       </main>
     </div>
