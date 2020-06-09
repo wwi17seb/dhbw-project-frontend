@@ -59,29 +59,29 @@ export default function DozentenTable() {
     }
     const [state, setState] = React.useState({
         columns: [
-            { title: 'Module', field: 'Module' },
-            { title: 'SWS', field: 'SWS' },
+            { title: 'Module', field: 'Module', lookup: {1: 'Grundlagen der BWL', 2: 'Plattformen & Frameworks', 3: 'Projekt'} },
+            { title: 'SWS', field: 'SWS', type: 'numeric'},
             { title: 'Kursleistung', field: 'Kursleistung' },
             { title: 'Dozent', field: 'lecturer' },
             { title: 'Status', field: 'Status' },
         ],
       data: [
             {
-            Module: 'Grundlagen BWL',
+            Module: 1,
             SWS: '40',
             Kursleistung: 'K oder SE',
             lecturer: 'Max Mustermann',
             Status: 'angeschrieben',
         },
         {
-            Module: 'Plattformen & Frameworks',
+            Module: 2,
             SWS: '35',
             Kursleistung: 'K oder SE',
             lecturer: 'Erika Musterfrau',
             Status: 'Termine eingetragen',
         },
         {
-            Module: 'Projekt',
+            Module: 3,
             SWS: '25',
             Kursleistung: 'P',
             lecturer: 'Dozent suchen ',

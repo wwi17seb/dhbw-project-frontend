@@ -4,7 +4,7 @@ import AddCourseTable from './addCourseTable'
 
 const useStyles = makeStyles(theme => ({
     formControl: {
-        margin: 20,
+        margin: 0,
         minWidth: 150,
     },
 }));
