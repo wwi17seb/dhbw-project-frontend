@@ -23,7 +23,7 @@ function TabPanel(props) {
       aria-labelledby={`scrollable-auto-tab-${index}`}
       {...other}
     >
-      {value === index && <Box p={3}>{children}</Box>}
+      {value === index && <Box p={0}>{children}</Box>}
     </Typography>
   );
 }
@@ -60,7 +60,7 @@ export default function ScrollableTabsButtonAuto() {
   const tabLabels = ["Semester 1", "Semester 2","Semester 3","Semester 4","Semester 5","Semester 6",];
   const finalTabLabels = [];
   const finalTabPanels = [];
-  const finalPanelContent = [<AddSemesterContent></AddSemesterContent>];
+  const finalPanelContent = [<AddSemesterContent></AddSemesterContent>,  <AddSemesterContent></AddSemesterContent>, <AddSemesterContent></AddSemesterContent>, <AddSemesterContent></AddSemesterContent>, <AddSemesterContent></AddSemesterContent>, <AddSemesterContent></AddSemesterContent>];
   let tabIndex = 0;
 
 

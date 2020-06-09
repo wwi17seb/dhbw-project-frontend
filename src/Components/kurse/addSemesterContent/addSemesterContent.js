@@ -14,9 +14,9 @@ const AddSemesterContent = () => {
     const classes = useStyles();
 
     return (
-        <>
+        <div style={{padding:0}}>
             <AddCourseTable></AddCourseTable>
-        </>
+        </div>
     )
 }
 

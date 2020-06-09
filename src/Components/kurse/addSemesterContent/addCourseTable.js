@@ -61,9 +61,9 @@ export default function DozentenTable() {
         columns: [
             { title: 'Module', field: 'Module', lookup: {1: 'Grundlagen der BWL', 2: 'Plattformen & Frameworks', 3: 'Projekt'} },
             { title: 'SWS', field: 'SWS', type: 'numeric'},
-            { title: 'Kursleistung', field: 'Kursleistung' },
+            { title: 'Kursleistung', field: 'Kursleistung', lookup: {1: 'K oder SE', 2: 'K', 3: 'SE', 4: 'P'}},
             { title: 'Dozent', field: 'lecturer' },
-            { title: 'Status', field: 'Status' },
+            { title: 'Status', field: 'Status', lookup: {1: 'angeschrieben', 2: 'Plattformen & Frameworks', 3: 'Projekt'} },
         ],
       data: [
             {
@@ -91,11 +91,8 @@ export default function DozentenTable() {
     });
     return (
     
-      <div className={classes.root}>
-          <Nav></Nav>
-          <main className = {classes.content}>
-          <div className = {classes.toolbar}/>
-        <MaterialTable
+      <div>
+        <MaterialTable 
             actions={[
                 {
                     icon: tableIcons.Mail,
@@ -146,7 +143,6 @@ export default function DozentenTable() {
             }}
         />
        
-       </main>
         </div>
     )
 }

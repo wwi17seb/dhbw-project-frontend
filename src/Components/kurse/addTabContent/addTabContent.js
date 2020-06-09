@@ -15,10 +15,10 @@ const AddTabContent = () => {
     const classes = useStyles();
 
     return (
-        <>
+        <div style={{padding:0}}>
         <AddSemester></AddSemester>
         <AddCalendar></AddCalendar>
-        </>
+        </div>
     )
 }
 
