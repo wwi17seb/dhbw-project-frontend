@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -6,9 +6,8 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import Nav from '../nav/Nav';
-import AddKurs from './addkurs/addkurs'
-import AddTabContent from './addTabContent/addTabContent'
+import Nav from '../../nav/Nav';
+import AddSemesterContent from '../addSemesterContent/addSemesterContent'
 
 
 
@@ -24,7 +23,7 @@ function TabPanel(props) {
       aria-labelledby={`scrollable-auto-tab-${index}`}
       {...other}
     >
-      {value === index && <Box p={3}>{children}</Box>}
+      {value === index && <Box p={0}>{children}</Box>}
     </Typography>
   );
 }
@@ -43,18 +42,14 @@ function a11yProps(index) {
 }
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-  }, toolbar: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-    padding: theme.spacing(3),
-  }
+    formControl: {
+        margin: 20,
+        minWidth: 150,
+    },
 }));
 
 
-export default function ScrollableTabsButtonAuto(props) {
+export default function ScrollableTabsButtonAuto() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -62,10 +57,10 @@ export default function ScrollableTabsButtonAuto(props) {
     setValue(newValue);
   };
 
-  const tabLabels = ["ABC17DEF", "Kurs Hinzufügen"];
+  const tabLabels = ["Semester 1", "Semester 2","Semester 3","Semester 4","Semester 5","Semester 6",];
   const finalTabLabels = [];
   const finalTabPanels = [];
-  const finalPanelContent = [<AddTabContent></AddTabContent>, <AddKurs></AddKurs>];
+  const finalPanelContent = [<AddSemesterContent></AddSemesterContent>,  <AddSemesterContent></AddSemesterContent>, <AddSemesterContent></AddSemesterContent>, <AddSemesterContent></AddSemesterContent>, <AddSemesterContent></AddSemesterContent>, <AddSemesterContent></AddSemesterContent>];
   let tabIndex = 0;
 
 
@@ -75,26 +70,12 @@ export default function ScrollableTabsButtonAuto(props) {
     finalTabPanels.push(<TabPanel key={tabIndex} value={value} index={tabIndex}> {finalPanelContent[tabIndex]} </TabPanel>)
     tabIndex++;
   }
-  /* useEffect(() => {
-    console.log(document.getElementById('success-alert'));
-    document.getElementById('success-alert').fadeTo(2000, 500).slideUp(500, function() {
-      document.getElementById('success-alert').slideUp(500);
-    });
-  }); */
+
   return (
     <div className={classes.root}>
       <Nav></Nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-
-        {props.location.state !== undefined ?
-          <div className="alert alert-success alert-dismissible fadeOut" role="alert" id="success-alert">
-            <strong>{props.location.state.message}</strong>
-            <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div> : null}
-
         <Paper>
           <Tabs
             value={value}
