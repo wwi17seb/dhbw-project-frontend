@@ -63,29 +63,29 @@ export default function DozentenTable() {
             { title: 'SWS', field: 'SWS', type: 'numeric'},
             { title: 'Kursleistung', field: 'Kursleistung', lookup: {1: 'K oder SE', 2: 'K', 3: 'SE', 4: 'P'}},
             { title: 'Dozent', field: 'lecturer' },
-            { title: 'Status', field: 'Status', lookup: {1: 'angeschrieben', 2: 'Plattformen & Frameworks', 3: 'Projekt'} },
+            { title: 'Status', field: 'Status', lookup: {1: 'angeschrieben', 2: 'Termin eingetragen', 3: 'bestätigt'} },
         ],
       data: [
             {
             Module: 1,
             SWS: '40',
-            Kursleistung: 'K oder SE',
+            Kursleistung: 1,
             lecturer: 'Max Mustermann',
-            Status: 'angeschrieben',
+            Status: 1,
         },
         {
             Module: 2,
             SWS: '35',
-            Kursleistung: 'K oder SE',
+            Kursleistung: 1,
             lecturer: 'Erika Musterfrau',
-            Status: 'Termine eingetragen',
+            Status: 2,
         },
         {
             Module: 3,
             SWS: '25',
-            Kursleistung: 'P',
+            Kursleistung: 4,
             lecturer: 'Dozent suchen ',
-            Status: 'bestätigt',
+            Status: 3,
         }
         ], 
     });
