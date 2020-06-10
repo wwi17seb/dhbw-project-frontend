@@ -36,7 +36,7 @@ export default function LecturerRow(props) {
         <Grid item xs={12}>
             <Grid container spacing={2}>
                 <Grid item xs={4}>
-                    <Link1 to={"/dozenten/" + id} component={Link}>
+                    <Link1 to={{ pathname: "/dozenten/" + id, state: { data: props.data } }} component={Link}>
                         <Typography variant="h6">{title + " " + name}</Typography>
                     </Link1>
                     <Typography variant="subtitle1">{"Tel.: " + tel}</Typography>

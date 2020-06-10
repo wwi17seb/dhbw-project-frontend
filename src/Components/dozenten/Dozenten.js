@@ -26,15 +26,9 @@ import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import './dozenten.css';
 import Nav from '../nav/Nav';
 import LecturerList from './lecturerlist'
-<<<<<<< HEAD
-//import DozentenDetails from './dozentendetails/dozentendetails'
-import { Route, BrowserRouter as Router } from 'react-router-dom'
-import { Grid, Card, CardContent } from '@material-ui/core';
-=======
+import { Route, Switch } from 'react-router-dom'
 import DozentenDetails from './dozentendetails/dozentendetails'
-import { Route, BrowserRouter as Router } from 'react-router-dom'
 
->>>>>>> UI13
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -55,12 +49,7 @@ export default function DozentenTable() {
             <Nav></Nav>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <Typography variant="h5" noWrap>
-                    Dozenten
-                </Typography>
-                <div className="btn_align">
-                    <button className="btn btn_dhbw">Dozenten hinzufügen</button>
-                </div>
+
                 {/*
                 <form className={classes.searchForm}>
                 <Typography variant='h6'>
@@ -72,8 +61,11 @@ export default function DozentenTable() {
             </Grid>
             </form>
             */}
-                <Route path="/dozenten" component={LecturerList} />
-                <Route path="/dozenten/details" component={DozentenDetails} />
+                <Switch>
+                    <Route exact path="/dozenten" component={LecturerList} />
+                    <Route path="/dozenten/:id" component={DozentenDetails} />
+                </Switch>
+
             </main>
         </div>
     )

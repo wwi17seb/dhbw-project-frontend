@@ -28,7 +28,7 @@ function TabPanel(props) {
             aria-labelledby={`scrollable-auto-tab-${index}`}
             {...other}
         >
-            {value === index && <Box p={3}>{children}</Box>}
+            {value === index && <Box p={0}>{children}</Box>}
         </Typography>
     );
 }
@@ -66,15 +66,18 @@ export default function DozentenDetails(props) {
         setValue(newValue);
     };
 
+    const data = props["location"]["state"]["data"]
+    const name = data["academic_title"] + " " + data["firstname"] + " " + data["lastname"]
+
     const tabLabels = ["Profil", "Lehre", "Vita", "Notizen"];
     const finalTabLabels = [];
     const finalTabPanels = [];
-    const finalPanelContent = [<Profile></Profile>, <Lehre></Lehre>, <Vita></Vita>, <Notizen></Notizen>];
+    const finalPanelContent = [<Profile data={data}></Profile>, <Lehre data={data}></Lehre>, <Vita data={data}></Vita>, <Notizen data={data}></Notizen>];
     let tabIndex = 0;
 
     for (let tabLabel of tabLabels) {
         finalTabLabels.push(<Tab key={tabIndex} label={tabLabel} {...a11yProps({ tabIndex })} />);
-        finalTabPanels.push(<TabPanel key={tabIndex} value={value} index={tabIndex}> {finalPanelContent[tabIndex]} </TabPanel>)
+        finalTabPanels.push(<TabPanel style={{ paddingTop: 10 }} key={tabIndex} value={value} index={tabIndex}> {finalPanelContent[tabIndex]} </TabPanel>)
         tabIndex++;
     }
 
@@ -84,9 +87,9 @@ export default function DozentenDetails(props) {
                 <Link1 color="inherit" to="/dozenten" component={Link}>
                     Dozenten
                 </Link1>
-                <Typography color="textPrimary">Max Mustermann</Typography>
+                <Typography color="textPrimary">{name}</Typography>
             </Breadcrumbs>
-            <Typography variant="h4">Max Mustermann</Typography>
+            <Typography variant="h4">{name}</Typography>
             <Paper>
                 <Tabs
                     value={value}

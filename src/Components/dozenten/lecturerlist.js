@@ -65,25 +65,34 @@ export default function LecturerList() {
   }
 
   return (
-    <Grid container spacing={2}>
-      <Paper className={classes.paper}>
-        <Grid item xs={12} style={{ marginBottom: 10 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={4}>
-              <Typography variant="h5">Name</Typography>
+    <React.Fragment>
+      <Typography variant="h5" noWrap>
+        Dozenten
+                </Typography>
+      <div className="btn_align">
+        <button className="btn btn_dhbw">Dozenten hinzufügen</button>
+      </div>
+      <Grid container spacing={2}>
+        <Paper className={classes.paper}>
+          <Grid item xs={12} style={{ marginBottom: 10 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={4}>
+                <Typography variant="h5">Name</Typography>
+              </Grid>
+              <Grid item xs={4}>
+                <Typography variant="h5">Schwerpunkt</Typography>
+              </Grid>
+              <Grid item xs={4}>
+                <Typography variant="h5">Email</Typography>
+              </Grid>
             </Grid>
-            <Grid item xs={4}>
-              <Typography variant="h5">Schwerpunkt</Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Typography variant="h5">Email</Typography>
-            </Grid>
+            <Divider></Divider>
           </Grid>
-          <Divider></Divider>
-        </Grid>
-        {output}
-      </Paper>
+          {output}
+        </Paper>
 
-    </Grid>
+      </Grid>
+    </React.Fragment>
+
   );
 }
