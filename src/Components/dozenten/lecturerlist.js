@@ -10,6 +10,12 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import LecturerRow from "./lecturerrow"
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import AddLecturer from "./addlecturer"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,6 +31,7 @@ export default function LecturerList() {
   const [lecturers, setLecturers] = React.useState(null)
   const [output, setOutput] = React.useState([])
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [open, setOpen] = React.useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -33,6 +40,12 @@ export default function LecturerList() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleCloseMenu = () => {
+    setOpen(false);
+  };
+  const ClickSubmit = () => {
+    setOpen(true);
+  }
 
   const loadData = () => {
     axios.get(`api/lecturers`).then(res => {
@@ -70,7 +83,7 @@ export default function LecturerList() {
         Dozenten
                 </Typography>
       <div className="btn_align">
-        <button className="btn btn_dhbw">Dozenten hinzufügen</button>
+        <button className="btn btn_dhbw" onClick={ClickSubmit.bind(this)}>Dozenten hinzufügen</button>
       </div>
       <Grid container spacing={2}>
         <Paper className={classes.paper}>
@@ -90,7 +103,27 @@ export default function LecturerList() {
           </Grid>
           {output}
         </Paper>
-
+        <Dialog
+          open={open}
+          onClose={handleCloseMenu}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{"Neuen Dozent hinzufügen:"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              <AddLecturer></AddLecturer>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary" >
+              Submit
+            </Button>
+            <Button onClick={handleClose} color="primary" autoFocus>
+              Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Grid>
     </React.Fragment>
 
