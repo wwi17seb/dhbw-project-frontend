@@ -9,6 +9,9 @@ import Box from '@material-ui/core/Box';
 import Nav from '../nav/Nav';
 import AddKurs from './addkurs/addkurs'
 import AddTabContent from './addTabContent/addTabContent'
+import '../../helper/Api'
+import { API, APIGet } from '../../helper/Api';
+import axios from 'axios'
 
 
 
@@ -81,6 +84,52 @@ export default function ScrollableTabsButtonAuto(props) {
       document.getElementById('success-alert').slideUp(500);
     });
   }); */
+
+  useEffect(() => {
+
+
+
+    const fetch = async () => {
+      let response1 = await API('/api/courses');
+      console.log("Res1:" + response1.toString());
+
+    }
+    fetch();
+
+    // let res = API('get', '/api/courses')
+    // console.log(res);
+    // res.then((response) => {
+    //   console.log(response);
+    // })
+
+    // async function fetch() {
+    //   try {
+    //     await API('get', '/api/courses')
+    //   } catch (err) {
+    //     console.log(err)
+    //   }
+    // }
+
+    // let res = fetch();
+    // let method = 'get'
+    // let url = 'api/courses'
+    // let config = null
+    // let params = {
+    //   token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Impvam9Aam9qby5kZSIsImlhdCI6MTU5MTc4Mzg5OCwiZXhwIjoxNTkxODI3MDk4fQ.JI2OPU8_WvjdJmx9wPLffW4rYr6bDTHt_5eXY94fgZk'
+    // }
+
+    // axios({
+    //   method: method,
+    //   url: url,
+    //   config: config,
+    //   params: params
+    // }).then(res => {
+    //   console.log(res);
+    // }).catch(err => {
+    //   return err;
+    // })
+  })
+
   return (
     <div className={classes.root}>
       <Nav></Nav>
