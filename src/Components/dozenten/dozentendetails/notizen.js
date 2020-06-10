@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-
+//TODO: implement comment posting (currently added comments are not saved)
 export default function Notizen(props) {
     const classes = useStyles();
 
@@ -35,9 +35,7 @@ export default function Notizen(props) {
 
     const createCommentSection = (topic, comment) => {
         var currentList = commentList
-        console.log(currentList)
         currentList.push({ "topic": topic, "comment": comment })
-        console.log(currentList)
         setCommentList(currentList)
 
         var output = []
@@ -51,7 +49,7 @@ export default function Notizen(props) {
         }
         setState(output)
     }
-    console.log(commentList)
+
     const handleTopic = (event) => {
         setTopic(event.target.value)
     }
@@ -63,6 +61,10 @@ export default function Notizen(props) {
         createCommentSection(topic, comment)
         setTopic("")
         setComment("")
+    }
+
+    if (state === null) {
+        createCommentSection("info", props.data["comment"])
     }
 
     return (

@@ -21,7 +21,12 @@ const useStyles = makeStyles(theme => ({
 
 export default function Profile(props) {
     const classes = useStyles();
-
+    var temp = []
+    for (var i = 0; i < props.data["MainFocus"].length; i++) {
+        temp.push(
+            <Typography variant="subtitle1"> {"- " + props.data["MainFocus"][i]["name"]}</Typography>
+        )
+    }
     return (
         <Paper className={classes.paper}>
             <Grid container spacing={2}>
@@ -29,20 +34,19 @@ export default function Profile(props) {
                     <Typography className={classes.title} variant="h6">Tel.: </Typography>
                 </Grid>
                 <Grid item xs={10}>
-                    0178 12345678
+                    {props.data["phonenumber"]}
                 </Grid>
                 <Grid item xs={2}>
                     <Typography className={classes.title} variant="h6">Email: </Typography>
                 </Grid>
                 <Grid item xs={10}>
-                    max.mustermann@email.de
+                    {props.data["email"]}
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant="h6">Schwerpunkte: </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                    - BWL <br />
-                    - VWL
+                    {temp}
                 </Grid>
             </Grid>
 

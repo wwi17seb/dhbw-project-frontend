@@ -31,6 +31,7 @@ const rows = [
     createData('VWL', "WWI16SEA", "18.11.2019-14.02.2020", 25, "-"),
 ];
 
+//TODO: implement dynamic loading of course history
 export default function Lehre(props) {
     const classes = useStyles();
 

@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-
+//TODO: implement real functionality (needs to be discussed with backend)
 export default function Vita(props) {
     const classes = useStyles();
 
