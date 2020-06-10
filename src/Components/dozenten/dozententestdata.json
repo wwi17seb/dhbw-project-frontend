@@ -10,12 +10,20 @@
                 "salutation": "Herr",
                 "phonenumber": "012345678",
                 "experience": "keine ahnung",
-                "main_focus": "BWL",
+                "MainFocus": [{
+                        "mainFocus_id": 0,
+                        "name": "BWL"
+                    },
+                    {
+                        "mainFocus_id": 0,
+                        "name": "VWL"
+                    }
+                ],
                 "profile": "Tinder",
                 "research": "[LEHRE]",
                 "cv": "1990-1994 Kindergarten",
                 "comment": "ich bin ein kommentar",
-                "is_extern": "0"
+                "is_extern": true
             },
             {
                 "lecturer_id": 1,
@@ -26,12 +34,15 @@
                 "salutation": "Herr",
                 "phonenumber": "01234567890",
                 "experience": "absolut keine Ahnung",
-                "main_focus": "Studenten das Leben schwer machen",
+                "MainFocus": [{
+                    "mainFocus_id": 0,
+                    "name": "Studierenden leben schwer machen"
+                }],
                 "profile": "egal",
                 "research": "egal",
                 "cv": "1990-1994 Kindergarten",
                 "comment": "ich bin ein kommentar",
-                "is_extern": "0"
+                "is_extern": false
             }
         ]
     }

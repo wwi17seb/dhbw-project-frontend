@@ -5,93 +5,85 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import { Grid } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import * as testdata from "./dozententestdata.json"
+import * as testdata from "./dozententestdata.json";
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import LecturerRow from "./lecturerrow"
 
 const useStyles = makeStyles(theme => ({
   root: {
-      display: 'flex',
+    display: 'flex',
   }, toolbar: theme.mixins.toolbar,
   paper: {
-      flexGrow: 1,
-      padding: theme.spacing(3),
+    flexGrow: 1,
+    padding: theme.spacing(3),
   }
 }));
 export default function LecturerList() {
   const classes = useStyles();
-  const [lecturers,setLecturers] = React.useState(null)
-  const [output,setOutput] = React.useState([])
+  const [lecturers, setLecturers] = React.useState(null)
+  const [output, setOutput] = React.useState([])
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const loadData = ()=>{
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const loadData = () => {
     axios.get(`api/lecturers`).then(res => {
       setLecturers(res.data);
     })
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     createLecturerRow()
-  },[lecturers])
+  }, [lecturers])
 
-  const createLecturerRow = ()=>{
-    
-    if(lecturers!==null){
-      var temp=[]
-      for(var i=0; i<lecturers["default"]["payload"]["lecturers"].length;i++){
-        var title= lecturers["default"]["payload"]["lecturers"][i]["academic_title"]
-        var name = lecturers["default"]["payload"]["lecturers"][i]["firstname"]+ " " + lecturers["default"]["payload"]["lecturers"][i]["lastname"]
-        var mainFocus=lecturers["default"]["payload"]["lecturers"][i]["main_focus"]
-        var email=lecturers["default"]["payload"]["lecturers"][i]["email"]
+  const createLecturerRow = () => {
+
+    if (lecturers !== null) {
+      var temp = []
+
+      for (var i = 0; i < lecturers["default"]["payload"]["lecturers"].length; i++) {
+
         temp.push(
-          <Grid item xs={12}>
-            <Grid container spacing={2}>
-            <Grid item xs={4}>
-                <Typography variant="h6">{title+" " +name}</Typography>
-            </Grid>
-            <Grid item xs={4}>
-                <Typography variant="h6">{mainFocus}</Typography>
-            </Grid>
-            <Grid item xs={4}>
-                <Typography variant="h6">{email}</Typography>
-            </Grid>
-          </Grid>
-          <Divider></Divider>
-          </Grid>        
+          <LecturerRow data={lecturers["default"]["payload"]["lecturers"][i]}></LecturerRow>
         )
       }
       setOutput(temp)
     }
-    
-    console.log(temp)
-    
   }
-  
-  if(lecturers === null){
+
+  if (lecturers === null) {
     //loadData()
     setLecturers(testdata)
   }
-    
-  console.log(lecturers)
 
   return (
-        <Grid container spacing={2}>
-        <Paper className={classes.paper}>
-        <Grid item xs={12} style={{marginBottom:10}}>
-            <Grid container spacing={2}>
+    <Grid container spacing={2}>
+      <Paper className={classes.paper}>
+        <Grid item xs={12} style={{ marginBottom: 10 }}>
+          <Grid container spacing={2}>
             <Grid item xs={4}>
-                <Typography variant="h5">Name</Typography>
+              <Typography variant="h5">Name</Typography>
             </Grid>
             <Grid item xs={4}>
-                <Typography variant="h5">Schwerpunkt</Typography>
+              <Typography variant="h5">Schwerpunkt</Typography>
             </Grid>
             <Grid item xs={4}>
-                <Typography variant="h5">Email</Typography>
+              <Typography variant="h5">Email</Typography>
             </Grid>
           </Grid>
           <Divider></Divider>
-          </Grid>    
-          {output}
-        </Paper>
-        
         </Grid>
-    );
-  }
+        {output}
+      </Paper>
 
+    </Grid>
+  );
+}
