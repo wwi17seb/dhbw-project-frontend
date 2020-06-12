@@ -91,7 +91,7 @@ const handleClick = () => {
             };
 
             var request = gapi.client.calendar.events.insert({
-              'calendarId': 'primary',
+              'calendarId': creds.calenderID,
               'resource': event
             });
             
