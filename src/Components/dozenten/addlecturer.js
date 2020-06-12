@@ -37,6 +37,13 @@ export default function AddLecturer() {
                 <TextField></TextField><br></br>
                 Lebenslauf:
                 <Button>Upload Lebenslauf</Button><br></br>
+                <TextField></TextField><br></br>
+                Schwerpunkte: 
+                <TextField></TextField><br></br>
+                Studiengangsleiter:
+                <TextField></TextField><br></br>
+                Lebenslauf:
+                <Button>Upload Lebenslauf</Button><br></br>
             </div>
        </React.Fragment>
 
