@@ -3,7 +3,7 @@ import React, { forwardRef, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import { Grid } from '@material-ui/core';
+import { Grid, TextField } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import * as testdata from "./dozententestdata.json";
 import Button from '@material-ui/core/Button';
@@ -21,9 +21,24 @@ export default function AddLecturer() {
 
 
     return (
-        <React.Fragment>
-            Hier könnte euer Inhalt stehen
-        </React.Fragment>
+        <React.Fragment>          
+            <div>
+                Vorname: 
+                <TextField></TextField><br></br>
+                Nachname: 
+                <TextField></TextField><br></br>
+                E-Mail: 
+                <TextField></TextField><br></br>
+                Telefonnummer: 
+                <TextField></TextField><br></br>
+                Schwerpunkte: 
+                <TextField></TextField><br></br>
+                Studiengangsleiter:
+                <TextField></TextField><br></br>
+                Lebenslauf:
+                <Button>Upload Lebenslauf</Button><br></br>
+            </div>
+       </React.Fragment>
 
     );
 }
