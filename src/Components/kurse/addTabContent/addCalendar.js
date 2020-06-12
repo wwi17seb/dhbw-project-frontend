@@ -37,6 +37,36 @@ import Create from '@material-ui/icons/Create';
 
 import { appointments } from './appointments';
 
+const creds = {
+  clientId: "696108575064-pqp0vf98bbrklbet30qbkka6mc3io6p5.apps.googleusercontent.com",
+  apiKey: "AIzaSyA5OGAMBup2tHpeQvt7EA0w2zR-3ZCQ6-0",
+  scope: "https://www.googleapis.com/auth/calendar",
+  discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
+  secret: "p0p2e1o0qTZg7TQq_plsDl4V",
+  calenderID: "iq90i34lq6v196rqs4986dp370@group.calendar.google.com"
+}
+
+
+const handleClick = () => {
+  const gapi = window.gapi;
+  gapi.load('client:auth2', () => {
+      gapi.client.init({
+          apiKey: creds.apiKey,
+          clientId: creds.clientId,
+          discoveryDocs: creds.discoveryDocs,
+          scope: creds.scope
+      })
+
+      gapi.client.load('calendar', 'v3', () => console.log('penis'))
+
+      gapi.auth2.getAuthInstance().signIn().then(
+          () => {
+              console.log("signed in")
+          }
+      )
+  })
+}
+
 
 function formatData(calendarData) {
 
@@ -503,6 +533,8 @@ class Demo extends React.PureComponent {
       );
     } else {
       return (
+        <div>
+        <button onClick={handleClick}>Login</button>
         <Paper>
           <Scheduler
             data={data}
@@ -579,6 +611,7 @@ class Demo extends React.PureComponent {
             <AddIcon />
           </Fab>
         </Paper>
+        </div>
       );
     }
   }
