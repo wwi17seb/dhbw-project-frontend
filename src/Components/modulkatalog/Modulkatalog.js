@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import { Grid, Card, CardContent } from '@material-ui/core';
 import './modulkatalog.css';
+import { API } from '../../helper/Api';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -55,6 +56,12 @@ export default function ModulkatalogTable() {
     setSearchTerm(event.target.value);
   };
   React.useEffect(() => {
+    const fetch = async () => {
+      let response1 = await API('/api/modulecatalog');
+      console.log("API request: " + response1.statusText);
+    }
+    fetch();
+
     const results = moduleList.filter(modul =>
       modul.toLowerCase().includes(searchTerm.toLowerCase())
     );

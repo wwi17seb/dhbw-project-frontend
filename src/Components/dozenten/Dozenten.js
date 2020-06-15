@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -27,7 +27,7 @@ import './dozenten.css';
 import MaterialTable from 'material-table';
 import Nav from '../nav/Nav';
 import LecturerList from './lecturerlist'
-
+import { API, APIGet } from '../../helper/Api';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -40,6 +40,14 @@ const useStyles = makeStyles(theme => ({
       }}));
 
 export default function DozentenTable() {
+    useEffect(() => {
+        const fetch = async () => {
+          let response1 = await API('/api/lecturers');
+          console.log("API request: " + response1.statusText);
+        }
+        fetch();
+      })
+
     const classes = useStyles();
     const tableIcons = {
         Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
