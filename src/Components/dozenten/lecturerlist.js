@@ -30,21 +30,11 @@ export default function LecturerList() {
   const classes = useStyles();
   const [lecturers, setLecturers] = React.useState(null)
   const [output, setOutput] = React.useState([])
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  const handleCloseMenu = () => {
-    setOpen(false);
-  };
   const ClickSubmit = () => {
     setOpen(true);
+    setInterval(function () { setOpen(false); }, 1000);
   }
 
   const loadData = () => {
@@ -92,38 +82,19 @@ export default function LecturerList() {
               <Grid item xs={4}>
                 <Typography variant="h5">Name</Typography>
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={3}>
                 <Typography variant="h5">Schwerpunkt</Typography>
               </Grid>
-              <Grid item xs={4}>
-                <Typography variant="h5">Email</Typography>
+              <Grid item xs={3}>
+                <Typography variant="h5">Studiengangsleiter</Typography>
               </Grid>
             </Grid>
             <Divider></Divider>
           </Grid>
           {output}
         </Paper>
-        <Dialog
-          open={open}
-          onClose={handleCloseMenu}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">{"Neuen Dozent hinzufügen:"}</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              <AddLecturer></AddLecturer>
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary" >
-              Submit
-            </Button>
-            <Button onClick={handleClose} color="primary" autoFocus>
-              Cancel
-            </Button>
-          </DialogActions>
-        </Dialog>
+
+        <AddLecturer open={open}></AddLecturer>
       </Grid>
     </React.Fragment>
 
