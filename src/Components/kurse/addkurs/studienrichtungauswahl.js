@@ -13,24 +13,41 @@ const useStyles = makeStyles(theme => ({
 }));
 
 //Funktion, welche das Auswahlmenü für eine Studienrichtung zurück gibt
-const StudienrichtungAuswahl = () => {
+export default function StudienrichtungAuswahl({ studiengang, data }) {
     const classes = useStyles();
 
-    //TODO: dynamisches Anfragen der Studienrichtungen für einen Studiengang, nachdem der Studiengang ausgewählt wurde
-    //TODO: Auswahlmenü erst einfügen, nachdem Studiengang ausgewählt wurde
-    const studienrichtungen = ["Software Engineering", "Sales & Consulting", "Data Science"]
     const studienrichtungAuswahl = []
     const [studienrichtung, setStudienrichtung] = React.useState('');
+    const [studiengang1, setStudiengang1] = React.useState(studiengang);
+    const [state, setState] = React.useState(data);
+
+    React.useEffect(() => {
+        if (state !== data) {
+            setState(data)
+        }
+    }, [state, setState, data]);
+
+    React.useEffect(() => {
+        if (studiengang1 !== studiengang) {
+            setStudiengang1(studiengang)
+        }
+    }, [studiengang1, setStudiengang1, studiengang]);
 
     const handleChange = event => {
         setStudienrichtung(event.target.value);
     };
 
     //hinzufügen der MenuItems anhand der List mit Studienrichtungen
-    var index = 0
-    for (let gang of studienrichtungen) {
-        studienrichtungAuswahl.push(<MenuItem key={index} value={gang}>{gang}</MenuItem>);
-        index++
+    var richtungen = []
+    for (var i = 0; i < data["default"]["payload"]["fieldOfStudies"].length; i++) {
+        if (studiengang === data["default"]["payload"]["fieldOfStudies"][i]["name"]) {
+            richtungen = data["default"]["payload"]["fieldOfStudies"][i]["majorSubjects"]
+        }
+    }
+
+    for (var i = 0; i < richtungen.length; i++) {
+        var richtung = richtungen[i]["name"]
+        studienrichtungAuswahl.push(<MenuItem key={i} value={richtung}>{richtung}</MenuItem>)
     }
 
     return (
@@ -48,4 +65,3 @@ const StudienrichtungAuswahl = () => {
         </FormControl>
     )
 }
-export default StudienrichtungAuswahl

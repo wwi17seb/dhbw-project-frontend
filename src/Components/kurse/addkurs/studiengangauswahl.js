@@ -4,6 +4,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import StudienrichtungAuswahl from './studienrichtungauswahl'
 
 const useStyles = makeStyles(theme => ({
     formControl: {
@@ -13,38 +14,43 @@ const useStyles = makeStyles(theme => ({
 }));
 
 //Funktion, welche das Auswahlmenü für einen Studiengang zurück gibt
-const StudiengangAuswahl = () => {
+export default function StudiengangAuswahl({ data }) {
     const classes = useStyles();
 
     //TODO: dynamisches anfragen der Studiengänge
-    const studiengaenge = ["Wirtschaftsinformatik", "Betriebswirtschaftslehre", "Wirtschaftingenieurwesen"]
     const studiengangAuswahl = []
     const [studiengang, setStudiengang] = React.useState('');
+    const [state, setState] = React.useState(data);
+
+    React.useEffect(() => {
+        if (state !== data) {
+            setState(data)
+        }
+    }, [state, setState, data]);
 
     const handleChange = event => {
         setStudiengang(event.target.value);
     };
-
     //hinzufügen der MenuItems anhand der List mit Studiengängen
-    var index = 0
-    for (let gang of studiengaenge) {
-        studiengangAuswahl.push(<MenuItem key={index} value={gang}>{gang}</MenuItem>);
-        index++
+    for (var i = 0; i < data["default"]["payload"]["fieldOfStudies"].length; i++) {
+        var gang = data["default"]["payload"]["fieldOfStudies"][i]["name"]
+        studiengangAuswahl.push(<MenuItem key={i} value={gang}>{gang}</MenuItem>);
     }
 
     return (
-        <FormControl required className={classes.formControl}>
-            <InputLabel id="studiengang-label">Studiengang</InputLabel>
-            <Select
-                labelId="studiengang-label"
-                id="studiengang-select"
-                value={studiengang}
-                onChange={handleChange}
-            >
-                {studiengangAuswahl}
-            </Select>
-        </FormControl>
+        <React.Fragment>
+            <FormControl required className={classes.formControl}>
+                <InputLabel id="studiengang-label">Studiengang</InputLabel>
+                <Select
+                    labelId="studiengang-label"
+                    id="studiengang-select"
+                    value={studiengang}
+                    onChange={handleChange}
+                >
+                    {studiengangAuswahl}
+                </Select>
+            </FormControl>
+            <StudienrichtungAuswahl studiengang={studiengang} data={data}></StudienrichtungAuswahl>
+        </React.Fragment>
     )
 }
-
-export default StudiengangAuswahl

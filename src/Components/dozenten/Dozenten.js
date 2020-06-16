@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -28,7 +28,7 @@ import Nav from '../nav/Nav';
 import LecturerList from './lecturerlist'
 import { Route, Switch } from 'react-router-dom'
 import DozentenDetails from './dozentendetails/dozentendetails'
-
+import ApiHandler from '../../helper/Api';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -42,9 +42,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function DozentenTable() {
+
     const classes = useStyles();
     return (
-
         <div className={classes.root}>
             <Nav></Nav>
             <main className={classes.content}>
