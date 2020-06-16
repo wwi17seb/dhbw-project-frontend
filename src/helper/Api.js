@@ -7,7 +7,7 @@ export const API = async (url) => {
     return axios.get(url, { params }).then((response) => {
         return response
     }).catch((err) => {
-        return err
+        return err.response
     })
 }
 
