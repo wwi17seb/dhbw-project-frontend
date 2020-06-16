@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import { Grid, Card, CardContent, Button } from '@material-ui/core';
 import './modulkatalog.css';
-import { ApiHandler } from '../../helper/Api';
+import ApiHandler from '../../helper/Api';
 import TextField from '@material-ui/core/TextField';
 import ModulkatalogAdd from './ModulkatalogAdd'
 
