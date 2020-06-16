@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import '../node_modules/bootstrap/dist/css/bootstrap.css'
 import '../node_modules/bootstrap/dist/js/bootstrap.js'
-import { Route, BrowserRouter as Router } from 'react-router-dom'
-import App from './App'
+import { Route, BrowserRouter as Router, Redirect } from 'react-router-dom'
 import Kurse from './Components/kurse/Kurse'
 import Dozenten from './Components/dozenten/Dozenten'
 import Modulkatalog from './Components/modulkatalog/Modulkatalog'
@@ -12,17 +11,23 @@ import ModulkatalogDetail from './Components/modulkatalog/ModulkatalogDetail'
 import Login from './Components/login/Login'
 import ResetPassword from './Components/login/forgotPassword'
 
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    localStorage.getItem('ExoplanSessionToken') !== null
+      ? <Component {...props} />
+      : <Redirect to='/' />
+  )} />
+)
 
 const routing = (
   <Router>
     <div>
-      <Route path="/home" component={App} />
-      <Route path="/kurse" component={Kurse} />
-      <Route path="/dozenten" component={Dozenten} />
-      <Route exact path='/modulkatalog' component={Modulkatalog} />
-      <Route exact path='/modulkatalog/details/:name' component={ModulkatalogDetail} />
+      <PrivateRoute exact path="/kurse" component={Kurse} />
+      <PrivateRoute exact path="/dozenten" component={Dozenten} />
+      <PrivateRoute path='/modulkatalog' component={Modulkatalog} />
+      <PrivateRoute exact path='/modulkatalog/details/:name' component={ModulkatalogDetail} />
       <Route exact path='/' component={Login} />
-      <Route path="/reset" exact component={ResetPassword} />
+      <Route exact path="/reset" component={ResetPassword} />
     </div>
   </Router>
 )

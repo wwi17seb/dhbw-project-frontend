@@ -3,8 +3,11 @@ import Nav from '../nav/Nav';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
-import { Grid, Card, CardContent } from '@material-ui/core';
+import { Grid, Card, CardContent, Button } from '@material-ui/core';
 import './modulkatalog.css';
+import ApiHandler from '../../helper/Api';
+import TextField from '@material-ui/core/TextField';
+import ModulkatalogAdd from './ModulkatalogAdd'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,6 +34,9 @@ const useStyles = makeStyles(theme => ({
   },
   formButton: {
     marginTop: '2rem'
+  },
+  addModule: {
+    textAlign: 'right'
   }
 }));
 
@@ -63,10 +69,10 @@ export default function ModulkatalogTable() {
 
   const handleCardClick = event => {
     console.log(event.target.textContent);
-    history.push('/modulkatalog/details/'+ event.target.textContent);
+    history.push('/modulkatalog/details/' + event.target.textContent);
   }
 
-  function toggleRaised (event) { //this is supposed to raise the card as a hover effect, but seemingly React doesn't allow DOM attribute manipulation
+  function toggleRaised(event) { //this is supposed to raise the card as a hover effect, but seemingly React doesn't allow DOM attribute manipulation
     console.log(event.target);
     event.target.setAttribute("raised", !raised);
     setRaised(raised => !raised);// update the state to force render
@@ -75,6 +81,7 @@ export default function ModulkatalogTable() {
   return (
     <div className={classes.root} >
       <Nav></Nav>
+      <ApiHandler url='/api/modulecatalog'></ApiHandler>
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Typography variant="h5" noWrap>
@@ -82,11 +89,15 @@ export default function ModulkatalogTable() {
         </Typography>
         <form className={classes.searchForm}>
           <Typography variant='h6'>
-            Suchen Sie hier nach Modulkatalogen: </Typography>
+            Grenzen Sie hier die Liste mit Kriterien ein: </Typography>
           <Grid container spacing={4}>
-            <Grid item md={5} sm={12}>
+            <Grid item sm={8}>
               {/* <label className="card-label" forhtml="inputStudiengang">Studiengang:</label> */}
-              <input type="text" value={searchTerm} onChange={handleSearch} className="form-control" id="inputStudiengang" />
+              {/* <input type="text" label='Suchen Sie nach Jahr, Studienrichtung oder Spezialisierung' value={searchTerm} onChange={handleSearch} className="form-control" id="inputStudiengang" /> */}
+              <TextField id="filled-basic" fullWidth='true' label="Suchen Sie nach Jahr, Studienrichtung oder Spezialisierung" value={searchTerm} onChange={handleSearch} id="inputStudiengang" variant="filled" />
+            </Grid>
+            <Grid item sm={4}>
+              <ModulkatalogAdd />
             </Grid>
             {/* <Grid item md={5} sm={12}>
               <label className="card-label" forhtml="inputSpezialisierung">Spezialisierung:</label>
@@ -101,7 +112,7 @@ export default function ModulkatalogTable() {
           {(searchResults).map(studyName =>
             <Grid container item xl={3} sm={3} className='cards' justify='center' key={studyName}>
               <div className='carddiv'>
-              <Card onMouseOver={toggleRaised} onMouseOut={toggleRaised} className={classes.card} onClick={handleCardClick}>
+                <Card onMouseOver={toggleRaised} onMouseOut={toggleRaised} className={classes.card} onClick={handleCardClick}>
                   <CardContent className={classes.cardContent}>
                     <Typography className={classes.cardText}>{studyName}</Typography>
                   </CardContent>
