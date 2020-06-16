@@ -27,7 +27,7 @@ import './dozenten.css';
 import MaterialTable from 'material-table';
 import Nav from '../nav/Nav';
 import LecturerList from './lecturerlist'
-import { API, APIGet } from '../../helper/Api';
+import ApiHandler from '../../helper/Api';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -40,13 +40,6 @@ const useStyles = makeStyles(theme => ({
       }}));
 
 export default function DozentenTable() {
-    useEffect(() => {
-        const fetch = async () => {
-          let response1 = await API('/api/lecturers');
-          console.log("API request: " + response1.statusText);
-        }
-        fetch();
-      })
 
     const classes = useStyles();
     const tableIcons = {
@@ -124,6 +117,7 @@ export default function DozentenTable() {
     
       <div className={classes.root}>
           <Nav></Nav>
+          <ApiHandler url = '/api/lecturers'></ApiHandler>
           <main className = {classes.content}>
           <div className = {classes.toolbar}/>
         <MaterialTable

@@ -9,7 +9,7 @@ import Box from '@material-ui/core/Box';
 import Nav from '../nav/Nav';
 import AddKurs from './addkurs/addkurs'
 import AddTabContent from './addTabContent/addTabContent'
-import { API, APIGet } from '../../helper/Api';
+import ApiHandler from '../../helper/Api';
 
 
 function TabPanel(props) {
@@ -82,17 +82,10 @@ export default function ScrollableTabsButtonAuto(props) {
     });
   }); */
 
-  useEffect(() => {
-    const fetch = async () => {
-      let response1 = await API('/api/courses');
-      console.log("API request: " + response1.statusText);
-    }
-    fetch();
-  })
-
   return (
     <div className={classes.root}>
       <Nav></Nav>
+      <ApiHandler url='/api/courses' ></ApiHandler>
       <main className={classes.content}>
         <div className={classes.toolbar} />
 

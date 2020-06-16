@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import { Grid, Card, CardContent, Button } from '@material-ui/core';
 import './modulkatalog.css';
-import { API } from '../../helper/Api';
+import { ApiHandler } from '../../helper/Api';
 import TextField from '@material-ui/core/TextField';
 import ModulkatalogAdd from './ModulkatalogAdd'
 
@@ -61,12 +61,6 @@ export default function ModulkatalogTable() {
     setSearchTerm(event.target.value);
   };
   React.useEffect(() => {
-    const fetch = async () => {
-      let response1 = await API('/api/modulecatalog');
-      console.log("API request: " + response1.statusText);
-    }
-    fetch();
-
     const results = moduleList.filter(modul =>
       modul.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -87,6 +81,7 @@ export default function ModulkatalogTable() {
   return (
     <div className={classes.root} >
       <Nav></Nav>
+      <ApiHandler url='/api/modulecatalog'></ApiHandler>
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Typography variant="h5" noWrap>

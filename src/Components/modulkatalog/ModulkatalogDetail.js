@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import ExpansionPanels from './ExpansionPanels'
-import { API } from '../../helper/Api';
+import ApiHandler from '../../helper/Api';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -19,19 +19,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function ModulkatalogDetail(props) {
-    React.useEffect(() => {
-        const fetch = async () => {
-          let response1 = await API('/api/modulecatalog');
-          console.log("API request: " + response1.statusText);
-        }
-        fetch();
-      })
 
     const classes = useStyles();
     var studyName = props.match.params.name; //the selected course of study 
     return (
         <div className={classes.root} >
             <Nav></Nav>
+            <ApiHandler url='/api/modulecatalog'></ApiHandler>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 <Breadcrumbs aria-label="breadcrumb">
