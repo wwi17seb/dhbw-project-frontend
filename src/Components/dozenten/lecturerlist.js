@@ -32,7 +32,6 @@ export default function LecturerList() {
   const loadData = () => {
     const url = "api/lecturers?token=" + localStorage.getItem("ExoplanSessionToken")
     axios.get(url).then(res => {
-      console.log(res.data)
       setLecturers(res.data.payload);
     })
   }
