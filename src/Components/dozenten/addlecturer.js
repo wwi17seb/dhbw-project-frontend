@@ -1,15 +1,9 @@
 import axios from 'axios';
-import React, { forwardRef, useEffect } from 'react';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
+import React, { useEffect } from 'react';
 import { Grid, TextField } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import * as testdata from "./dozententestdata.json";
 import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import LecturerRow from "./lecturerrow"
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -21,8 +15,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
-import ListItemText from '@material-ui/core/ListItemText';
-import Checkbox from '@material-ui/core/Checkbox';
 
 const useStyles = makeStyles(theme => ({
     textfield: {
@@ -63,12 +55,16 @@ export default function AddLecturer(props) {
     const [cv, setCv] = React.useState(null);
     const [submit, setSubmit] = React.useState(true);
     const [open, setOpen] = React.useState(props.open);
+    const [open2, setOpen2] = React.useState(false);
     const [submitState, setSubmitState] = React.useState("");
 
 
 
     const handleCloseMenu = () => {
         setOpen(false);
+    };
+    const handleCloseConfirm = () => {
+        setOpen2(false);
     };
 
     useEffect(() => {
@@ -122,12 +118,20 @@ export default function AddLecturer(props) {
         const url = "api/lecturers?token=" + localStorage.getItem("ExoplanSessionToken");
         axios.post(url, data).then(res => {
             setSubmitState(res.data.message)
+            setOpen2(false);
+            setOpen(false);
         }
         ).catch(err => {
             setSubmitState(err.response.data.message)
+            setOpen2(false);
+            setOpen(false);
         }
         )
     };
+
+    const handleConfirm = (event) => {
+        setOpen2(true);
+    }
 
     const handleSalutation = (event) => {
         setSalutation(event.target.value);
@@ -192,103 +196,120 @@ export default function AddLecturer(props) {
 
 
     return (
-        <Dialog
-            open={open}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-        >
-            <DialogTitle id="alert-dialog-title">{"Neuen Dozenten hinzufügen:"}</DialogTitle>
-            <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                    <Grid container spacing={1}>
-                        <Grid item xs={6}>
-                            <FormControl required className={classes.formControl}>
-                                <InputLabel id="select-salutation-label">Anrede</InputLabel>
-                                <Select
-                                    labelId="select-salutation-label"
-                                    id="select-salutation"
-                                    value={salutation}
-                                    onChange={handleSalutation}
-                                    label="Salutation"
-                                >
-                                    <MenuItem value={"Herr"}>Herr</MenuItem>
-                                    <MenuItem value={"Frau"}>Frau</MenuItem>
-                                    <MenuItem value={"Other"}>Other</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField className={classes.textfield} value={titel} onChange={handleTitel} label="Akadem. Titel" ></TextField>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField className={classes.textfield} value={vorname} onChange={handleVorname} required label="Vorname" ></TextField>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField className={classes.textfield} value={nachname} onChange={handleNachname} required label="Nachname" ></TextField>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField className={classes.textfield} error={emailErr} value={email} onChange={handleEmail} required label="E-Mail" ></TextField>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField className={classes.textfield} error={telnrErr} value={telnr} onChange={handleTelnr} label="Telefonnummer"></TextField>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <FormControl style={{ width: 250 }} className={classes.formControl}>
-                                <InputLabel id="select-mainfocus-label">Schwerpunkte</InputLabel>
-                                <Select
-                                    labelId="select-mainfocus-label"
-                                    id="select-mainfocus"
-                                    value={mainFocus}
-                                    multiple
-                                    onChange={handleMainFocus}
-                                    label="MainFocus"
-                                    input={<Input />}
-                                    renderValue={(selected) => <div >
-                                        {selected.map((value) => (
-                                            <Chip key={value} label={value} />
-                                        ))}
-                                    </div>}
-                                    MenuProps={MenuProps}
-                                >
-                                    {mainFocusList}
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <FormControl required className={classes.formControl}>
-                                <InputLabel id="select-extern-label">Extern?</InputLabel>
-                                <Select
-                                    labelId="select-extern-label"
-                                    id="select-extern"
-                                    value={extern}
-                                    onChange={handleExtern}
-                                    label="extern"
-                                >
-                                    <MenuItem value={true}>Ja</MenuItem>
-                                    <MenuItem value={false}>Nein</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControl required className={classes.formControl}>
-                                <Input id="my-input" type="file" aria-describedby="my-helper-text" onChange={handleUpload} />
-                                <FormHelperText id="my-helper-text">Upload Lebenslauf</FormHelperText>
-                            </FormControl>
+        <React.Fragment>
+            <Dialog
+                open={open}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"Neuen Dozenten hinzufügen:"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        <Grid container spacing={1}>
+                            <Grid item xs={6}>
+                                <FormControl required className={classes.formControl}>
+                                    <InputLabel id="select-salutation-label">Anrede</InputLabel>
+                                    <Select
+                                        labelId="select-salutation-label"
+                                        id="select-salutation"
+                                        value={salutation}
+                                        onChange={handleSalutation}
+                                        label="Salutation"
+                                    >
+                                        <MenuItem value={"Herr"}>Herr</MenuItem>
+                                        <MenuItem value={"Frau"}>Frau</MenuItem>
+                                        <MenuItem value={"Other"}>Other</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField className={classes.textfield} value={titel} onChange={handleTitel} label="Akadem. Titel" ></TextField>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField className={classes.textfield} value={vorname} onChange={handleVorname} required label="Vorname" ></TextField>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField className={classes.textfield} value={nachname} onChange={handleNachname} required label="Nachname" ></TextField>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField className={classes.textfield} error={emailErr} value={email} onChange={handleEmail} required label="E-Mail" ></TextField>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField className={classes.textfield} error={telnrErr} value={telnr} onChange={handleTelnr} label="Telefonnummer"></TextField>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <FormControl style={{ width: 250 }} className={classes.formControl}>
+                                    <InputLabel id="select-mainfocus-label">Schwerpunkte</InputLabel>
+                                    <Select
+                                        labelId="select-mainfocus-label"
+                                        id="select-mainfocus"
+                                        value={mainFocus}
+                                        multiple
+                                        onChange={handleMainFocus}
+                                        label="MainFocus"
+                                        input={<Input />}
+                                        renderValue={(selected) => <div >
+                                            {selected.map((value) => (
+                                                <Chip key={value} label={value} />
+                                            ))}
+                                        </div>}
+                                        MenuProps={MenuProps}
+                                    >
+                                        {mainFocusList}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <FormControl required className={classes.formControl}>
+                                    <InputLabel id="select-extern-label">Extern?</InputLabel>
+                                    <Select
+                                        labelId="select-extern-label"
+                                        id="select-extern"
+                                        value={extern}
+                                        onChange={handleExtern}
+                                        label="extern"
+                                    >
+                                        <MenuItem value={true}>Ja</MenuItem>
+                                        <MenuItem value={false}>Nein</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <FormControl style={{ marginTop: 10 }} required className={classes.formControl}>
+                                    <Input id="my-input" type="file" aria-describedby="my-helper-text" onChange={handleUpload} />
+                                    <FormHelperText id="my-helper-text">Upload Lebenslauf</FormHelperText>
+                                </FormControl>
 
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={handleCloseMenu} color="primary" >
-                    abbrechen
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseMenu} color="primary" >
+                        abbrechen
                 </Button>
-                <Button disabled={submit} onClick={handleSubmit} color="primary" >
-                    hinzufügen
+                    <Button disabled={submit} onClick={handleConfirm} color="primary" >
+                        hinzufügen
                 </Button>
-            </DialogActions>
+                </DialogActions>
+            </Dialog>
+            <Dialog
+                open={open2}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"Sind sie sich sicher?"}</DialogTitle>
+                <DialogActions>
+                    <Button onClick={handleCloseConfirm} color="primary" >
+                        abbrechen
+                </Button>
+                    <Button disabled={submit} onClick={handleSubmit} color="primary" >
+                        ja
+                </Button>
+                </DialogActions>
+            </Dialog>
+        </React.Fragment>
 
-        </Dialog>
 
 
 
