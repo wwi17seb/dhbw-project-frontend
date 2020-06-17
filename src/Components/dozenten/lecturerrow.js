@@ -64,7 +64,7 @@ export default function LecturerRow(props) {
                     </Menu>
                 </Grid>
             </Grid>
-            <Divider></Divider>
+            <Divider style={{ marginBottom: 10 }}></Divider>
         </Grid>
     );
 }

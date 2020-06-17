@@ -89,7 +89,7 @@ export default function LecturerList() {
                 <Typography variant="h5">Studiengangsleiter</Typography>
               </Grid>
             </Grid>
-            <Divider></Divider>
+            <Divider style={{ marginBottom: 10 }}></Divider>
           </Grid>
           {output}
         </Paper>
