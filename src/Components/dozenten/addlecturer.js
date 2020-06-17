@@ -94,7 +94,6 @@ export default function AddLecturer(props) {
         var selectedIds = []
         for (var i = 0; i < mainFocuses.length; i++) {
             for (var j = 0; j < mainFocus.length; j++) {
-                console.log(mainFocuses[i]["name"] === mainFocus[j])
                 if (mainFocuses[i]["name"] === mainFocus[j]) {
                     selectedIds.push(mainFocuses[i]["mainFocus_id"])
                 }
@@ -116,7 +115,6 @@ export default function AddLecturer(props) {
             "comment": "",
             "is_extern": extern
         }
-        console.log(data)
         const url = "api/lecturers?token=" + localStorage.getItem("ExoplanSessionToken");
         axios.post(url, data).then(res => {
             setSubmitState(res.status)
