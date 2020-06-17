@@ -38,8 +38,10 @@ export default function LecturerList() {
   }
 
   const loadData = () => {
-    axios.get(`api/lecturers`).then(res => {
-      setLecturers(res.data);
+    const url = "api/lecturers?token=" + localStorage.getItem("ExoplanSessionToken")
+    axios.get(url).then(res => {
+      console.log(res.data)
+      setLecturers(res.data.payload);
     })
   }
 
@@ -52,10 +54,10 @@ export default function LecturerList() {
     if (lecturers !== null) {
       var temp = []
 
-      for (var i = 0; i < lecturers["default"]["payload"]["lecturers"].length; i++) {
+      for (var i = 0; i < lecturers["lecturers"].length; i++) {
 
         temp.push(
-          <LecturerRow data={lecturers["default"]["payload"]["lecturers"][i]}></LecturerRow>
+          <LecturerRow data={lecturers["lecturers"][i]}></LecturerRow>
         )
       }
       setOutput(temp)
@@ -63,15 +65,15 @@ export default function LecturerList() {
   }
 
   if (lecturers === null) {
-    //loadData()
-    setLecturers(testdata)
+    loadData()
+    //setLecturers(testdata)
   }
 
   return (
     <React.Fragment>
       <Typography variant="h5" noWrap>
         Dozenten
-                </Typography>
+      </Typography>
       <div className="btn_align">
         <button className="btn btn_dhbw" onClick={ClickSubmit.bind(this)}>Dozenten hinzufügen</button>
       </div>

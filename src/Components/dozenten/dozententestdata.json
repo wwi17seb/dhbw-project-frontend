@@ -10,7 +10,7 @@
                 "salutation": "Herr",
                 "phonenumber": "012345678",
                 "experience": "keine ahnung",
-                "MainFocus": [{
+                "MainFocuses": [{
                         "mainFocus_id": 0,
                         "name": "BWL"
                     },

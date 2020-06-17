@@ -21,7 +21,7 @@ export default function LecturerRow(props) {
     var temp2 = []
     var title = props.data["academic_title"]
     var name = props.data["firstname"] + " " + props.data["lastname"]
-    var mainFocus = props.data["MainFocus"]
+    var mainFocus = props.data["MainFocuses"]
     var email = props.data["email"]
     var tel = props.data["phonenumber"]
     var id = props.data["lecturer_id"]
