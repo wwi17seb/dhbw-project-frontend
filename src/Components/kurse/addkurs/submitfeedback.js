@@ -31,7 +31,7 @@ export default function SubmitFeedback(props) {
     };
 
     const snack = (submit) => {
-        if (submit === 200) {
+        if (submit === 200 || submit === 201) {
             setOutput(
                 <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
                     <Alert onClose={handleClose} severity="success">

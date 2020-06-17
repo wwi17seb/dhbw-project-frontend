@@ -15,6 +15,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
+import SubmitFeedback from '../kurse/addkurs/submitfeedback'
 
 const useStyles = makeStyles(theme => ({
     textfield: {
@@ -56,7 +57,8 @@ export default function AddLecturer(props) {
     const [submit, setSubmit] = React.useState(true);
     const [open, setOpen] = React.useState(props.open);
     const [open2, setOpen2] = React.useState(false);
-    const [submitState, setSubmitState] = React.useState("");
+    const [submitState, setSubmitState] = React.useState(null);
+    const [submitText, setSubmitText] = React.useState(null);
 
 
 
@@ -117,12 +119,16 @@ export default function AddLecturer(props) {
         console.log(data)
         const url = "api/lecturers?token=" + localStorage.getItem("ExoplanSessionToken");
         axios.post(url, data).then(res => {
-            setSubmitState(res.data.message)
+            setSubmitState(res.status)
+            setSubmitText(res.statusText)
+            setTimeout(() => { setSubmitState(null) }, 2000)
             setOpen2(false);
             setOpen(false);
         }
         ).catch(err => {
-            setSubmitState(err.response.data.message)
+            setSubmitState(err.response.status)
+            setSubmitText(err.response.statusText)
+            setTimeout(() => { setSubmitState(null) }, 3000)
             setOpen2(false);
             setOpen(false);
         }
@@ -308,6 +314,7 @@ export default function AddLecturer(props) {
                 </Button>
                 </DialogActions>
             </Dialog>
+            <SubmitFeedback submit={submitState} text={submitText}></SubmitFeedback>
         </React.Fragment>
 
 
