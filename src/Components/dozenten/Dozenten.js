@@ -113,11 +113,16 @@ export default function DozentenTable() {
         }
         ],
     });
+
+    const handleAPIresponse = (response) => {
+        console.log("parent comp")
+        console.log(response);
+    }
     return (
     
       <div className={classes.root}>
           <Nav></Nav>
-          <ApiHandler url = '/api/lecturers'></ApiHandler>
+          <ApiHandler url = '/api/lecturers' handleAPIresponse={handleAPIresponse}></ApiHandler>
           <main className = {classes.content}>
           <div className = {classes.toolbar}/>
         <MaterialTable

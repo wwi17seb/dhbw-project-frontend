@@ -20,6 +20,10 @@ const useStyles = makeStyles(theme => ({
 function ExpansionPanels(props) {
     const classes = useStyles();
     var studyName = props.studyName;
+    var example = "";
+    if (typeof props.content !== "undefined" && props.content !== null && props.content.length > 0){
+        example = Object.values(props.content[0]).toString();
+    }
     return (
         <div className={classes.root}>
             <ExpansionPanel>
@@ -32,8 +36,8 @@ function ExpansionPanels(props) {
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <Typography>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                        sit amet blandit leo lobortis eget. Studium: {studyName}
+                        Beispiel live aus dem Backend: {example}
+                        Studium: {studyName}
                     </Typography>
                 </ExpansionPanelDetails>
             </ExpansionPanel>

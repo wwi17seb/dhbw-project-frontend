@@ -82,10 +82,14 @@ export default function ScrollableTabsButtonAuto(props) {
     });
   }); */
 
+  const handleAPIresponse = (response) => {
+    console.log("parent comp")
+    console.log(response);
+  }
   return (
     <div className={classes.root}>
       <Nav></Nav>
-      <ApiHandler url='/api/courses' ></ApiHandler>
+      <ApiHandler url='/api/courses' handleAPIresponse={handleAPIresponse}></ApiHandler>
       <main className={classes.content}>
         <div className={classes.toolbar} />
 

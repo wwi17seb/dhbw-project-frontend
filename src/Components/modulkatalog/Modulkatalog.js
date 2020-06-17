@@ -56,6 +56,7 @@ export default function ModulkatalogTable() {
   const history = useHistory();
   const [searchTerm, setSearchTerm] = React.useState("");
   const [searchResults, setSearchResults] = React.useState([]);
+  const [payload, setPayload] = React.useState([]);
   const [raised, setRaised] = React.useState(false);
   const handleSearch = event => {
     setSearchTerm(event.target.value);
@@ -73,15 +74,18 @@ export default function ModulkatalogTable() {
   }
 
   function toggleRaised(event) { //this is supposed to raise the card as a hover effect, but seemingly React doesn't allow DOM attribute manipulation
-    console.log(event.target);
+    //console.log(event.target);
     event.target.setAttribute("raised", !raised);
     setRaised(raised => !raised);// update the state to force render
   }
 
+  const handleAPIresponse = (response) => {
+    setPayload(response.data.payload);
+  }
   return (
     <div className={classes.root} >
       <Nav></Nav>
-      <ApiHandler url='/api/modulecatalog'></ApiHandler>
+      <ApiHandler url='/api/modulecatalog' handleAPIresponse={handleAPIresponse} params={{majorSubjectId: 4}}></ApiHandler>
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Typography variant="h5" noWrap>
@@ -94,7 +98,7 @@ export default function ModulkatalogTable() {
             <Grid item sm={8}>
               {/* <label className="card-label" forhtml="inputStudiengang">Studiengang:</label> */}
               {/* <input type="text" label='Suchen Sie nach Jahr, Studienrichtung oder Spezialisierung' value={searchTerm} onChange={handleSearch} className="form-control" id="inputStudiengang" /> */}
-              <TextField id="filled-basic" fullWidth='true' label="Suchen Sie nach Jahr, Studienrichtung oder Spezialisierung" value={searchTerm} onChange={handleSearch} id="inputStudiengang" variant="filled" />
+              <TextField id="filled-basic" fullWidth={true} label="Suchen Sie nach Jahr, Studienrichtung oder Spezialisierung" value={searchTerm} onChange={handleSearch} id="inputStudiengang" variant="filled" />
             </Grid>
             <Grid item sm={4}>
               <ModulkatalogAdd />
