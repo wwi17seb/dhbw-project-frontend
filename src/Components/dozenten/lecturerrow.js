@@ -25,6 +25,7 @@ export default function LecturerRow(props) {
     var email = props.data["email"]
     var tel = props.data["phonenumber"]
     var id = props.data["lecturer_id"]
+    var director = props.data["DirectorOfStudies"]["username"]
 
     for (var j = 0; j < mainFocus.length; j++) {
         temp2.push(
@@ -46,7 +47,7 @@ export default function LecturerRow(props) {
                     {temp2}
                 </Grid>
                 <Grid item xs={3}>
-                    <Typography variant="h6">{email}</Typography>
+                    <Typography variant="h6">{director}</Typography>
                 </Grid>
                 <Grid item xs={2}>
                     <Button variant="outlined" color="primary" onClick={handleClick}>
