@@ -58,92 +58,109 @@ export default function KontoeinstellungenTable() {
           </Grid>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">Neuen Studiengangsleiter hinzufügen</DialogTitle>
+          
           <DialogContent>
             <DialogContentText>
               Um einen neuen Studiengangsleiter hinzuzufügen füllen Sie bitte folgende Pflichtfelder aus:
               </DialogContentText>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="Titel"
-              label="Titel"
-              placeholder="Prof. Dr. ..."
-              fullWidth
-            />
-            <TextField
-              margin="dense"
-              id="Vorname"
-              label="Vorname"
-              fullWidth
-            />
-            <TextField
-              margin="dense"
-              id="Nachname"
-              label="Nachname"
-              fullWidth
-            />
-            <TextField
-              margin="dense"
-              id="Mail"
-              label="E-Mail"
-              type="email"
-              fullWidth
-            />
-            <TextField
-              margin="dense"
-              id="Passwort"
-              label="Passwort"
-              type="password"
-              fullWidth
-            />
-          </DialogContent>
+              <Form>
+              <Form.Group as={Row} controlId="Titel">
+                <Form.Label column sm={3}>
+                  Titel
+    </Form.Label>
+                <Col sm={9}>
+                  <Form.Control type="name" placeholder="Prof. Dr." />
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row} controlId="Vorname">
+                <Form.Label column sm={3}>
+                  Vorname
+    </Form.Label>
+                <Col sm={9}>
+                  <Form.Control type="name" placeholder="Vorname" />
+                </Col>
+              </Form.Group>
+
+              <Form.Group as={Row} controlId="Nachname">
+                <Form.Label column sm={3}>
+                  Nachname
+    </Form.Label>
+                <Col sm={9}>
+                  <Form.Control type="name" placeholder="Nachname" />
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row} controlId="Email">
+                <Form.Label column sm={3}>
+                  E-Mail
+    </Form.Label>
+                <Col sm={9}>
+                  <Form.Control type="email" placeholder="E-Mail" />
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row} controlId="Passwort">
+                <Form.Label column sm={3}>
+                  Passwort
+    </Form.Label>
+                <Col sm={9}>
+                  <Form.Control type="password" placeholder="Passwort eingeben" />
+                </Col>
+              </Form.Group>        
+          
           <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              Abbrechen
-              </Button>
-            <Button onClick={handleClose} color="primary">
-              Bestätigen
-              </Button>
+          <Form.Group as={Row}>
+                <Col sm={{ span: 8, offset: 0 }}>
+                  <Button variant="outlined" color="primary" type="reset" onClick={handleClose}>Abbrechen</Button>
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row}>
+                <Col sm={{ span: 8, offset: 0 }}>
+                  <Button variant="outlined" color="primary" type="submit">Hinzufügen</Button>
+                </Col>
+              </Form.Group>
+              
           </DialogActions>
+          </Form>
+        </DialogContent>
+      
         </Dialog>
         
         <Grid item xs={6}> 
             <Form>
               <Form.Group as={Row} controlId="formHorizontalName">
-                <Form.Label column sm={2}>
+                <Form.Label column sm={3}>
                   Name
     </Form.Label>
-                <Col sm={10}>
+                <Col sm={9}>
                   <Form.Control type="name" placeholder="Name" />
                 </Col>
               </Form.Group>
               <Form.Group as={Row} controlId="formHorizontalEmail">
-                <Form.Label column sm={2}>
-                  Email
+                <Form.Label column sm={3}>
+                  E-Mail
     </Form.Label>
-                <Col sm={10}>
-                  <Form.Control type="email" placeholder="Email" />
+                <Col sm={9}>
+                  <Form.Control type="email" placeholder="E-Mail" />
                 </Col>
               </Form.Group>
 
               <Form.Group as={Row} controlId="formHorizontalPassword">
-                <Form.Label column sm={2}>
+                <Form.Label column sm={3}>
                   Passwort
     </Form.Label>
-                <Col sm={10}>
+                <Col sm={9}>
                   <Form.Control type="password" placeholder="Passwort" />
                 </Col>
               </Form.Group>
               <Form.Group as={Row} controlId="formHorizontalOtherEmail">
-                <Form.Label column sm={2}>
-                  Weitere Email
+                <Form.Label column sm={3}>
+                  Weitere E-Mail
     </Form.Label>
-                <Col sm={10}>
-                  <Form.Control type="email" placeholder="Email" />
+                <Col sm={9}>
+                  <Form.Control type="email" placeholder="Weitere E-Mail" />
                 </Col>
               </Form.Group>
               <Form.Group as={Row}>
-                <Col sm={{ span: 10, offset: 2 }}>
+                <Col sm={{ span: 9, offset: 3 }}>
                   <Button variant="outlined" color="primary" type="submit">Bestätigen</Button>
                 </Col>
               </Form.Group>
