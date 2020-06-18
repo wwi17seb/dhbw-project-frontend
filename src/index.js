@@ -24,7 +24,7 @@ const routing = (
     <div>
       <PrivateRoute exact path="/kurse" component={Kurse} />
       <PrivateRoute exact path="/dozenten" component={Dozenten} />
-      <PrivateRoute path='/modulkatalog' component={Modulkatalog} />
+      <PrivateRoute exact path='/modulkatalog' component={Modulkatalog} />
       <PrivateRoute exact path='/modulkatalog/details/:name' component={ModulkatalogDetail} />
       <Route exact path='/' component={Login} />
       <Route exact path="/reset" component={ResetPassword} />
