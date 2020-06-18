@@ -89,7 +89,9 @@ export default function ModulkatalogTable() {
       let fieldsOfStudyWithMajorSubject = [];
       for (let [index, fieldOfStudy] of Object.entries(response.data.payload.FieldsOfStudy)) {
         for (let majorSubject of fieldOfStudy.MajorSubjects) {
-          if ( (majorSubjectIDs.find(i => i.id == majorSubject.majorSubject_id)) === undefined) {
+          if ( (majorSubjectIDs.find(i => i.id == majorSubject.majorSubject_id)) === undefined
+            && (majorSubjectIDs.find(i => i.name.toString().includes(majorSubject.name))) === undefined //this second check is only needed until majorSubject_id is unambiguous (unique)
+          ) {
             fieldsOfStudyWithMajorSubject.push( fieldOfStudy.name + " " + majorSubject.name);
             majorSubjectIDs.push({name: fieldsOfStudyWithMajorSubject[fieldsOfStudyWithMajorSubject.length -1], id: majorSubject.majorSubject_id})
           }
