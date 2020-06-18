@@ -64,9 +64,8 @@ export default function ModulkatalogTable() {
     setSearchTerm(event.target.value);
   };
   React.useEffect(() => {
-    console.log("executed " + fieldsOfStudyList.length)
-    const results = fieldsOfStudyList.filter(modul =>
-      modul.toLowerCase().includes(searchTerm.toLowerCase())
+    const results = fieldsOfStudyList.filter(fieldOfStudy =>
+      fieldOfStudy.toLowerCase().trim().includes(searchTerm.toLowerCase().trim())
     );
     setSearchResults(results);
   }, [searchTerm]);
@@ -87,6 +86,7 @@ export default function ModulkatalogTable() {
     console.log(response.data.payload);
     if (typeof response.data.payload["FieldsOfStudy"] !== "undefined"){
       let fieldsOfStudyWithMajorSubject = [];
+      majorSubjectIDs = [];
       for (let [index, fieldOfStudy] of Object.entries(response.data.payload.FieldsOfStudy)) {
         for (let majorSubject of fieldOfStudy.MajorSubjects) {
           if ( (majorSubjectIDs.find(i => i.id == majorSubject.majorSubject_id)) === undefined
