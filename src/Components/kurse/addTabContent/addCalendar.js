@@ -36,7 +36,7 @@ import CalendarToday from '@material-ui/icons/CalendarToday';
 import Create from '@material-ui/icons/Create';
 
 import { appointments } from './appointments';
-import {handleAddedEvent} from './apiHandlerGoogleCalendar';
+import {handleAppointmentDelete, handleAppointmentInsert, handleAppointmentChange} from './apiHandlerGoogleCalendar';
 
 function formatData(calendarData) {
 
@@ -51,6 +51,7 @@ function formatData(calendarData) {
       endDate: undefined, 
       location: 'No location given',
       id: i, 
+      gcId: "test",
     }
 
     if (calendarData[i].location) {
@@ -61,6 +62,9 @@ function formatData(calendarData) {
       test.title = calendarData[i].summary;
     }
 
+    if (calendarData[i].id) {
+      test.gcId = calendarData[i].id;
+    }
     //test.id = calendarData[i].id;
 
     let startDateString = calendarData[i].start.dateTime;
@@ -187,6 +191,8 @@ class AppointmentFormContainerBasic extends React.PureComponent {
       ...appointmentChanges,
     };
 
+    /*aktuelles Appointment
+        console.log(appointmentData)*/
     const isNewAppointment = appointmentData.id === undefined;
     const applyChanges = isNewAppointment
       ? () => this.commitAppointment('added')
@@ -322,7 +328,7 @@ class Demo extends React.PureComponent {
     super(props);
     this.state = {
       data: appointments,
-      currentDate: '2020-05-12',
+      currentDate: '2020-06-18',
       confirmationVisible: false,
       editingFormVisible: false,
       deletedAppointmentId: undefined,
@@ -417,6 +423,8 @@ class Demo extends React.PureComponent {
           });
         }, 600);
         console.log(this.state.data); 
+        console.log(appointments.items);
+        
       })
       .catch(() => this.setState({dataReady: true}));
   }
@@ -460,7 +468,8 @@ class Demo extends React.PureComponent {
     this.setState((state) => {
       const { data, deletedAppointmentId } = state;
       const nextData = data.filter(appointment => appointment.id !== deletedAppointmentId);
-
+      /** Google Calendar Delete */
+      handleAppointmentDelete(data[deletedAppointmentId].gcId);
       return { data: nextData, deletedAppointmentId: null };
     });
     this.toggleConfirmationVisible();
@@ -472,10 +481,25 @@ class Demo extends React.PureComponent {
       if (added) {
         const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0;
         data = [...data, { id: startingAddedId, ...added }];
+        console.log("addedData:")
+        console.log(added); 
+        handleAppointmentInsert(added);
       }
       if (changed) {
         data = data.map(appointment => (
-          changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment));
+          changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment
+        ));
+
+        if(changed[state.editingAppointment.id].title === undefined){
+          data[state.editingAppointment.id].startDate = changed[state.editingAppointment.id].startDate; 
+          data[state.editingAppointment.id].endDate = changed[state.editingAppointment.id].endDate;
+          handleAppointmentChange(data[state.editingAppointment.id]);
+        }else{
+          handleAppointmentChange(changed[state.editingAppointment.id]);
+        };
+
+        console.log(changed[state.editingAppointment.id]);
+        console.log(data[state.editingAppointment.id]);
       }
       if (deleted !== undefined) {
         this.setDeletedAppointmentId(deleted);
@@ -503,8 +527,6 @@ class Demo extends React.PureComponent {
       );
     } else {
       return (
-        <div>
-        <button onClick={handleAddedEvent}>Login</button>
         <Paper>
           <Scheduler
             data={data}
@@ -581,7 +603,6 @@ class Demo extends React.PureComponent {
             <AddIcon />
           </Fab>
         </Paper>
-        </div>
       );
     }
   }
