@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const moduleList = [
+const fieldsOfStudyList_SAMPLE = [
   "Wirtschaftsinformatik Software Engineering",
   "Wirtschaftsinformatik Sales & Consulting",
   "Wirtschaftsinformatik Application Management",
@@ -50,6 +50,7 @@ const moduleList = [
   "BWL Logistik",
   "Wirtschaft Unternehmenswirtschaft"
 ];
+var majorSubjectIDs = [];
 
 export default function ModulkatalogTable() {
   const classes = useStyles();
@@ -57,13 +58,14 @@ export default function ModulkatalogTable() {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [searchResults, setSearchResults] = React.useState([]);
   const [payload, setPayload] = React.useState([]);
+  const [fieldsOfStudyList, setFieldsOfStudyList] = React.useState([]);
   const [raised, setRaised] = React.useState(false);
   const handleSearch = event => {
     setSearchTerm(event.target.value);
   };
   React.useEffect(() => {
-    const results = moduleList.filter(modul =>
-      modul.toLowerCase().includes(searchTerm.toLowerCase())
+    const results = fieldsOfStudyList.filter(fieldOfStudy =>
+      fieldOfStudy.toLowerCase().trim().includes(searchTerm.toLowerCase().trim())
     );
     setSearchResults(results);
   }, [searchTerm]);
@@ -81,11 +83,30 @@ export default function ModulkatalogTable() {
 
   const handleAPIresponse = (response) => {
     setPayload(response.data.payload);
+    console.log(response.data.payload);
+    if (typeof response.data.payload["FieldsOfStudy"] !== "undefined"){
+      let fieldsOfStudyWithMajorSubject = [];
+      majorSubjectIDs = [];
+      for (let [index, fieldOfStudy] of Object.entries(response.data.payload.FieldsOfStudy)) {
+        for (let majorSubject of fieldOfStudy.MajorSubjects) {
+          if ( (majorSubjectIDs.find(i => i.id == majorSubject.majorSubject_id)) === undefined
+            && (majorSubjectIDs.find(i => i.name.toString().includes(majorSubject.name))) === undefined //this second check is only needed until majorSubject_id is unambiguous (unique)
+          ) {
+            fieldsOfStudyWithMajorSubject.push( fieldOfStudy.name + " " + majorSubject.name);
+            majorSubjectIDs.push({name: fieldsOfStudyWithMajorSubject[fieldsOfStudyWithMajorSubject.length -1], id: majorSubject.majorSubject_id})
+          }
+        }
+      }
+      console.log(fieldsOfStudyWithMajorSubject);
+      console.log(majorSubjectIDs);
+      setFieldsOfStudyList (fieldsOfStudyWithMajorSubject);
+      setSearchTerm(" ")
+  }
   }
   return (
     <div className={classes.root} >
       <Nav></Nav>
-      <ApiHandler url='/api/modulecatalog' handleAPIresponse={handleAPIresponse} params={{majorSubjectId: 4}}></ApiHandler>
+      <ApiHandler url='/api/fieldsOfStudy' handleAPIresponse={handleAPIresponse} params={{withMajorSubjects: true}}></ApiHandler>
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Typography variant="h5" noWrap>
