@@ -9,7 +9,7 @@ import Box from '@material-ui/core/Box';
 import Nav from '../nav/Nav';
 import AddKurs from './addkurs/addkurs'
 import AddTabContent from './addTabContent/addTabContent'
-
+import ApiHandler from '../../helper/Api';
 
 
 function TabPanel(props) {
@@ -81,9 +81,15 @@ export default function ScrollableTabsButtonAuto(props) {
       document.getElementById('success-alert').slideUp(500);
     });
   }); */
+
+  const handleAPIresponse = (response) => {
+    console.log("parent comp")
+    console.log(response);
+  }
   return (
     <div className={classes.root}>
       <Nav></Nav>
+      <ApiHandler url='/api/courses' handleAPIresponse={handleAPIresponse}></ApiHandler>
       <main className={classes.content}>
         <div className={classes.toolbar} />
 
