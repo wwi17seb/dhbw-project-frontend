@@ -1,27 +1,25 @@
-import React, { forwardRef } from 'react';
-import Nav from '../nav/Nav';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import { Grid } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { Grid, Container, CssBaseline } from '@material-ui/core'
-import Form from 'react-bootstrap/Form'
-import FormControl from 'react-bootstrap/FormControl'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import PersonIcon from '@material-ui/icons/Person';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import React from 'react';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Nav from '../nav/Nav';
+import axios from 'axios';
+import { APICall } from '../../helper/Api';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -60,16 +58,19 @@ export default function KontoeinstellungenTable() {
   const [Password, setPassword] = React.useState(false);
   const [Studiengangsleiter, setStudiengangsleiter] = React.useState(false);
   const [Mail, setMail] = React.useState(false);
+  const [email, setMailOfStudiengangsleiter] = React.useState("");
+  const [pw, setPasswordOfStudiengangsleiter] = React.useState("");
 
-  const handleStudiengangsleiter = () => {
+
+  const handleDialogStudiengangsleiter = () => {
     setStudiengangsleiter(true);
   };
 
-  const handlePassword = () => {
+  const handleDialogPassword = () => {
     setPassword(true);
   };
 
-  const handleMail = () => {
+  const handleDialogMail = () => {
     setMail(true);
   };
 
@@ -80,6 +81,23 @@ export default function KontoeinstellungenTable() {
 
   };
 
+  const handleCreateStudiengangsleiter = (e) => {
+    e.preventDefault();
+    const newStudiengangsleiter = {
+      username: email,
+      password: pw
+    }
+    console.log({ newStudiengangsleiter });
+    APICall("POST", '/api/register', newStudiengangsleiter).then(res => {
+      if (res.data && res.data.status === 201) {
+
+        alert("User was created");
+      } else {
+        alert("Problem occurred: User not created!")
+      }
+    });
+
+  }
 
   return (
     <div className={classes.root} >
@@ -93,15 +111,15 @@ export default function KontoeinstellungenTable() {
           <Dialog open={Studiengangsleiter} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Neuen Studiengangsleiter hinzufügen</DialogTitle>
             <DialogContent>
-              <Form>
+              <Form onSubmit={handleCreateStudiengangsleiter}>
                 <Form.Group as={Row} controlId="Nutzer">
                   <Col>
-                    <Form.Control type="name" placeholder="E-Mail eingeben" />
+                    <Form.Control type="name" placeholder="E-Mail eingeben" onChange={({ target: { value } }) => setMailOfStudiengangsleiter(value)} />
                   </Col>
                 </Form.Group>
                 <Form.Group as={Row} controlId="Passwort">
                   <Col>
-                    <Form.Control type="password" placeholder="Passwort eingeben" />
+                    <Form.Control type="password" placeholder="Passwort eingeben" onChange={({ target: { value } }) => setPasswordOfStudiengangsleiter(value)} />
                   </Col>
                 </Form.Group>
                 <DialogActions>
@@ -197,7 +215,7 @@ export default function KontoeinstellungenTable() {
               </CardContent>
             </CardActionArea>
             <CardActions>
-              <Button type="button" variant="outlined" style={{ margin: "0 auto" }} onClick={handleMail}>
+              <Button type="button" variant="outlined" style={{ margin: "0 auto" }} onClick={handleDialogMail}>
                 E-Mail ändern
         </Button>
             </CardActions>
@@ -213,7 +231,7 @@ export default function KontoeinstellungenTable() {
               </CardContent>
             </CardActionArea>
             <CardActions>
-              <Button type="button" variant="outlined" style={{ margin: "0 auto" }} onClick={handlePassword} >
+              <Button type="button" variant="outlined" style={{ margin: "0 auto" }} onClick={handleDialogPassword} >
                 Passwort ändern
         </Button>
             </CardActions>
@@ -229,7 +247,7 @@ export default function KontoeinstellungenTable() {
               </CardContent>
             </CardActionArea>
             <CardActions >
-              <Button type="button" variant="outlined" onClick={handleStudiengangsleiter} style={{ margin: "0 auto" }} >
+              <Button type="button" variant="outlined" onClick={handleDialogStudiengangsleiter} style={{ margin: "0 auto" }} >
                 Studiengangsleiter hinzufügen
         </Button>
             </CardActions>
