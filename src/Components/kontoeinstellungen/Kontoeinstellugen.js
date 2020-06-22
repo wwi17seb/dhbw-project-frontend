@@ -88,7 +88,7 @@ export default function KontoeinstellungenTable() {
       password: pw
     }
     console.log({ newStudiengangsleiter });
-    APICall("POST", '/api/register', newStudiengangsleiter).then(res => {
+    APICall("POST", 'register', newStudiengangsleiter).then(res => {
       if (res.data && res.data.status === 201) {
 
         alert("User was created");

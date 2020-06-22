@@ -13,7 +13,7 @@ import { getTokenFromStorage } from './tokenHelper';
 
 export const APICall = async (method, url, data) => { //not in use
     return axios.request({
-        data, method, url,
+        data, method, url: "https://localhost/api/" + url,
         params: {
             token: getTokenFromStorage(),
         }
