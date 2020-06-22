@@ -23,7 +23,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 const routing = (
   <Router>
     <div>
-      <Route path="/home" component={App} />
       <Route path="/kontoeinstellungen" component={Kontoeinstellungen} />
       <Route path="/kurse" component={Kurse} />
       <Route path="/dozenten" component={Dozenten} />
@@ -34,4 +33,4 @@ const routing = (
     </div>
   </Router>
 )
-ReactDOM.render(routing, document.getElementById('root'))
+ReactDOM.render(routing, document.getElementById(n'root'))
