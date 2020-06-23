@@ -33,6 +33,9 @@ const useStyles = makeStyles(theme => ({
   Buttons: {
     marginTop: "2rem",
   },
+  cardsGrid: {
+    marginTop: "2rem",
+  },
   card: {
     width: 345,
     height: 230,
@@ -88,15 +91,15 @@ export default function KontoeinstellungenTable() {
       password: pw
     }
     console.log({ newStudiengangsleiter });
-    APICall("POST", 'register', newStudiengangsleiter).then(res => {
-      if (res.data && res.data.status === 201) {
+    APICall("POST", 'signup', newStudiengangsleiter).then(res => {
+      console.log(res);
+      if (res.data && res.status === 201) {
 
         alert("User was created");
       } else {
         alert("Problem occurred: User not created!")
       }
     });
-
   }
 
   return (
@@ -167,7 +170,7 @@ export default function KontoeinstellungenTable() {
                   </Form.Group>
                   <Form.Group as={Row}>
                     <Col sm={{ span: 8, offset: 0 }}>
-                      <Button variant="outlined" color="primary" type="submit">Hinzufügen</Button>
+                      <Button variant="outlined" color="primary" type="submit">Bestätigen</Button>
                     </Col>
                   </Form.Group>
                 </DialogActions>
@@ -178,7 +181,7 @@ export default function KontoeinstellungenTable() {
 
         <Grid container className={classes.Buttons} spacing={3} alignContent='center' alignItems='center'>
           <Dialog open={Mail} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Neuen Studiengangsleiter hinzufügen</DialogTitle>
+            <DialogTitle id="form-dialog-title">Benutzerkonto E-Mail ändern</DialogTitle>
             <DialogContent>
               <Form>
                 <Form.Group as={Row} controlId="Nutzer">
@@ -194,7 +197,7 @@ export default function KontoeinstellungenTable() {
                   </Form.Group>
                   <Form.Group as={Row}>
                     <Col sm={{ span: 8, offset: 0 }}>
-                      <Button variant="outlined" color="primary" type="submit">Hinzufügen</Button>
+                      <Button variant="outlined" color="primary" type="submit">Bestätigen</Button>
                     </Col>
                   </Form.Group>
                 </DialogActions>
@@ -204,7 +207,7 @@ export default function KontoeinstellungenTable() {
         </Grid>
 
 
-        <Grid container className={classes.Buttons} spacing={3} alignContent='center' alignItems='center' style={{ marginLeft: "80px" }}>
+        <Grid container className={classes.cardsGrid} alignContent='center' alignItems='center'>
           <Card className={classes.card}>
             <CardActionArea>
               <PersonIcon className={classes.icon} />
