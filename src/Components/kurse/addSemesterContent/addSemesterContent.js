@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import AddCalendar from './addCalendar'
-import AddSemester from './addSemester'
+import AddCourseTable from './addCourseTable'
 
 const useStyles = makeStyles(theme => ({
     formControl: {
@@ -11,15 +10,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 //Funktion, welche das Auswahlmenü für einen Studiengang zurück gibt
-const AddTabContent = () => {
+const AddSemesterContent = () => {
     const classes = useStyles();
 
     return (
         <div style={{padding:0}}>
-        <AddSemester></AddSemester>
-        <AddCalendar></AddCalendar>
+            <AddCourseTable></AddCourseTable>
         </div>
     )
 }
 
-export default AddTabContent
+export default AddSemesterContent

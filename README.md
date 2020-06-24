@@ -24,3 +24,6 @@ start your docker container
 ```
 docker run -p 80:3000 -d felixwaage/dhbw-project-frontend
 ```
+# Before Production!
+
+Proxy in package.json muss vor dem production build entfernt werden

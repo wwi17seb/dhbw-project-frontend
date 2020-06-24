@@ -1,0 +1,16 @@
+.btn_dhbw {
+    background-color: #e30613;
+    color: white;
+    margin-top: 1.7rem;
+}
+
+.btn_dhbw:hover {
+    background-color: white;
+    border-color: #e30613;
+}
+
+.carddiv:hover {
+    cursor: pointer;
+    border-color: #e30613;
+    box-shadow: 0 0 0 0.2rem rgba(227, 6, 19, 0.25);
+}
