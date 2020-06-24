@@ -36,7 +36,8 @@ import CalendarToday from '@material-ui/icons/CalendarToday';
 import Create from '@material-ui/icons/Create';
 
 import { appointments } from './appointments';
-import {handleAppointmentDelete, handleAppointmentInsert, handleAppointmentChange} from './apiHandlerGoogleCalendar';
+//import {handleAppointmentDelete, handleAppointmentInsert, handleAppointmentChange} from './apiHandlerGoogleCalendar';
+import {syncGoogleCalendar} from './apiHandlerGoogleCalendar';
 
 function formatData(calendarData) {
 
@@ -469,7 +470,7 @@ class Demo extends React.PureComponent {
       const { data, deletedAppointmentId } = state;
       const nextData = data.filter(appointment => appointment.id !== deletedAppointmentId);
       /** Google Calendar Delete */
-      handleAppointmentDelete(data[deletedAppointmentId].gcId);
+      syncGoogleCalendar("delete", data[deletedAppointmentId].gcId);
       return { data: nextData, deletedAppointmentId: null };
     });
     this.toggleConfirmationVisible();
@@ -481,9 +482,7 @@ class Demo extends React.PureComponent {
       if (added) {
         const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0;
         data = [...data, { id: startingAddedId, ...added }];
-        console.log("addedData:")
-        console.log(added); 
-        handleAppointmentInsert(added);
+        syncGoogleCalendar("insert", added)
       }
       if (changed) {
         data = data.map(appointment => (
@@ -493,13 +492,10 @@ class Demo extends React.PureComponent {
         if(changed[state.editingAppointment.id].title === undefined){
           data[state.editingAppointment.id].startDate = changed[state.editingAppointment.id].startDate; 
           data[state.editingAppointment.id].endDate = changed[state.editingAppointment.id].endDate;
-          handleAppointmentChange(data[state.editingAppointment.id]);
+          syncGoogleCalendar("change", data[state.editingAppointment.id]);
         }else{
-          handleAppointmentChange(changed[state.editingAppointment.id]);
+          syncGoogleCalendar("change", changed[state.editingAppointment.id]);
         };
-
-        console.log(changed[state.editingAppointment.id]);
-        console.log(data[state.editingAppointment.id]);
       }
       if (deleted !== undefined) {
         this.setDeletedAppointmentId(deleted);

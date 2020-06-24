@@ -56,5 +56,6 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/nikolockenvitz/dhbw-project-frontend/issues"
-  }
+  },
+"homepage": "https://github.com/nikolockenvitz/dhbw-project-frontend#readme"
 }

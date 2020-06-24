@@ -7,7 +7,7 @@ const creds = {
   calenderID: "iq90i34lq6v196rqs4986dp370@group.calendar.google.com"
 }
 
-export async function handleAppointmentDelete(deleteAppointmentId) {
+export async function syncGoogleCalendar(action, appointmentData) {
   const gapi = window.gapi;
   gapi.load('client:auth2', () => {
     gapi.client.init({
@@ -16,33 +16,55 @@ export async function handleAppointmentDelete(deleteAppointmentId) {
       discoveryDocs: creds.discoveryDocs,
       scope: creds.scope
     })
+    gapi.client.load('calendar', 'v3', () => console.log('syncGoogleCalendar'))
 
-    gapi.client.load('calendar', 'v3', () => console.log('deleteGC'))
-
-    gapi.auth2.getAuthInstance().signIn().then(
-      () => {
-
-        var request = gapi.client.calendar.events.delete({
-          'calendarId': creds.calenderID,
-          'eventId': deleteAppointmentId
-        });
-        console.log(deleteAppointmentId);
-
-        request.execute(function (response) {
-          if (response.error || response == false) {
-            alert('Error');
-          } else {
-            alert('Success');
-          }
-        });
-      }
-    )
+    //Check if already logged in
+    if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+      handleAction(action, appointmentData, gapi);
+    } else { //If not logged in yet -> login
+      gapi.auth2.getAuthInstance().signIn().then(
+        () => {
+           handleAction(action, appointmentData, gapi);
+        }
+      )
+    }
   })
 }
 
+function handleAction(action, appointmentData, gapi) {
+  switch (action) {
+    case "delete":
+      handleAppointmentDelete(appointmentData, gapi);
+      break;
+    case "change":
+      handleAppointmentChange(appointmentData, gapi);
+      break;
+    case "insert":
+      handleAppointmentInsert(appointmentData, gapi);
+      break;
+    default:
+      console.log("Wont happen")
+  }
+}
 
-export async function handleAppointmentInsert(insertAppointmentData) {
+function handleAppointmentDelete(deleteAppointmentId, gapi) {
 
+  var request = gapi.client.calendar.events.delete({
+    'calendarId': creds.calenderID,
+    'eventId': deleteAppointmentId
+  });
+  console.log(deleteAppointmentId);
+
+  request.execute(function (response) {
+    if (response.error || response == false) {
+      alert('Error');
+    } else {
+      alert('Success');
+    }
+  });
+}
+
+function handleAppointmentInsert(insertAppointmentData, gapi) {
   let event = {
     'summary': insertAppointmentData.title,
     'location': insertAppointmentData.location,
@@ -56,44 +78,22 @@ export async function handleAppointmentInsert(insertAppointmentData) {
       'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
     },
   }
-  //console.log(Intl.DateTimeFormat().resolvedOptions().timeZone)
 
-  const gapi = window.gapi;
-  gapi.load('client:auth2', () => {
-    gapi.client.init({
-      apiKey: creds.apiKey,
-      clientId: creds.clientId,
-      discoveryDocs: creds.discoveryDocs,
-      scope: creds.scope
-    })
+  var request = gapi.client.calendar.events.insert({
+    'calendarId': creds.calenderID,
+    'resource': event
+  });
 
-    gapi.client.load('calendar', 'v3', () => console.log('insertGC'))
-
-    gapi.auth2.getAuthInstance().signIn().then(
-      () => {
-
-        var request = gapi.client.calendar.events.insert({
-          'calendarId': creds.calenderID,
-          'resource': event
-        });
-
-        request.execute(function (response) {
-          if (response.error || response == false) {
-            alert('Error');
-          } else {
-            alert('Success');
-          }
-        });
-      }
-    )
-  })
+  request.execute(function (response) {
+    if (response.error || response == false) {
+      alert('Error');
+    } else {
+      alert('Success');
+    }
+  });
 }
 
-
-export async function handleAppointmentChange(changedAppointmentData) {
-  
-  console.log("I know my shit:");
-  console.log(changedAppointmentData);
+function handleAppointmentChange(changedAppointmentData, gapi) {
   var event1 = {
     'summary': changedAppointmentData.title,
     'location': changedAppointmentData.location,
@@ -107,36 +107,18 @@ export async function handleAppointmentChange(changedAppointmentData) {
       'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
     },
   }
-  console.log(event1)
 
-  const gapi = window.gapi;
-  gapi.load('client:auth2', () => {
-    gapi.client.init({
-      apiKey: creds.apiKey,
-      clientId: creds.clientId,
-      discoveryDocs: creds.discoveryDocs,
-      scope: creds.scope
-    })
+  var request = gapi.client.calendar.events.update({
+    'calendarId': creds.calenderID,
+    'eventId': changedAppointmentData.gcId,
+    'resource': event1
+  });
 
-    gapi.client.load('calendar', 'v3', () => console.log('insertGC'))
-
-    gapi.auth2.getAuthInstance().signIn().then(
-      () => {
-
-        var request = gapi.client.calendar.events.update({
-          'calendarId': creds.calenderID,
-          'eventId': changedAppointmentData.gcId,
-          'resource': event1
-        });
-
-        request.execute(function (response) {
-          if (response.error || response == false) {
-            alert('Error');
-          } else {
-            alert('Success');
-          }
-        });
-      }
-    )
-  })
+  request.execute(function (response) {
+    if (response.error || response == false) {
+      alert('Error');
+    } else {
+      alert('Success');
+    }
+  });
 }
