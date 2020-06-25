@@ -24,6 +24,10 @@ const useStyles = makeStyles(theme => ({
     formControl: {
         minWidth: 120,
     },
+    chips: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    }
 }));
 
 
@@ -122,6 +126,7 @@ export default function AddLecturer(props) {
             setTimeout(() => { setSubmitState(null) }, 2000)
             setOpen2(false);
             setOpen(false);
+            window.location.reload();
         }
         ).catch(err => {
             setSubmitState(err.response.status)
@@ -251,10 +256,10 @@ export default function AddLecturer(props) {
                                         multiple
                                         onChange={handleMainFocus}
                                         label="MainFocus"
-                                        input={<Input />}
-                                        renderValue={(selected) => <div >
+                                        input={<Input id="select-multiple-chip" />}
+                                        renderValue={(selected) => <div className={classes.chips}>
                                             {selected.map((value) => (
-                                                <Chip key={value} label={value} />
+                                                <Chip style={{ margin: 2 }} key={value} label={value} />
                                             ))}
                                         </div>}
                                         MenuProps={MenuProps}
