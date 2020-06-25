@@ -60,9 +60,16 @@ export default function KontoeinstellungenTable() {
   const classes = useStyles();
   const [Password, setPassword] = React.useState(false);
   const [Studiengangsleiter, setStudiengangsleiter] = React.useState(false);
+  const [newMail, changeMail] = React.useState(false);
   const [Mail, setMail] = React.useState(false);
   const [email, setMailOfStudiengangsleiter] = React.useState("");
-  const [pw, setPasswordOfStudiengangsleiter] = React.useState("");
+  const [pw1, setPasswordOfStudiengangsleiter1] = React.useState("");
+  const [pw2, setPasswordOfStudiengangsleiter2] = React.useState("");
+  const [newPW1, changePassword1] = React.useState("");
+  const [newPW2, changePassword2] = React.useState("");
+  const [oldPW, changePasswordOld] = React.useState("");
+
+
 
 
   const handleDialogStudiengangsleiter = () => {
@@ -85,22 +92,70 @@ export default function KontoeinstellungenTable() {
   };
 
   const handleCreateStudiengangsleiter = (e) => {
-    e.preventDefault();
-    const newStudiengangsleiter = {
-      username: email,
-      password: pw
+    if (pw1 != pw2) {
+      alert("Passwords do not match!");
+    } else {
+
+      e.preventDefault();
+      const newStudiengangsleiter = {
+        username: email,
+        password: pw1
+      }
+      console.log({ newStudiengangsleiter });
+      APICall("POST", 'signUp', newStudiengangsleiter).then(res => {
+        console.log(res);
+        if (res.data && res.status === 201) {
+
+          alert("User was created");
+        } else {
+          alert("Problem occurred: User not created!")
+        }
+      });
     }
-    console.log({ newStudiengangsleiter });
-    APICall("POST", 'signup', newStudiengangsleiter).then(res => {
+  }
+
+  const handleChangeMail = (e) => {
+    e.preventDefault();
+    const setMail = {
+      username: newMail,
+      misc: "", // to be continued
+    }
+    console.log({ setMail });
+    APICall("PUT", 'directorOfStudies', setMail).then(res => {
       console.log(res);
       if (res.data && res.status === 201) {
 
-        alert("User was created");
+        alert("Mail was changed");
       } else {
-        alert("Problem occurred: User not created!")
+        alert("Problem occurred: Mail not changed!")
       }
     });
   }
+
+  const handleChangePassword = (e) => {
+    e.preventDefault();
+    if (newPW1 != newPW2) {
+      alert("Passwords do not match!");
+    } else {
+      const setPassword = {
+        oldPassword: oldPW,
+        newPassword: newPW1,
+        // to be continued and adapted by backend because API changes
+      }
+      console.log({ setPassword });
+      
+      APICall("PUT", 'changePassword', setPassword).then(res => {
+        console.log(res);
+        if (res.data && res.status === 201) {
+
+          alert("Password was changed");
+        } else {
+          alert("Problem occurred: Password not changed!")
+        }
+      });
+    }
+  }
+
 
   return (
     <div className={classes.root} >
@@ -122,7 +177,12 @@ export default function KontoeinstellungenTable() {
                 </Form.Group>
                 <Form.Group as={Row} controlId="Passwort">
                   <Col>
-                    <Form.Control type="password" placeholder="Passwort eingeben" onChange={({ target: { value } }) => setPasswordOfStudiengangsleiter(value)} />
+                    <Form.Control type="password" placeholder="Neues Passwort eingeben" onChange={({ target: { value } }) => setPasswordOfStudiengangsleiter1(value)} />
+                  </Col>
+                </Form.Group>
+                <Form.Group as={Row} controlId="Passwort">
+                  <Col>
+                    <Form.Control type="password" placeholder="Neues Passwort wiederholen" onChange={({ target: { value } }) => setPasswordOfStudiengangsleiter2(value)} />
                   </Col>
                 </Form.Group>
                 <DialogActions>
@@ -146,20 +206,20 @@ export default function KontoeinstellungenTable() {
           <Dialog open={Password} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Passwort ändern</DialogTitle>
             <DialogContent>
-              <Form>
+              <Form  onSubmit={handleChangePassword}>
                 <Form.Group as={Row} controlId="OldPW">
                   <Col>
-                    <Form.Control type="password" placeholder="Altes Passwort eingeben" />
+                    <Form.Control type="password" placeholder="Altes Passwort eingeben" onChange={({ target: { value } }) => changePasswordOld(value)}/>
                   </Col>
                 </Form.Group>
                 <Form.Group as={Row} controlId="Passwort">
                   <Col>
-                    <Form.Control type="password" placeholder="Neues Passwort eingeben" />
+                    <Form.Control type="password" placeholder="Neues Passwort eingeben" onChange={({ target: { value } }) => changePassword1(value)}/>
                   </Col>
                 </Form.Group>
                 <Form.Group as={Row} controlId="Passwort2">
                   <Col>
-                    <Form.Control type="password" placeholder="Neues Passwort wiederholen" />
+                    <Form.Control type="password" placeholder="Neues Passwort wiederholen" onChange={({ target: { value } }) => changePassword2(value)}/>
                   </Col>
                 </Form.Group>
                 <DialogActions>
@@ -183,10 +243,10 @@ export default function KontoeinstellungenTable() {
           <Dialog open={Mail} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Benutzerkonto E-Mail ändern</DialogTitle>
             <DialogContent>
-              <Form>
+              <Form onSubmit={handleChangeMail}>
                 <Form.Group as={Row} controlId="Nutzer">
                   <Col>
-                    <Form.Control type="name" placeholder="E-Mail eingeben" />
+                    <Form.Control type="name" placeholder="E-Mail eingeben" onChange={({ target: { value } }) => changeMail(value)} />
                   </Col>
                 </Form.Group>
                 <DialogActions>
@@ -260,5 +320,6 @@ export default function KontoeinstellungenTable() {
     </div>
   )
 }
+
 
 

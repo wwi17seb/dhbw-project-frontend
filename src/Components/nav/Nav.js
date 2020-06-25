@@ -67,6 +67,11 @@ export default function PermanentDrawerLeft() {
     setAnchorEl(null);
   };
 
+  const handleLogout = () => {
+    setAnchorEl(null);
+    localStorage.removeItem('ExoplanSessionToken');
+  };
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -100,8 +105,7 @@ export default function PermanentDrawerLeft() {
             >
               
                 <MenuItem onClick={handleClose} component={Link} to='/kontoeinstellungen'>Einstellungen</MenuItem>
-                <MenuItem onClick={handleClose}>Abmelden</MenuItem>
-            </Menu>
+                <MenuItem onClick={handleLogout} component={Link} to='/'>Abmelden</MenuItem>            </Menu>
           </div>
         </Toolbar>
       </AppBar>
