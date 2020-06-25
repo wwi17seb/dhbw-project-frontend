@@ -28,6 +28,10 @@ export default function LecturerRow(props) {
     var director = props.data["DirectorOfStudies"]["username"]
     var intext = props.data["is_extern"]
 
+    if (title === null) {
+        title = ""
+    }
+
     const printIntExt = (intext) => {
         if (intext) {
             return ("extern")

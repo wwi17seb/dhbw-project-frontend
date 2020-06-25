@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import * as testdata from "./dozententestdata.json";
 import LecturerRow from "./lecturerrow"
 import AddLecturer from "./addlecturer"
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,11 +24,16 @@ export default function LecturerList() {
   const [lecturers, setLecturers] = React.useState(null)
   const [output, setOutput] = React.useState([])
   const [open, setOpen] = React.useState(false);
+  const [searchTerm, setSearchTerm] = React.useState("");
 
   const ClickSubmit = () => {
     setOpen(true);
     setInterval(function () { setOpen(false); }, 1000);
   }
+
+  const handleSearch = event => {
+    setSearchTerm(event.target.value);
+  };
 
   const loadData = () => {
     const url = "api/lecturers?token=" + localStorage.getItem("ExoplanSessionToken")
@@ -38,7 +44,26 @@ export default function LecturerList() {
 
   useEffect(() => {
     createLecturerRow()
-  }, [lecturers])
+  }, [lecturers, searchTerm])
+
+  const checkName = (searchterm, name) => {
+    if (name.toLowerCase().includes(searchterm.toLowerCase())) {
+      return true
+    } else {
+      return false
+    }
+  }
+  const checkFocus = (searchterm, focus) => {
+    var out = false
+    for (var i = 0; i < focus.length; i++) {
+      if (focus[i]["name"].toLowerCase().includes(searchterm.toLowerCase())) {
+        if (out === false) {
+          out = true
+        }
+      }
+    }
+    return out
+  }
 
   const createLecturerRow = () => {
 
@@ -46,10 +71,12 @@ export default function LecturerList() {
       var temp = []
 
       for (var i = 0; i < lecturers["lecturers"].length; i++) {
+        if (checkName(searchTerm, lecturers["lecturers"][i]["lastname"]) || checkFocus(searchTerm, lecturers["lecturers"][i]["MainFocuses"])) {
+          temp.push(
+            <LecturerRow data={lecturers["lecturers"][i]}></LecturerRow>
+          )
+        }
 
-        temp.push(
-          <LecturerRow data={lecturers["lecturers"][i]}></LecturerRow>
-        )
       }
       setOutput(temp)
     }
@@ -65,9 +92,21 @@ export default function LecturerList() {
       <Typography variant="h5" noWrap>
         Dozenten
       </Typography>
-      <div className="btn_align">
-        <button className="btn btn_dhbw" onClick={ClickSubmit.bind(this)}>Dozenten hinzufügen</button>
+      <div style={{ marginTop: 10 }}>
+        <Typography variant='h6'>
+          Grenzen Sie hier die Liste mit Kriterien ein: </Typography>
+        <Grid container spacing={4} alignItems="center">
+          <Grid item sm={8}>
+            <TextField fullWidth={true} label="Suchen Sie nach dem Nachnamen oder Schwerpunkt" value={searchTerm} onChange={handleSearch} id="searchLecturer" variant="filled" />
+          </Grid>
+          <Grid item sm={4}>
+            <div className="btn_align">
+              <button className="btn btn_dhbw" onClick={ClickSubmit.bind(this)}>Dozenten hinzufügen</button>
+            </div>
+          </Grid>
+        </Grid>
       </div>
+
       <Grid container spacing={2}>
         <Paper className={classes.paper}>
           <Grid item xs={12} style={{ marginBottom: 10 }}>
