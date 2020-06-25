@@ -34,14 +34,14 @@ import Notes from '@material-ui/icons/Notes';
 import Close from '@material-ui/icons/Close';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import Create from '@material-ui/icons/Create';
-
-import { appointments } from './appointments';
 //import {handleAppointmentDelete, handleAppointmentInsert, handleAppointmentChange} from './apiHandlerGoogleCalendar';
 import {syncGoogleCalendar} from './apiHandlerGoogleCalendar';
 
+let appointments = [];
+
 function formatData(calendarData) {
 
-  let appointments = [];
+  appointments = [];
 
   for (let i = 0; i < calendarData.length; i++) {
 
@@ -317,11 +317,18 @@ const AppointmentFormContainer = withStyles(containerStyles, { name: 'Appointmen
 
 const styles = theme => ({
   addButton: {
-    position: 'absolute',
-    bottom: theme.spacing(1) * 3,
-    right: theme.spacing(1) * 4,
+    float: 'right',
+    marginTop:  '1vh'
   },
 });
+
+var today = new Date();
+var dd = String(today.getDate()).padStart(2, '0');
+var mm = String(today.getMonth() + 1).padStart(2, '0');
+var yyyy = today.getFullYear();
+
+today = mm + '-' + dd + '-' + yyyy;
+
 
 /* eslint-disable-next-line react/no-multi-comp */
 class Demo extends React.PureComponent {
@@ -329,7 +336,7 @@ class Demo extends React.PureComponent {
     super(props);
     this.state = {
       data: appointments,
-      currentDate: '2020-06-18',
+      currentDate: today,
       confirmationVisible: false,
       editingFormVisible: false,
       deletedAppointmentId: undefined,
@@ -526,7 +533,7 @@ class Demo extends React.PureComponent {
         <Paper>
           <Scheduler
             data={data}
-            height={660}
+            height={700}
           >
             <ViewState
               currentDate={currentDate}
@@ -583,9 +590,8 @@ class Demo extends React.PureComponent {
             </Button>
             </DialogActions>
           </Dialog>
-
           <Fab
-            color="secondary"
+            color="primary"
             className={classes.addButton}
             onClick={() => {
               this.setState({ editingFormVisible: true });
