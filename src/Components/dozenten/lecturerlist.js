@@ -67,7 +67,7 @@ export default function LecturerList() {
 
   const createLecturerRow = () => {
 
-    if (lecturers !== null) {
+    if (lecturers !== null && typeof lecturers !== 'undefined') {
       var temp = []
 
       for (var i = 0; i < lecturers["lecturers"].length; i++) {
