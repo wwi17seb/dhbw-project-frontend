@@ -67,16 +67,15 @@ export default function LecturerList() {
 
   const createLecturerRow = () => {
 
-    if (lecturers !== null && typeof lecturers["lecturers"] !== "undefined") {
+    if (lecturers !== null) {
       var temp = []
 
-      for (var i = 0; i < lecturers["lecturers"].length; i++) {
-        if (checkName(searchTerm, lecturers["lecturers"][i]["lastname"]) || checkFocus(searchTerm, lecturers["lecturers"][i]["MainFocuses"])) {
+      for (var i = 0; i < lecturers["Lecturers"].length; i++) {
+        if (checkName(searchTerm, lecturers["Lecturers"][i]["lastname"]) || checkFocus(searchTerm, lecturers["Lecturers"][i]["MainFocuses"])) {
           temp.push(
-            <LecturerRow data={lecturers["lecturers"][i]}></LecturerRow>
+            <LecturerRow data={lecturers["Lecturers"][i]}></LecturerRow>
           )
         }
-
       }
       setOutput(temp)
     }
