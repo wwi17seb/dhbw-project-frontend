@@ -228,7 +228,7 @@ export default function AddLecturer(props) {
                                     >
                                         <MenuItem value={"Herr"}>Herr</MenuItem>
                                         <MenuItem value={"Frau"}>Frau</MenuItem>
-                                        <MenuItem value={"Other"}>Other</MenuItem>
+                                        <MenuItem value={"Andere"}>Other</MenuItem>
                                     </Select>
                                 </FormControl>
                             </Grid>
