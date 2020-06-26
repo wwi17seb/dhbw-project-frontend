@@ -113,14 +113,14 @@ export default function AddLecturer(props) {
             "phonenumber": telnr,
             "experience": "",
             "mainFocus_ids": selectedIds,
-            "profile": "",
-            "research": "",
             "cv": cv,
             "comment": "",
-            "is_extern": extern
+            "is_extern": extern,
+            "allow_manipulation": true
         }
         const url = "api/lecturers?token=" + localStorage.getItem("ExoplanSessionToken");
         axios.post(url, data).then(res => {
+            console.log(res.data)
             setSubmitState(res.status)
             setSubmitText(res.statusText)
             setTimeout(() => { setSubmitState(null) }, 2000)
@@ -129,6 +129,7 @@ export default function AddLecturer(props) {
             window.location.reload();
         }
         ).catch(err => {
+            console.log(err.response)
             setSubmitState(err.response.status)
             setSubmitText(err.response.statusText)
             setTimeout(() => { setSubmitState(null) }, 3000)
