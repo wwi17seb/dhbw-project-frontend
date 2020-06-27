@@ -534,6 +534,7 @@ class Demo extends React.PureComponent {
           <Scheduler
             data={data}
             height={700}
+            firstDayOfWeek={1}
           >
             <ViewState
               currentDate={currentDate}
@@ -547,6 +548,7 @@ class Demo extends React.PureComponent {
             <WeekView
               startDayHour={startDayHour}
               endDayHour={endDayHour}
+
             />
             <MonthView />
             <AllDayPanel />
