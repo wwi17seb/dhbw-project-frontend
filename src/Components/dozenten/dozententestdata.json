@@ -10,7 +10,12 @@
                 "salutation": "Herr",
                 "phonenumber": "012345678",
                 "experience": "keine ahnung",
-                "MainFocus": [{
+                "DirectorOfStudies": {
+                    "directorOfStudies_id": 2,
+                    "is_admin": false,
+                    "username": "asd"
+                },
+                "MainFocuses": [{
                         "mainFocus_id": 0,
                         "name": "BWL"
                     },

@@ -22,9 +22,9 @@ const useStyles = makeStyles(theme => ({
 export default function Profile(props) {
     const classes = useStyles();
     var temp = []
-    for (var i = 0; i < props.data["MainFocus"].length; i++) {
+    for (var i = 0; i < props.data["MainFocuses"].length; i++) {
         temp.push(
-            <Typography variant="subtitle1"> {"- " + props.data["MainFocus"][i]["name"]}</Typography>
+            <Typography variant="subtitle1"> {"- " + props.data["MainFocuses"][i]["name"]}</Typography>
         )
     }
     return (
