@@ -6,6 +6,8 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import ExpansionPanels from './ExpansionPanels'
 import ApiHandler from '../../helper/Api';
+import ModulAdd from './ModulAdd'
+import ModulAddStepper from './ModulAddStepper';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -31,7 +33,7 @@ function ModulkatalogDetail(props) {
     const handleAPIresponse = (response) => {
         setPayload(response.data.payload);
         console.log(response.data.payload);
-        if(typeof response.data.payload.FieldsOfStudy !== "undefined" && response.data.payload.FieldsOfStudy.length > 0){
+        if (typeof response.data.payload.FieldsOfStudy !== "undefined" && response.data.payload.FieldsOfStudy.length > 0) {
             setLectureSample(response.data.payload.FieldsOfStudy[0].Modules[0].Lectures);
         }
     }
@@ -39,7 +41,7 @@ function ModulkatalogDetail(props) {
     return (
         <div className={classes.root} >
             <Nav></Nav>
-            <ApiHandler url='/api/modulecatalog' handleAPIresponse={handleAPIresponse} params={{majorSubjectId: 4}}></ApiHandler>
+            <ApiHandler url='/api/modulecatalog' handleAPIresponse={handleAPIresponse} params={{ majorSubjectId: 4 }}></ApiHandler>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 <Breadcrumbs aria-label="breadcrumb">
@@ -50,7 +52,8 @@ function ModulkatalogDetail(props) {
                         {studyName}
                     </Typography>
                 </Breadcrumbs>
-                <ExpansionPanels studyName={studyName} content={lectureSample}/>
+                <ExpansionPanels studyName={studyName} content={lectureSample} />
+                <ModulAddStepper />
             </main>
         </div>
 
