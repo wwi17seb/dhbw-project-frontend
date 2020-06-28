@@ -33,6 +33,7 @@ const useStyles = makeStyles(theme => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
+    backgroundColor: theme.palette.secondary.dark
   },
   toolbarButtons: {
     marginLeft: 'auto',
@@ -71,11 +72,11 @@ export default function PermanentDrawerLeft() {
     setAnchorEl(null);
     localStorage.removeItem('ExoplanSessionToken');
   };
-
+  
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar style={{ background: '#323e46' }} position="fixed" className={classes.appBar}>
+      <AppBar position="fixed" className={classes.appBar}> 
         <Toolbar>
           <img src={Logo} alt="ExoPlan Logo" className="NavBarLogo"></img>
           <div className={classes.toolbarButtons}>

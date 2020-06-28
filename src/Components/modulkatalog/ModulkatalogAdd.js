@@ -19,7 +19,7 @@ export default function FormDialog() {
 
     return (
         <div>
-            <Button variant="contained" size="large" onClick={handleClickOpen}>Modulkatalog hinzufügen</Button>
+            <Button variant="contained" color="primary" size="large" onClick={handleClickOpen}>Modulkatalog hinzufügen</Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Neuen Modulkatalog hinzufügen</DialogTitle>
                 <DialogContent>
