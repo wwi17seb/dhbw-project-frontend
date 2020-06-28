@@ -21,10 +21,24 @@ export default function LecturerRow(props) {
     var temp2 = []
     var title = props.data["academic_title"]
     var name = props.data["firstname"] + " " + props.data["lastname"]
-    var mainFocus = props.data["MainFocus"]
+    var mainFocus = props.data["MainFocuses"]
     var email = props.data["email"]
     var tel = props.data["phonenumber"]
     var id = props.data["lecturer_id"]
+    var director = props.data["DirectorOfStudies"]["username"]
+    var intext = props.data["is_extern"]
+
+    if (title === null) {
+        title = ""
+    }
+
+    const printIntExt = (intext) => {
+        if (intext) {
+            return ("extern")
+        } else {
+            return ("intern")
+        }
+    }
 
     for (var j = 0; j < mainFocus.length; j++) {
         temp2.push(
@@ -37,7 +51,7 @@ export default function LecturerRow(props) {
             <Grid container spacing={2}>
                 <Grid item xs={4}>
                     <Link1 to={{ pathname: "/dozenten/" + id, state: { data: props.data } }} component={Link}>
-                        <Typography variant="h6">{title + " " + name}</Typography>
+                        <Typography variant="h6">{title + " " + name + " (" + printIntExt(intext) + ")"}</Typography>
                     </Link1>
                     <Typography variant="subtitle1">{"Tel.: " + tel}</Typography>
                     <Typography variant="subtitle1">{email}</Typography>
@@ -46,7 +60,7 @@ export default function LecturerRow(props) {
                     {temp2}
                 </Grid>
                 <Grid item xs={3}>
-                    <Typography variant="h6">{email}</Typography>
+                    <Typography variant="h6">{director}</Typography>
                 </Grid>
                 <Grid item xs={2}>
                     <Button variant="outlined" color="primary" onClick={handleClick}>
@@ -64,7 +78,7 @@ export default function LecturerRow(props) {
                     </Menu>
                 </Grid>
             </Grid>
-            <Divider></Divider>
+            <Divider style={{ marginBottom: 10 }}></Divider>
         </Grid>
     );
 }

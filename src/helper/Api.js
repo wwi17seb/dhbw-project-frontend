@@ -8,14 +8,14 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { getTokenFromStorage } from './tokenHelper';
 
 
-export const APICall = async (method, url) => { //not in use
+export const APICall = async (method, url, data) => { //not in use
     return axios.request({
-        method: method,
-        url: url,
+        data, method, url: "/api/" + url,
         params: {
-            token: localStorage.getItem('ExoplanSessionToken')
+            token: getTokenFromStorage(),
         }
     })
         .then(res => { return res })
@@ -27,7 +27,7 @@ function ApiHandler(props) {
     //          params                  object of parameters for api request (excluding token)
     //          url                     the url of the api service route
     //          handleAPIresponse       function of the parent component to receive the data
-    
+
     const [open, setOpen] = useState(false);
     const [errorMsg, setError] = useState("");
     const [initial, setInitial] = useState(true);
@@ -46,7 +46,7 @@ function ApiHandler(props) {
                 let params = {
                     token: localStorage.getItem('ExoplanSessionToken')
                 }
-                if (typeof props.params !== "undefined"){
+                if (typeof props.params !== "undefined") {
                     for (let [key, value] of Object.entries(props.params)) {
                         params[key] = value;
                     }
@@ -58,7 +58,7 @@ function ApiHandler(props) {
                     console.log(err)
                     console.log(err.response)
 
-                    if (typeof err.response !== "undefined"){
+                    if (typeof err.response !== "undefined") {
                         setError(err.response.status)
 
                         switch (err.response.status) {
