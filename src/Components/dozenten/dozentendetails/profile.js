@@ -42,6 +42,12 @@ export default function Profile(props) {
                 <Grid item xs={10}>
                     {props.data["email"]}
                 </Grid>
+                <Grid item xs={2}>
+                    <Typography className={classes.title} variant="h6">Studiengangsleiter: </Typography>
+                </Grid>
+                <Grid item xs={10}>
+                    {props.data["DirectorOfStudies"]["username"]}
+                </Grid>
                 <Grid item xs={12}>
                     <Typography variant="h6">Schwerpunkte: </Typography>
                 </Grid>

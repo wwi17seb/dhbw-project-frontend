@@ -1,4 +1,5 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -29,42 +30,52 @@ export default function Notizen(props) {
     const classes = useStyles();
 
     const [state, setState] = React.useState(null)
-    const [commentList, setCommentList] = React.useState([])
-    const [topic, setTopic] = React.useState("")
-    const [comment, setComment] = React.useState("")
+    const [comment, setComment] = React.useState(null)
+    const [disabled, setDisabled] = React.useState(true)
 
-    const createCommentSection = (topic, comment) => {
-        var currentList = commentList
-        currentList.push({ "topic": topic, "comment": comment })
-        setCommentList(currentList)
-
-        var output = []
-        for (var i = 0; i < commentList.length; i++) {
-            output.push(
-                <Paper className={classes.paper} key={topic + i}>
-                    <Typography variant="h6">{"Kommentar " + i + ": " + commentList[i]["topic"]}</Typography>
-                    <Typography>{commentList[i]["comment"]}</Typography>
-                </Paper>
-            )
-        }
-        setState(output)
-    }
-
-    const handleTopic = (event) => {
-        setTopic(event.target.value)
-    }
     const handleComment = (event) => {
         setComment(event.target.value)
     }
 
-    const handleButton = () => {
-        createCommentSection(topic, comment)
-        setTopic("")
-        setComment("")
+    useEffect(() => {
+        const url = "/api/directorOfStudies?token=" + localStorage.getItem("ExoplanSessionToken")
+        var allowed = false
+        axios.get(url).then(res => {
+            if (!props.data["allow_manipulation"]) {
+                if (props.data["DirectorOfStudies"]["username"] === res.data.payload["DirectorOfStudies"]["username"]) {
+                    allowed = true
+                } else {
+                    allowed = false
+                }
+            } else {
+                allowed = true
+            }
+
+            if (comment !== props.data["comment"] && allowed) {
+                setDisabled(false)
+            } else {
+                setDisabled(true)
+            }
+        })
+
+    }, [comment])
+
+    const updateComment = () => {
+        const url = "/api/lecturers?lecturerId=" + props.data["lecturer_id"] + "&token=" + localStorage.getItem("ExoplanSessionToken")
+        var data = props.data
+        delete data["lecturer_id"]
+        data["comment"] = comment
+        axios.put(url, data).then(res => {
+            window.location.reload()
+        })
     }
 
-    if (state === null) {
-        createCommentSection("info", props.data["comment"])
+    const handleButton = () => {
+        updateComment()
+    }
+
+    if (comment === null) {
+        setComment(props.data["comment"])
     }
 
     return (
@@ -72,31 +83,26 @@ export default function Notizen(props) {
             <Paper className={classes.paper}>
                 <form className={classes.root} noValidate autoComplete="off">
                     <Grid container spacing={2}>
-
-                        <Grid item xs={12}>
-                            <TextField id="input-topic" fullWidth label="Thema" value={topic} onChange={handleTopic}></TextField>
-                        </Grid>
                         <Grid item xs={12}>
                             <TextField
                                 fullWidth
                                 id="input-comment"
                                 label="Kommentar"
                                 multiline
+                                variant="filled"
                                 rows={4}
                                 value={comment}
                                 onChange={handleComment}
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <Button variant="contained" color="primary" onClick={handleButton}>
-                                Kommentar senden
+                            <Button variant="contained" disabled={disabled} color="primary" onClick={handleButton}>
+                                Änderung bestätigen
                             </Button>
                         </Grid>
-
                     </Grid>
                 </form>
             </Paper>
-            {state}
         </div>
 
     );
