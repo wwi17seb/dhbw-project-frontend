@@ -211,20 +211,20 @@ export default function AddKurs() {
     //Gibt alle Eingabefelder für das hinzufügen eines Kurses zurück.
     return (
         <div className={classes.root}>
-            <h2>Neuen Kurs Hinzufügen</h2>
+            <Typography variant="h5" noWrap>Neuen Kurs Hinzufügen</Typography>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Paper className={classes.paper}>
                         <div className={classes.block}>
-                            <h5>Bitte geben Sie den Namen des Kurses an:</h5>
+                            <Typography variant='h6'>Bitte geben Sie den Namen des Kurses an:</Typography>
                             <TextField required value={nameValue} error={nameerror} onChange={NameOnChange} id="kursname-input" label="Kursname" variant="outlined" helperText={nametext} />
                         </div>
                         <div className={classes.block}>
-                            <h5>Bitte geben Sie den Studiengang und Studienrichtung an:</h5>
+                            <Typography variant='h6'>Bitte geben Sie den Studiengang und Studienrichtung an:</Typography>
                             <StudiengangAuswahl data={subjectData}></StudiengangAuswahl>
                         </div>
                         <div className={classes.block}>
-                            <h5>Bitte wählen Sie die Anzahl der Semester aus und geben Sie für jedes Semester die Zeiträume an:</h5>
+                            <Typography variant='h6'>Bitte wählen Sie die Anzahl der Semester aus und geben Sie für jedes Semester die Zeiträume an:</Typography>
                             <Grid container direction="row" justify="flex-start" alignItems="center">
                                 <Grid item>
                                     6 Semester
