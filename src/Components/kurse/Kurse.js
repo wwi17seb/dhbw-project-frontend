@@ -7,23 +7,21 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Nav from '../nav/Nav';
-import AddKurs from './addkurs/addkurs'
-import AddTabContent from './addTabContent/addTabContent'
+import AddKurs from './addkurs/addkurs';
+import AddTabContent from './addTabContent/addTabContent';
 import ApiHandler from '../../helper/Api';
-
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
     <Typography
-      component="div"
-      role="tabpanel"
+      component='div'
+      role='tabpanel'
       hidden={value !== index}
       id={`scrollable-auto-tabpanel-${index}`}
       aria-labelledby={`scrollable-auto-tab-${index}`}
-      {...other}
-    >
+      {...other}>
       {value === index && <Box p={3}>{children}</Box>}
     </Typography>
   );
@@ -42,17 +40,17 @@ function a11yProps(index) {
   };
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-  }, toolbar: theme.mixins.toolbar,
+  },
+  toolbar: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing(3),
-  }
+  },
 }));
-
 
 export default function ScrollableTabsButtonAuto(props) {
   const classes = useStyles();
@@ -62,17 +60,19 @@ export default function ScrollableTabsButtonAuto(props) {
     setValue(newValue);
   };
 
-  const tabLabels = ["ABC17DEF", "Kurs Hinzufügen"];
+  const tabLabels = ['ABC17DEF', 'Kurs Hinzufügen'];
   const finalTabLabels = [];
   const finalTabPanels = [];
-  const finalPanelContent = [<AddTabContent></AddTabContent>, <AddKurs></AddKurs>];
+  const finalPanelContent = [<AddTabContent />, <AddKurs />];
   let tabIndex = 0;
-
-
 
   for (let tabLabel of tabLabels) {
     finalTabLabels.push(<Tab key={tabIndex} label={tabLabel} {...a11yProps({ tabIndex })} />);
-    finalTabPanels.push(<TabPanel key={tabIndex} value={value} index={tabIndex}> {finalPanelContent[tabIndex]} </TabPanel>)
+    finalTabPanels.push(
+      <TabPanel key={tabIndex} value={value} index={tabIndex}>
+        {finalPanelContent[tabIndex]}
+      </TabPanel>
+    );
     tabIndex++;
   }
   /* useEffect(() => {
@@ -82,35 +82,44 @@ export default function ScrollableTabsButtonAuto(props) {
     });
   }); */
 
-  const handleAPIresponse = (response) => {
-    console.log("parent comp")
-    console.log(response);
-  }
+  const handleAPIresponse = async (response) => {
+    console.log('parent comp');
+    const {Courses} = response.data.payload;
+    console.log('Courses', Courses);
+    // Just for testing
+    props.setSelectedCourse(Courses[0]);
+  };
+
+  const getMessage = (props) => {
+    if (props.location && props.location.state) {
+      return props.location.state.message;
+    }
+  };
+
   return (
     <div className={classes.root}>
-      <Nav></Nav>
-      <ApiHandler url='/api/courses' handleAPIresponse={handleAPIresponse}></ApiHandler>
+      <Nav />
+      <ApiHandler url='/api/courses' handleAPIresponse={handleAPIresponse} />
       <main className={classes.content}>
         <div className={classes.toolbar} />
-
-        {props.location.state !== undefined ?
-          <div className="alert alert-success alert-dismissible fadeOut" role="alert" id="success-alert">
-            <strong>{props.location.state.message}</strong>
-            <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
+        {(props.location && props.location.state) !== undefined ? (
+          <div className='alert alert-success alert-dismissible fadeOut' role='alert' id='success-alert'>
+            <strong>{getMessage(props)}</strong>
+            <button type='button' className='close' data-dismiss='alert' aria-label='Close'>
+              <span aria-hidden='true'>&times;</span>
             </button>
-          </div> : null}
+          </div>
+        ) : null}
 
         <Paper>
           <Tabs
             value={value}
             onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="scrollable"
-            scrollButtons="auto"
-            aria-label="scrollable auto tabs example"
-          >
+            indicatorColor='primary'
+            textColor='primary'
+            variant='scrollable'
+            scrollButtons='auto'
+            aria-label='scrollable auto tabs example'>
             {finalTabLabels}
           </Tabs>
         </Paper>

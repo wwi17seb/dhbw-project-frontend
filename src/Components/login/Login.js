@@ -82,7 +82,7 @@ class Login extends Component {
         axios.post('/api/login', data)
             .then(res => {
                 this.setState({ message: res.data.message })
-                const token = res.data.payload.token;
+                const {token} = res.data.payload;
                 localStorage.setItem('ExoplanSessionToken', token);
                 this.props.history.push({
                     pathname: "/kurse", //oder zu der Seite auf der man zuvor war? (bei session timout)

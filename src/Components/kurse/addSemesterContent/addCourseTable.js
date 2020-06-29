@@ -1,6 +1,6 @@
 //Von API wird Presentations benötigt, dort sind alle Informationen enthalten
 import axios from 'axios';
-import React, { forwardRef, useEffect } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
@@ -20,11 +20,13 @@ const useStyles = makeStyles(theme => ({
 
 export default function CourseTableList() {
     const classes = useStyles();
-    const [courseTable, setCourseTable] = React.useState(null)
-    const [output, setOutput] = React.useState([])
+    const [courseTable, setCourseTable] = useState(null)
+    const [output, setOutput] = useState([])
+
+    
 
     const loadData = () => {
-        axios.get(`api/courseTable`).then(res => {
+        axios.get("/api/courseTable").then(res => {
             setCourseTable(res.data);
         })
     }
