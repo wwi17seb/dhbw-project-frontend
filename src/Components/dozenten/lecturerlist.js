@@ -9,6 +9,7 @@ import * as testdata from "./dozententestdata.json";
 import LecturerRow from "./lecturerrow"
 import AddLecturer from "./addlecturer"
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -100,7 +101,7 @@ export default function LecturerList() {
           </Grid>
           <Grid item sm={4}>
             <div className="btn_align">
-              <button className="btn btn_dhbw" onClick={ClickSubmit.bind(this)}>Dozenten hinzufügen</button>
+              <Button variant="contained" color="primary" onClick={ClickSubmit.bind(this)}>Dozenten hinzufügen</Button>
             </div>
           </Grid>
         </Grid>
