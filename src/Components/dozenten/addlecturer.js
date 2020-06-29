@@ -23,6 +23,7 @@ const useStyles = makeStyles(theme => ({
     },
     formControl: {
         minWidth: 120,
+        width: 250
     },
     chips: {
         display: 'flex',
@@ -61,8 +62,9 @@ export default function AddLecturer(props) {
     const [submit, setSubmit] = React.useState(true);
     const [open, setOpen] = React.useState(props.open);
     const [open2, setOpen2] = React.useState(false);
-    const [submitState, setSubmitState] = React.useState(null);
+    const [manipulation, setManipulation] = React.useState(false);
     const [submitText, setSubmitText] = React.useState(null);
+    const [submitState, setSubmitState] = React.useState(null);
 
 
 
@@ -116,7 +118,7 @@ export default function AddLecturer(props) {
             "cv": cv,
             "comment": "",
             "is_extern": extern,
-            "allow_manipulation": true
+            "allow_manipulation": manipulation
         }
         const url = "api/lecturers?token=" + localStorage.getItem("ExoplanSessionToken");
         axios.post(url, data).then(res => {
@@ -148,6 +150,9 @@ export default function AddLecturer(props) {
     };
     const handleExtern = (event) => {
         setExtern(event.target.value);
+    };
+    const handleManipulation = (event) => {
+        setManipulation(event.target.value);
     };
     const handleTitel = (event) => {
         setTitel(event.target.value);
@@ -284,6 +289,23 @@ export default function AddLecturer(props) {
                                     </Select>
                                 </FormControl>
                             </Grid>
+
+                            <Grid item xs={6}>
+                                <FormControl required className={classes.formControl}>
+                                    <InputLabel id="allow-manupulation-label">Bearbeitung für andere erlauben?</InputLabel>
+                                    <Select
+                                        labelId="allow-manupulation-label"
+                                        id="allow-manupulation"
+                                        value={manipulation}
+                                        onChange={handleManipulation}
+                                        label="manipulation"
+                                    >
+                                        <MenuItem value={true}>Ja</MenuItem>
+                                        <MenuItem value={false}>Nein</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+
                             <Grid item xs={12}>
                                 <FormControl style={{ marginTop: 10 }} required className={classes.formControl}>
                                     <Input id="my-input" type="file" aria-describedby="my-helper-text" onChange={handleUpload} />
