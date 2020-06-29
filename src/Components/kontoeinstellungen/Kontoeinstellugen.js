@@ -278,7 +278,7 @@ export default function KontoeinstellungenTable() {
               </CardContent>
             </CardActionArea>
             <CardActions>
-              <Button type="button" variant="outlined" style={{ margin: "0 auto" }} onClick={handleDialogMail}>
+              <Button type="button" variant="contained" color="primary" style={{ margin: "0 auto" }} onClick={handleDialogMail}>
                 E-Mail ändern
         </Button>
             </CardActions>
@@ -294,7 +294,7 @@ export default function KontoeinstellungenTable() {
               </CardContent>
             </CardActionArea>
             <CardActions>
-              <Button type="button" variant="outlined" style={{ margin: "0 auto" }} onClick={handleDialogPassword} >
+              <Button type="button" variant="contained" color="primary" style={{ margin: "0 auto" }} onClick={handleDialogPassword} >
                 Passwort ändern
         </Button>
             </CardActions>
@@ -310,7 +310,7 @@ export default function KontoeinstellungenTable() {
               </CardContent>
             </CardActionArea>
             <CardActions >
-              <Button type="button" variant="outlined" onClick={handleDialogStudiengangsleiter} style={{ margin: "0 auto" }} >
+              <Button type="button" variant="contained" color="primary" onClick={handleDialogStudiengangsleiter} style={{ margin: "0 auto" }} >
                 Studiengangsleiter hinzufügen
         </Button>
             </CardActions>
