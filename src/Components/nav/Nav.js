@@ -23,7 +23,6 @@ import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 
 import Logo from '../../images/ExoPlanLogo_transparent.png';
-import "./nav.css";
 
 const drawerWidth = 240;
 
@@ -46,6 +45,10 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
   },
   toolbar: theme.mixins.toolbar,
+  navBarLogo: {
+    width: "8rem", 
+    height: 'auto',
+  }
 }));
 
 export default function PermanentDrawerLeft() {
@@ -78,7 +81,7 @@ export default function PermanentDrawerLeft() {
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}> 
         <Toolbar>
-          <img src={Logo} alt="ExoPlan Logo" className="NavBarLogo"></img>
+          <img src={Logo} alt="ExoPlan Logo" className={classes.navBarLogo}></img>
           <div className={classes.toolbarButtons}>
             <IconButton
               aria-label="account of current user"

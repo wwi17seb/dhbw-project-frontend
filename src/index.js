@@ -1,8 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './index.css'
-import '../node_modules/bootstrap/dist/css/bootstrap.css'
-import '../node_modules/bootstrap/dist/js/bootstrap.js'
 import { Route, BrowserRouter as Router, Redirect } from 'react-router-dom'
 import Kurse from './Components/kurse/Kurse'
 import Dozenten from './Components/dozenten/Dozenten'
