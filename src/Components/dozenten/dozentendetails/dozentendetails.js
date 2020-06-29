@@ -66,9 +66,16 @@ export default function DozentenDetails(props) {
         setValue(newValue);
     };
 
-    const data = props["location"]["state"]["data"]
-    const name = data["academic_title"] + " " + data["firstname"] + " " + data["lastname"]
+    const printIntExt = (intext) => {
+        if (intext) {
+            return ("extern")
+        } else {
+            return ("intern")
+        }
+    }
 
+    const data = props["location"]["state"]["data"]
+    const name = data["academic_title"] + " " + data["firstname"] + " " + data["lastname"] + " (" + printIntExt(data["is_extern"]) + ")"
     const tabLabels = ["Profil", "Lehre", "Vita", "Notizen"];
     const finalTabLabels = [];
     const finalTabPanels = [];
