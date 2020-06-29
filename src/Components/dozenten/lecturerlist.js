@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
   paper: {
     flexGrow: 1,
     padding: theme.spacing(3),
+    marginTop: 10
   }
 }));
 export default function LecturerList() {

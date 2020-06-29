@@ -49,18 +49,6 @@ export default function DozentenTable() {
             <Nav></Nav>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-
-                {/*
-                <form className={classes.searchForm}>
-                <Typography variant='h6'>
-                     Suchen für Dozenten: </Typography>
-                 <Grid container spacing={4}>
-                 <Grid item md={5} sm={12}>
-              <input type="text" className="form-control" id="inputDozent" />
-            </Grid>
-            </Grid>
-            </form>
-            */}
                 <Switch>
                     <Route exact path="/dozenten" component={LecturerList} />
                     <Route path="/dozenten/:id" component={DozentenDetails} />
