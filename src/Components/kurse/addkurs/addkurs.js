@@ -241,7 +241,7 @@ export default function AddKurs() {
 
                         <div className={classes.block}>
                             <Button onClick={ClickSubmit.bind(this)} disabled={button} id="submit-kurs" variant="contained" color="primary">
-                                Submit
+                                Kurs hinzufügen
                         </Button>
                             {loading}
                         </div>
