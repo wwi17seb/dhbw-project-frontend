@@ -11,9 +11,11 @@ import Link1 from '@material-ui/core/Link';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import EditLecturer from "./editlecturer"
 
 export default function LecturerRow(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [open, setOpen] = React.useState(false);
     const [open2, setOpen2] = React.useState(false);
     const [disabled, setDisabled] = React.useState(true)
     const [currentDirector, setCurrentDirector] = React.useState("")
@@ -31,7 +33,8 @@ export default function LecturerRow(props) {
     };
 
     const handleEdit = () => {
-        setAnchorEl(null);
+        setOpen(true)
+        setInterval(function () { setOpen(false); }, 1000);
     };
 
     const deleteLecturer = () => {
@@ -54,8 +57,6 @@ export default function LecturerRow(props) {
         axios.get(url).then(res => {
             setCurrentDirector(res.data.payload["DirectorOfStudies"]["username"])
         })
-
-
     }
     loadDirector()
 
@@ -103,7 +104,7 @@ export default function LecturerRow(props) {
         <Grid item xs={12}>
             <Grid container spacing={2}>
                 <Grid item xs={4}>
-                    <Link1 to={{ pathname: "/dozenten/" + id, state: { data: props.data } }} component={Link}>
+                    <Link1 to={{ pathname: "/dozenten/" + id, state: { data: props.data, editDisabled: disabled } }} component={Link}>
                         <Typography variant="h6">{title + " " + name + " (" + printIntExt(intext) + ")"}</Typography>
                     </Link1>
                     <Typography variant="subtitle1">{"Tel.: " + tel}</Typography>
@@ -136,16 +137,17 @@ export default function LecturerRow(props) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{"Dozent wirklich löschen?"}</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{"Dozent wirklich für alle löschen?"}</DialogTitle>
                 <DialogActions>
                     <Button onClick={handleCloseConfirm} color="primary" >
                         abbrechen
                     </Button>
                     <Button onClick={handleSubmit} color="primary" >
-                        ja
+                        löschen
                 </Button>
                 </DialogActions>
             </Dialog>
+            <EditLecturer data={props.data} open={open}></EditLecturer>
             <Divider style={{ marginBottom: 10 }}></Divider>
         </Grid>
     );

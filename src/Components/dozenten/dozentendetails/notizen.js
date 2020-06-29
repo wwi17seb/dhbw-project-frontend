@@ -38,25 +38,12 @@ export default function Notizen(props) {
     }
 
     useEffect(() => {
-        const url = "/api/directorOfStudies?token=" + localStorage.getItem("ExoplanSessionToken")
-        var allowed = false
-        axios.get(url).then(res => {
-            if (!props.data["allow_manipulation"]) {
-                if (props.data["DirectorOfStudies"]["username"] === res.data.payload["DirectorOfStudies"]["username"]) {
-                    allowed = true
-                } else {
-                    allowed = false
-                }
-            } else {
-                allowed = true
-            }
 
-            if (comment !== props.data["comment"] && allowed) {
-                setDisabled(false)
-            } else {
-                setDisabled(true)
-            }
-        })
+        if (comment !== props.data["comment"] && !props.editDisabled) {
+            setDisabled(false)
+        } else {
+            setDisabled(true)
+        }
 
     }, [comment])
 

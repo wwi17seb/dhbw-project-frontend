@@ -83,7 +83,7 @@ export default function DozentenDetails(props) {
     const tabLabels = ["Profil", "Lehre", "Vita", "Notizen"];
     const finalTabLabels = [];
     const finalTabPanels = [];
-    const finalPanelContent = [<Profile data={data}></Profile>, <Lehre data={data}></Lehre>, <Vita data={data}></Vita>, <Notizen data={data}></Notizen>];
+    const finalPanelContent = [<Profile data={data}></Profile>, <Lehre data={data}></Lehre>, <Vita data={data}></Vita>, <Notizen data={data} editDisabled={props["location"]["state"]["editDisabled"]}></Notizen>];
     let tabIndex = 0;
 
     for (let tabLabel of tabLabels) {
