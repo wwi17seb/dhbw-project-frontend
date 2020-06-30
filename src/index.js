@@ -6,7 +6,7 @@ import '../node_modules/bootstrap/dist/js/bootstrap.js';
 import Admin from './Components/admin/Admin';
 import Data from './Components/data/Data';
 import Dozenten from './Components/dozenten/Dozenten';
-import Kontoeinstellungen from './Components/kontoeinstellungen/Kontoeinstellugen';
+import Kontoeinstellungen from './Components/kontoeinstellungen/Kontoeinstellungen';
 import Kurse from './Components/kurse/Kurse';
 import ResetPassword from './Components/login/forgotPassword';
 import Login from './Components/login/Login';
