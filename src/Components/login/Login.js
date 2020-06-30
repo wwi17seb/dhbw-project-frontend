@@ -83,6 +83,7 @@ class Login extends Component {
             .then(res => {
                 this.setState({ message: res.data.message })
                 const token = res.data.payload.token;
+                localStorage.setItem("backend-login-response", JSON.stringify(res.data.payload));
                 localStorage.setItem('ExoplanSessionToken', token);
                 this.props.history.push({
                     pathname: "/kurse", //oder zu der Seite auf der man zuvor war? (bei session timout)
