@@ -53,7 +53,7 @@ class Login extends Component {
                         <Typography component="h1" variant="h5"><b>ExoPlan Login</b></Typography>
                     </div>
 
-                    {/* Alert message */}
+                    {/* Alert error message */}
                     {this.state.error !== "" ? 
                         <div className={classes.root}>
                             <Collapse in={this.state.open}>
@@ -71,7 +71,26 @@ class Login extends Component {
                                 </Alert>
                             </Collapse>
                         </div> : null}
-                                 
+
+                    {/* Alert success message */}
+                    {this.state.message !== "" ? 
+                        <div className={classes.root}>
+                            <Collapse in={this.state.open}>
+                                <Alert action={
+                                    <IconButton
+                                        aria-label="close"
+                                        color="inherit"
+                                        size="small"
+                                        onClick={() => this.setState({ open: false })}
+                                    >
+                                        <CloseIcon fontSize="inherit" />
+                                    </IconButton>
+                                }>
+                                {this.state.message}
+                                </Alert>
+                            </Collapse>
+                        </div> : null}
+
                         {/* Login Form */}
                         <form className={classes.form}>
                             <TextField
@@ -153,13 +172,19 @@ class Login extends Component {
 
         axios.post('/api/signup', data)
             .then(res => {
+                this.setState({ open: false })
+                this.setState({ error: "" })
                 this.setState({ message: res.data.message })
                 const token = res.data.payload.token;
                 localStorage.setItem('ExoplanSessionToken', token);
-                this.props.history.push({
-                    pathname: "/kurse",
-                    state: { message: "Successfully signed up! Let's get started." }
-                })
+                this.setState({ open: true })
+                this.setState({ message: "Successfully signed up! In a few seconds you will be automatically logged in." });
+                var that = this;
+                setTimeout(function(){
+                    that.props.history.push({
+                        pathname: "/kurse",
+                    }) 
+                },3000);
             })
             .catch(err => {
                 this.setState({ open: true })
@@ -181,7 +206,6 @@ class Login extends Component {
                 localStorage.setItem('ExoplanSessionToken', token);
                 this.props.history.push({
                     pathname: "/kurse", //oder zu der Seite auf der man zuvor war? (bei session timout)
-                    state: { message: "Successfully logged in! Let's continue." }
                 })
             })
             .catch(err => {
