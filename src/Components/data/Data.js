@@ -1,8 +1,9 @@
 import React from 'react';
+import DataTabs from './DataTabs';
 
 const Data = () => {
   
-  return 'Hier entsteht die Datenverwaltung.';
+  return <DataTabs />;
 };
 
 export default Data;
