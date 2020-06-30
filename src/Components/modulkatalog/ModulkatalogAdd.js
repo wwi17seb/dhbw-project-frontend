@@ -11,7 +11,7 @@ import FormControl from '@material-ui/core/FormControl'
 import { APICall } from '../../helper/Api';
 import { useHistory } from "react-router-dom";
 
-export default function FormDialog(props) {
+export default function FormDialog() {
     const [open, setOpen] = React.useState(false);
     const [fieldOfStudy, setFieldOfStudy] = React.useState("");
     const [majorSubject, setMajorSubject] = React.useState("");
@@ -44,7 +44,6 @@ export default function FormDialog(props) {
                 "catalog_effective_from": year.toString()
             } ).then((res) => {
                 history.push("/modulkatalog");
-                props.rerender()
             }).catch((err) => {
                 console.log(err)
             })

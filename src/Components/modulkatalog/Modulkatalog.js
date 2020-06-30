@@ -57,15 +57,12 @@ export default function ModulkatalogTable() {
   const history = useHistory();
   const [searchTerm, setSearchTerm] = React.useState("");
   const [searchResults, setSearchResults] = React.useState([]);
-  const [payload, setPayload] = React.useState([]);
   const [fieldsOfStudyList, setFieldsOfStudyList] = React.useState([]);
   const [raised, setRaised] = React.useState(false);
-  const [rendered, setRendered] = React.useState(false)
+  const [rendered, setRendered] = React.useState(0)
   
   const rerender = () => {
-    console.log("RERENDER " + rendered)
-    setRendered(!rendered);
-    console.log(rendered)
+    setRendered(rendered+1);
   }
   
   const handleSearch = event => {
@@ -90,7 +87,6 @@ export default function ModulkatalogTable() {
   }
 
   const handleAPIresponse = (response) => {
-    setPayload(response.data.payload);
     console.log(response.data.payload);
     if (typeof response.data.payload["FieldsOfStudy"] !== "undefined"){
       let fieldsOfStudyWithMajorSubject = [];
@@ -134,7 +130,7 @@ export default function ModulkatalogTable() {
               <TextField id="filled-basic" fullWidth={true} label="Suchen Sie nach Jahr, Studienrichtung oder Spezialisierung" value={searchTerm} onChange={handleSearch} id="inputStudiengang" variant="filled" />
             </Grid>
             <Grid item sm={4}>
-              <ModulkatalogAdd rerender={rerender}/>
+              <ModulkatalogAdd/>
             </Grid>
             {/* <Grid item md={5} sm={12}>
               <label className="card-label" forhtml="inputSpezialisierung">Spezialisierung:</label>
