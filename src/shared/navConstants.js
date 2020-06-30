@@ -1,12 +1,7 @@
-export const NAVBAR_ITEMS = {
-  DATA: {
-    name: 'Datenverwaltung',
-    link: '/daten',
-  },
-  ADMIN: {
-    name: 'Adminstrationsbereich',
-    link: '/admin',
-    showOnlyIfAdmin: true,
+export const NAV_ITEMS = {
+  SETTINGS: {
+    name: 'Kontoeinstellungen',
+    link: '/kontoeinstellungen',
   },
   COURSES: {
     name: 'Vorlesungspläne',
@@ -20,11 +15,32 @@ export const NAVBAR_ITEMS = {
     name: 'Modulkataloge',
     link: '/modulkatalog',
   },
+  LOGIN: {
+    name: 'Login',
+    link: '/',
+  },
+  RESET: {
+    name: 'Reset',
+    link: '/reset',
+  },
+  PASSWORD_RESET_FORCED: {
+    name: 'Passwort zurücksetzen',
+    link: '/password_reset_forced',
+  },
+  ADMIN: {
+    name: 'Adminstrationsbereich',
+    link: '/admin',
+    showOnlyIfAdmin: true,
+  },
+  DATA: {
+    name: 'Datenverwaltung',
+    link: '/daten',
+  },
 };
 export const NAV_LINKS = [
-  NAVBAR_ITEMS.COURSES,
-  NAVBAR_ITEMS.LECTURERS,
-  NAVBAR_ITEMS.MODULECATALOG,
-  NAVBAR_ITEMS.DATA,
-  NAVBAR_ITEMS.ADMIN,
+  NAV_ITEMS.COURSES,
+  NAV_ITEMS.LECTURERS,
+  NAV_ITEMS.MODULECATALOG,
+  NAV_ITEMS.DATA,
+  NAV_ITEMS.ADMIN,
 ];

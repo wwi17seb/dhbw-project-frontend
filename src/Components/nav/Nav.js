@@ -59,6 +59,7 @@ export default function PermanentDrawerLeft() {
 
   const handleLogout = () => {
     setAnchorEl(null);
+    localStorage.setItem('backend-login-response', JSON.stringify({}));
     localStorage.removeItem('ExoplanSessionToken');
   };
 
@@ -111,7 +112,7 @@ export default function PermanentDrawerLeft() {
         <div className={classes.toolbar} />
         <List>
           {NAV_LINKS.map((entry, index) => {
-            if (!entry.showOnlyIfAdmin || backend_login_response.is_admin) {
+            if (!entry.showOnlyIfAdmin || (backend_login_response && backend_login_response.is_admin)) {
               return (
                 <ListItem button={true} divider={true} component={Link} to={entry.link} key={index}>
                   <ListItemText>{entry.name}</ListItemText>

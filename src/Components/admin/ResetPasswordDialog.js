@@ -7,14 +7,25 @@ import React, { useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+import { APICall } from '../../helper/Api';
 
-const ChangePasswordDialog = ({ openDialog, handleClose, showSnackbar }) => {
+const ResetPasswordDialog = ({ openDialog, handleClose, showSnackbar, directorOfStudies_id, reloadData }) => {
   const [password, setPassword] = useState('');
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
-    showSnackbar('Passwort erfolgreich zurückgesetzt.', 'success');
-    handleClose();
+    APICall('PUT', `resetPassword?directorOfStudiesId=${directorOfStudies_id}`, { newPassword: password }).then(
+      (res) => {
+        const { status, data } = res;
+        if (status === 200 && data) {
+          showSnackbar('Passwort erfolgreich zurückgesetzt.', 'success');
+          reloadData();
+        } else {
+          showSnackbar('Es ist ein Fehler aufgetreten. Versuche es erneut.', 'error');
+        }
+        handleClose();
+      }
+    );
   };
 
   return (
@@ -29,7 +40,7 @@ const ChangePasswordDialog = ({ openDialog, handleClose, showSnackbar }) => {
                 placeholder='Neues Passwort eingeben'
                 value={password}
                 required
-                minlength="8"
+                minLength='1'
                 onChange={({ target: { value } }) => setPassword(value)}
               />
             </Col>
@@ -56,4 +67,4 @@ const ChangePasswordDialog = ({ openDialog, handleClose, showSnackbar }) => {
   );
 };
 
-export default ChangePasswordDialog;
+export default ResetPasswordDialog;

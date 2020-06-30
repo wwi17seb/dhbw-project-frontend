@@ -21,7 +21,6 @@ const UserContent = () => {
     APICall('GET', 'users').then((res) => {
       if (res.data && res.status === 200) {
         const users = res.data.payload.Users;
-        // TODO: sort by ID
         setUsers(users);
       }
     });

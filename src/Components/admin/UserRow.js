@@ -4,7 +4,7 @@ import { ControlPoint, RotateLeft } from '@material-ui/icons';
 import React, { Fragment, useEffect, useState } from 'react';
 import { APICall } from '../../helper/Api';
 import SnackBar from '../Snackbar/Snackbar';
-import ChangePasswordDialog from './ChangePasswordDialog';
+import ChangePasswordDialog from './ResetPasswordDialog';
 
 const UserRow = ({ user: { directorOfStudies_id, username, is_admin, password_change_required }, reloadData }) => {
   const [message, setMessage] = useState('');
@@ -31,16 +31,21 @@ const UserRow = ({ user: { directorOfStudies_id, username, is_admin, password_ch
   };
 
   const showChangePassword = () => {
-    setOpenDialog(true)
-  }
+    setOpenDialog(true);
+  };
   const closeDialog = () => {
     setOpenDialog(false);
   };
 
-
   useEffect(() => {
     return () => {};
   }, [setIsOpen]);
+
+  try {
+    var backend_login_response = JSON.parse(localStorage.getItem('backend-login-response'));
+  } catch (e) {
+    backend_login_response = {};
+  }
 
   return (
     <Fragment>
@@ -54,7 +59,7 @@ const UserRow = ({ user: { directorOfStudies_id, username, is_admin, password_ch
           </Grid>
           <Grid item xs={4}>
             {is_admin ? (
-              'Administator'
+              'Administrator'
             ) : (
               <Fragment>
                 <span>Benutzer</span>
@@ -73,15 +78,26 @@ const UserRow = ({ user: { directorOfStudies_id, username, is_admin, password_ch
             ) : (
               <span style={{ color: 'red' }}>Wechsel erforderlich</span>
             )}
-            <Tooltip title='Password zurücksetzen'>
-              <RotateLeft style={{ cursor: 'pointer' }} onClick={() => showChangePassword(directorOfStudies_id, username)} />
-            </Tooltip>
+            {backend_login_response.directorOfStudies_id !== directorOfStudies_id ? (
+              <Tooltip title='Password zurücksetzen'>
+                <RotateLeft
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => showChangePassword(directorOfStudies_id, username)}
+                />
+              </Tooltip>
+            ) : null}
           </Grid>
         </Grid>
         <Divider style={{ marginBottom: 10 }} />
       </Grid>
       <SnackBar message={message} severity={severity} isOpen={isOpen} />
-      <ChangePasswordDialog openDialog={openDialog} handleClose={closeDialog} showSnackbar={showSnackbar} />
+      <ChangePasswordDialog
+        openDialog={openDialog}
+        handleClose={closeDialog}
+        showSnackbar={showSnackbar}
+        directorOfStudies_id={directorOfStudies_id}
+        reloadData={reloadData}
+      />
     </Fragment>
   );
 };
