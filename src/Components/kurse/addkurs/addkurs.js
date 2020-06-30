@@ -211,7 +211,6 @@ export default function AddKurs() {
     //Gibt alle Eingabefelder für das hinzufügen eines Kurses zurück.
     return (
         <div className={classes.root}>
-            <Typography variant="h5" noWrap>Neuen Kurs Hinzufügen</Typography>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Paper className={classes.paper}>
