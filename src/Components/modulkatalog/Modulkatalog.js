@@ -60,6 +60,14 @@ export default function ModulkatalogTable() {
   const [payload, setPayload] = React.useState([]);
   const [fieldsOfStudyList, setFieldsOfStudyList] = React.useState([]);
   const [raised, setRaised] = React.useState(false);
+  const [rendered, setRendered] = React.useState(false)
+  
+  const rerender = () => {
+    console.log("RERENDER " + rendered)
+    setRendered(!rendered);
+    console.log(rendered)
+  }
+  
   const handleSearch = event => {
     setSearchTerm(event.target.value);
   };
@@ -92,7 +100,11 @@ export default function ModulkatalogTable() {
           if ( (majorSubjectIDs.find(i => i.id == majorSubject.majorSubject_id)) === undefined
             && (majorSubjectIDs.find(i => i.name.toString().includes(majorSubject.name))) === undefined //this second check is only needed until majorSubject_id is unambiguous (unique)
           ) {
-            fieldsOfStudyWithMajorSubject.push( fieldOfStudy.name + " " + majorSubject.name);
+            let year = ""
+            if (majorSubject.catalog_effective_from !== null) {
+              year = majorSubject.catalog_effective_from;
+            }
+            fieldsOfStudyWithMajorSubject.push( fieldOfStudy.name + " " + majorSubject.name + " " + year);
             majorSubjectIDs.push({name: fieldsOfStudyWithMajorSubject[fieldsOfStudyWithMajorSubject.length -1], id: majorSubject.majorSubject_id})
           }
         }
@@ -122,7 +134,7 @@ export default function ModulkatalogTable() {
               <TextField id="filled-basic" fullWidth={true} label="Suchen Sie nach Jahr, Studienrichtung oder Spezialisierung" value={searchTerm} onChange={handleSearch} id="inputStudiengang" variant="filled" />
             </Grid>
             <Grid item sm={4}>
-              <ModulkatalogAdd />
+              <ModulkatalogAdd rerender={rerender}/>
             </Grid>
             {/* <Grid item md={5} sm={12}>
               <label className="card-label" forhtml="inputSpezialisierung">Spezialisierung:</label>
