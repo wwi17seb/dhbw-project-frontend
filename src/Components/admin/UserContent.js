@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { APICall } from '../../helper/Api';
 import UserRow from './UserRow';
+import AddUserDialog from './AddUserDialog';
+import SnackBar from '../Snackbar/Snackbar';
 import { Grid, Paper, Typography, Divider, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -16,6 +18,16 @@ const useStyles = makeStyles((theme) => ({
 
 const UserContent = () => {
   const [users, setUsers] = useState([]);
+  const [openAddUserDialog, setOpenAddUserDialog] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const showSnackbar = (message, severity) => {
+    setMessage(message);
+    setSeverity(severity);
+    setSnackbarOpen(true);
+  };
 
   const getUsers = async () => {
     APICall('GET', 'users').then((res) => {
@@ -30,6 +42,13 @@ const UserContent = () => {
     getUsers();
   }, []);
 
+  const handleOpenDialog = () => {
+    setOpenAddUserDialog(true);
+  };
+  const handleCloseDialog = () => {
+    setOpenAddUserDialog(false);
+  };
+
   const classes = useStyles();
 
   const header = () => (
@@ -39,7 +58,7 @@ const UserContent = () => {
           <Typography variant='h5'>ID</Typography>
         </Grid>
         <Grid item xs={4}>
-          <Typography variant='h5'>Benutzername</Typography>
+          <Typography variant='h5'>Benutzername/E-Mail</Typography>
         </Grid>
         <Grid item xs={4}>
           <Typography variant='h5'>Benutzerart</Typography>
@@ -53,14 +72,31 @@ const UserContent = () => {
   );
 
   return (
-    <Grid container spacing={2}>
-      <Paper className={classes.paper}>
-        {header()}
-        {users.map((user) => (
-          <UserRow user={user} reloadData={getUsers}/>
-        ))}
-      </Paper>
-    </Grid>
+    <Fragment>
+      <div style={{ textAlign: 'right' }}>
+        <button
+          style={{ color: '#ffffff', backgroundColor: '#e30613', marginBottom: '1rem' }}
+          className='btn'
+          onClick={handleOpenDialog}>
+          Studiengangsleiter hinzufügen
+        </button>
+      </div>
+      <AddUserDialog
+        openAddUserDialog={openAddUserDialog}
+        handleClose={handleCloseDialog}
+        showSnackbar={showSnackbar}
+        reloadData={getUsers}
+      />
+      <Grid container spacing={2}>
+        <Paper className={classes.paper}>
+          {header()}
+          {users.map((user) => (
+            <UserRow key={user.directorOfStudies_id} user={user} showSnackbar={showSnackbar} reloadData={getUsers} />
+          ))}
+        </Paper>
+      </Grid>
+      <SnackBar isOpen={snackbarOpen} message={message} severity={severity} />
+    </Fragment>
   );
 };
 

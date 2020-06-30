@@ -1,31 +1,26 @@
 import { Grid, Tooltip } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import { ControlPoint, RotateLeft } from '@material-ui/icons';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { APICall } from '../../helper/Api';
-import SnackBar from '../Snackbar/Snackbar';
-import ChangePasswordDialog from './ResetPasswordDialog';
+import { SEVERITY } from '../Snackbar/SnackbarSeverity';
+import ResetPasswordDialog from './ResetPasswordDialog';
 
-const UserRow = ({ user: { directorOfStudies_id, username, is_admin, password_change_required }, reloadData }) => {
-  const [message, setMessage] = useState('');
-  const [severity, setSeverity] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
+const UserRow = ({
+  user: { directorOfStudies_id, username, is_admin, password_change_required },
+  reloadData,
+  showSnackbar,
+}) => {
   const [openDialog, setOpenDialog] = useState(false);
-
-  const showSnackbar = (message, severity) => {
-    setMessage(message);
-    setSeverity(severity);
-    setIsOpen(true);
-  };
 
   const promoteToAdmin = async (directorOfStudies_id, username) => {
     APICall('PUT', `upgradeToAdmin?directorOfStudiesId=${directorOfStudies_id}`).then((res) => {
       const { status, data } = res;
       if (data && status === 200) {
-        showSnackbar(`${username} wurde erfolgreich zum Admin ernannt.`, 'success');
+        showSnackbar(`${username} wurde erfolgreich zum Admin ernannt.`, SEVERITY.SUCCESS);
         reloadData();
       } else {
-        showSnackbar('Es ist ein Fehler aufgetreten. Versuche es erneut.', 'error');
+        showSnackbar('Es ist ein Fehler aufgetreten. Versuche es erneut.', SEVERITY.ERROR);
       }
     });
   };
@@ -37,18 +32,14 @@ const UserRow = ({ user: { directorOfStudies_id, username, is_admin, password_ch
     setOpenDialog(false);
   };
 
-  useEffect(() => {
-    return () => {};
-  }, [setIsOpen]);
-
   try {
     var backend_login_response = JSON.parse(localStorage.getItem('backend-login-response'));
   } catch (e) {
     backend_login_response = {};
   }
 
-  return (
-    <Fragment>
+  const header = () => {
+    return (
       <Grid item xs={12}>
         <Grid container spacing={2}>
           <Grid item xs={1}>
@@ -90,8 +81,13 @@ const UserRow = ({ user: { directorOfStudies_id, username, is_admin, password_ch
         </Grid>
         <Divider style={{ marginBottom: 10 }} />
       </Grid>
-      <SnackBar message={message} severity={severity} isOpen={isOpen} />
-      <ChangePasswordDialog
+    );
+  };
+
+  return (
+    <Fragment>
+      {header()}
+      <ResetPasswordDialog
         openDialog={openDialog}
         handleClose={closeDialog}
         showSnackbar={showSnackbar}
