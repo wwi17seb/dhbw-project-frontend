@@ -44,8 +44,10 @@ const loginStyles = theme => ({
       display: "block",
       marginRight: "auto",
       marginLeft: "auto",
-      width: "8rem",
-      height: "8rem",
+      marginTop: "1rem",
+      marginBottom: "2rem",
+      width: "10rem",
+      height: "auto",
     },
     form: {
       width: "100%", // Fix IE 11 issue.

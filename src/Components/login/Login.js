@@ -18,7 +18,7 @@ import Collapse from '@material-ui/core/Collapse';
 import CloseIcon from '@material-ui/icons/Close';
 
 import Background from '../../images/dhbw_campus2.jpg'
-import Logo from '../../images/dhbw_logo.png'
+import Logo from '../../images/ExoPlanLogo_transparent.png';
 import axios from 'axios';
 
 
@@ -50,7 +50,6 @@ class Login extends Component {
                 <Paper className={classes.paper}>
                     <div>
                         <img className={classes.loginHeadingLogo} src={Logo} alt='DHBW Logo'/>                      
-                        <Typography component="h1" variant="h5"><b>ExoPlan Login</b></Typography>
                     </div>
 
                     {/* Alert error message */}
@@ -96,7 +95,7 @@ class Login extends Component {
                             <TextField
                             required
                             id="InputUsername"
-                            label="Username"
+                            label="Nutzername"
                             margin="dense"
                             variant="outlined"
                             fullWidth
@@ -107,7 +106,7 @@ class Login extends Component {
                             <TextField
                             required
                             id="InputPassword"
-                            label="Password"
+                            label="Passwort"
                             type={this.state.showPassword ? 'text' : 'password'}
                             margin="dense"
                             variant="outlined"
@@ -144,7 +143,7 @@ class Login extends Component {
                             onClick={this.handleLogin}
                             className={classes.submit}
                             >
-                            Login
+                            Anmelden
                             </Button>
 
                             <Button
@@ -178,7 +177,7 @@ class Login extends Component {
                 const token = res.data.payload.token;
                 localStorage.setItem('ExoplanSessionToken', token);
                 this.setState({ open: true })
-                this.setState({ message: "Successfully signed up! In a few seconds you will be automatically logged in." });
+                this.setState({ message: "Registrierung erfolgreich! Sie werden in wenigen Sekunden automatisch eingeloggt." });
                 var that = this;
                 setTimeout(function(){
                     that.props.history.push({
@@ -210,7 +209,7 @@ class Login extends Component {
             })
             .catch(err => {
                 this.setState({ open: true })
-                this.setState({ error: "Wrong credentials! Please try again." })
+                this.setState({ error: "Ungültige Anmeldedaten. Versuchen Sie es noch einmal!" })
             });
     }
 
