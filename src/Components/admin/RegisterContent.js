@@ -22,15 +22,19 @@ const RegisterContent = () => {
 
   const handleUpdate = () => {
     APICall('PUT', 'registerKey', { registerKey }).then((res) => {
-        if (res.status === 200) {
-            setIsRegisterKeyDisabled(!registerKey);
-        }
+      if (res.status === 200) {
+        setIsRegisterKeyDisabled(!registerKey);
+      }
     });
   };
 
   const handleDisable = () => {
     setRegisterKey('');
-    handleUpdate();
+    APICall('PUT', 'registerKey', { registerKey: '' }).then((res) => {
+      if (res.status === 200) {
+        setIsRegisterKeyDisabled(true);
+      }
+    });
   };
 
   useEffect(() => {
