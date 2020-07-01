@@ -178,9 +178,8 @@ class Login extends Component {
                 localStorage.setItem('ExoplanSessionToken', token);
                 this.setState({ open: true })
                 this.setState({ message: "Registrierung erfolgreich! Sie werden in wenigen Sekunden automatisch eingeloggt." });
-                var that = this;
-                setTimeout(function(){
-                    that.props.history.push({
+                setTimeout(() => {
+                    this.props.history.push({
                         pathname: "/kurse",
                     }) 
                 },3000);
