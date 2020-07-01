@@ -74,7 +74,7 @@ function ExpansionPanels(props) {
                             </div>
                         </Grid>
                         <Grid item sm={12} xl={12}>
-                            <Button variant="contained" startIcon={<DeleteIcon />} size="small">Modul löschen</Button>
+                            <Button variant="contained" color="primary" startIcon={<DeleteIcon />} size="small">Modul löschen</Button>
                             <Typography>
                                 Backend Test: {studyName}
                             </Typography>
@@ -120,7 +120,7 @@ function ExpansionPanels(props) {
                             </div>
                         </Grid>
                         <Grid item sm={12} xl={12}>
-                            <Button variant="contained" startIcon={<DeleteIcon />} size="small">Modul löschen</Button>
+                            <Button variant="contained" color="primary" startIcon={<DeleteIcon />} size="small">Modul löschen</Button>
                         </Grid>
                     </Grid>
                 </ExpansionPanelDetails>
