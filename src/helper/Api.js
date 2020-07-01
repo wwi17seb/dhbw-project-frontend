@@ -1,19 +1,18 @@
-import axios from 'axios'
-
-import React, { useEffect, useState } from 'react';
-import { useHistory } from "react-router";
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { getTokenFromStorage } from './tokenHelper';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from "react-router";
 
+import { getTokenFromStorage } from './tokenHelper';
 
 export const APICall = async (method, url, data) => { //not in use
     return axios.request({
-        data, method, url: "https://localhost:50969/api/" + url,
+        data, method, url: "https://localhost/api/" + url,
         params: {
             token: getTokenFromStorage(),
         }

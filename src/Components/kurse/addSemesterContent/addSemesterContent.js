@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import AddCourseTable from './addCourseTable';
-import MyTable from './myTable';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+
 import { APICall } from '../../../helper/Api';
+import MyTable from './myTable';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -18,9 +17,8 @@ const AddSemesterContent = (props) => {
 
   // GET /presentations?courseId={ID}
   const loadData = () => {
-    console.log('props', props);
-    if (props.selectedCourse) {
-      const Course = props.selectedCourse;
+    const Course = props.selectedCourse;
+    if (Course) {
       const { course_id } = Course;
 
       APICall('GET', 'presentations/?courseId=' + course_id, {}).then((res) => {

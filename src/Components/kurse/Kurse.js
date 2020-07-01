@@ -1,15 +1,16 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
+import React from 'react';
+
+import ApiHandler from '../../helper/Api';
 import Nav from '../nav/Nav';
 import AddKurs from './addkurs/addkurs';
 import AddTabContent from './addTabContent/addTabContent';
-import ApiHandler from '../../helper/Api';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -55,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ScrollableTabsButtonAuto(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const [selectedCourse, setSelectedCourse] = React.useState();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -63,7 +65,7 @@ export default function ScrollableTabsButtonAuto(props) {
   const tabLabels = ['ABC17DEF', 'Kurs Hinzufügen'];
   const finalTabLabels = [];
   const finalTabPanels = [];
-  const finalPanelContent = [<AddTabContent />, <AddKurs />];
+  const finalPanelContent = [<AddTabContent selectedCourse={selectedCourse} />, <AddKurs />];
   let tabIndex = 0;
 
   for (let tabLabel of tabLabels) {
@@ -84,9 +86,10 @@ export default function ScrollableTabsButtonAuto(props) {
 
   const handleAPIresponse = async (response) => {
     console.log('parent comp');
-    const {Courses} = response.data.payload;
+    const { Courses } = response.data.payload;
     console.log('Courses', Courses);
     // Just for testing
+    setSelectedCourse(Courses[0]);
     props.setSelectedCourse(Courses[0]);
   };
 
