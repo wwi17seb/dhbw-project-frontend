@@ -1,5 +1,5 @@
-export const getNameOfLecturer = ({ firstname, lastname, academic_title, salutation }) => {
-  return academic_title
-    ? `${salutation} ${academic_title} ${lastname}, ${firstname}`
-    : `${salutation} ${lastname}, ${firstname}`;
+export const getNameOfLecturer = (Lecturer) => {
+  return Lecturer && (Lecturer.lastname || Lecturer.firstname)
+    ? `${Lecturer.academic_title || ''} ${Lecturer.lastname || ''}, ${Lecturer.firstname || ''}`
+    : '';
 };

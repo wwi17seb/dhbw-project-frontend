@@ -5,8 +5,9 @@ import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
 
+import { APICall } from '../../helper/Api';
 import ApiHandler from '../../helper/Api';
 import Nav from '../nav/Nav';
 import AddKurs from './addkurs/addkurs';
@@ -56,16 +57,17 @@ const useStyles = makeStyles((theme) => ({
 export default function ScrollableTabsButtonAuto(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const [selectedCourse, setSelectedCourse] = React.useState();
+  const [courses, setCourses] = React.useState([]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const tabLabels = ['ABC17DEF', 'Kurs Hinzufügen'];
+  const courseNames = courses.map((course) => course.name);
+  const tabLabels = courseNames.concat(['Kurs Hinzufügen']);
   const finalTabLabels = [];
   const finalTabPanels = [];
-  const finalPanelContent = [<AddTabContent selectedCourse={selectedCourse} />, <AddKurs />];
+  const finalPanelContent = courses.map((course) => <AddTabContent selectedCourse={course} />).concat([<AddKurs />]);
   let tabIndex = 0;
 
   for (let tabLabel of tabLabels) {
@@ -77,20 +79,23 @@ export default function ScrollableTabsButtonAuto(props) {
     );
     tabIndex++;
   }
-  /* useEffect(() => {
-    console.log(document.getElementById('success-alert'));
-    document.getElementById('success-alert').fadeTo(2000, 500).slideUp(500, function() {
-      document.getElementById('success-alert').slideUp(500);
+
+  useEffect(() => {
+    APICall('GET', 'courses').then((res) => {
+      if (res.data && res.status === 200) {
+        setCourses(res.data.payload.Courses);
+      } else {
+        //alert('Problem occurred: Not Loaded!'); // TODO: exchange with snackbar
+      }
     });
-  }); */
+    return () => {};
+  }, []);
 
   const handleAPIresponse = async (response) => {
-    console.log('parent comp');
     const { Courses } = response.data.payload;
     console.log('Courses', Courses);
     // Just for testing
-    setSelectedCourse(Courses[0]);
-    props.setSelectedCourse(Courses[0]);
+    setCourses(Courses);
   };
 
   const getMessage = (props) => {

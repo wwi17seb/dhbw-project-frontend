@@ -1,16 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import '../node_modules/bootstrap/dist/css/bootstrap.css';
-import '../node_modules/bootstrap/dist/js/bootstrap.js';
-import { Route, BrowserRouter as Router, Redirect } from 'react-router-dom';
-import CourseHome from './Components/kurse/CourseHome';
+import { Redirect, Route, BrowserRouter as Router } from 'react-router-dom';
+
 import Dozenten from './Components/dozenten/Dozenten';
+import Kontoeinstellungen from './Components/kontoeinstellungen/Kontoeinstellugen';
+import CourseHome from './Components/kurse/CourseHome';
+import ResetPassword from './Components/login/forgotPassword';
+import Login from './Components/login/Login';
 import Modulkatalog from './Components/modulkatalog/Modulkatalog';
 import ModulkatalogDetail from './Components/modulkatalog/ModulkatalogDetail';
-import Login from './Components/login/Login';
-import ResetPassword from './Components/login/forgotPassword';
-import Kontoeinstellungen from './Components/kontoeinstellungen/Kontoeinstellugen';
+
+import '../node_modules/bootstrap/dist/css/bootstrap.css';
+import '../node_modules/bootstrap/dist/js/bootstrap.js';
+import './index.css';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route

@@ -1,7 +1,4 @@
 import React, { Fragment, useState } from 'react';
-
-import SemesterContent from './addSemesterContent/addSemesterContent';
-import addCalendar from './addTabContent/addCalendar';
 import Courses from './Kurse';
 
 const CourseHome = () => {
@@ -9,9 +6,9 @@ const CourseHome = () => {
 
   return (
     <Fragment>
-      <Courses setSelectedCourse={setSelectedCourse}/>
+      {/* JONAS und Fabiio */}
+      <Courses setSelectedCourse={setSelectedCourse} />
       {/* <SemesterContent selectedCourse={selectedCourse}/> */}
-      {/* <addCalendar /> */}
     </Fragment>
   );
 };

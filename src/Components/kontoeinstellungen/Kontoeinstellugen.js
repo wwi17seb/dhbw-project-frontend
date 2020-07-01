@@ -17,44 +17,41 @@ import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import Nav from '../nav/Nav';
-import axios from 'axios';
-import { APICall } from '../../helper/Api';
 
-const useStyles = makeStyles(theme => ({
+import { APICall } from '../../helper/Api';
+import Nav from '../nav/Nav';
+
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-  }, toolbar: theme.mixins.toolbar,
+  },
+  toolbar: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing(3),
   },
   Buttons: {
-    marginTop: "2rem",
+    marginTop: '2rem',
   },
   cardsGrid: {
-    marginTop: "2rem",
+    marginTop: '2rem',
   },
   card: {
     width: 345,
     height: 230,
     marginRight: 50,
     marginBottom: 50,
-    textAlign: "center"
+    textAlign: 'center',
   },
   media: {
     height: 140,
   },
   icon: {
-    marginTop: "1rem",
-    fontSize: 90
-
-  }
-
+    marginTop: '1rem',
+    fontSize: 90,
+  },
 }));
-
-
 
 export default function KontoeinstellungenTable() {
   const classes = useStyles();
@@ -62,15 +59,12 @@ export default function KontoeinstellungenTable() {
   const [Studiengangsleiter, setStudiengangsleiter] = React.useState(false);
   const [newMail, changeMail] = React.useState(false);
   const [Mail, setMail] = React.useState(false);
-  const [email, setMailOfStudiengangsleiter] = React.useState("");
-  const [pw1, setPasswordOfStudiengangsleiter1] = React.useState("");
-  const [pw2, setPasswordOfStudiengangsleiter2] = React.useState("");
-  const [newPW1, changePassword1] = React.useState("");
-  const [newPW2, changePassword2] = React.useState("");
-  const [oldPW, changePasswordOld] = React.useState("");
-
-
-
+  const [email, setMailOfStudiengangsleiter] = React.useState('');
+  const [pw1, setPasswordOfStudiengangsleiter1] = React.useState('');
+  const [pw2, setPasswordOfStudiengangsleiter2] = React.useState('');
+  const [newPW1, changePassword1] = React.useState('');
+  const [newPW2, changePassword2] = React.useState('');
+  const [oldPW, changePasswordOld] = React.useState('');
 
   const handleDialogStudiengangsleiter = () => {
     setStudiengangsleiter(true);
@@ -88,112 +82,122 @@ export default function KontoeinstellungenTable() {
     setMail(false);
     setStudiengangsleiter(false);
     setPassword(false);
-
   };
 
   const handleCreateStudiengangsleiter = (e) => {
-    if (pw1 != pw2) {
-      alert("Passwords do not match!");
+    if (pw1 !== pw2) {
+      alert('Passwords do not match!'); // TODO: exchange with snackbar
     } else {
-
       e.preventDefault();
       const newStudiengangsleiter = {
         username: email,
-        password: pw1
-      }
+        password: pw1,
+      };
       console.log({ newStudiengangsleiter });
-      APICall("POST", 'signUp', newStudiengangsleiter).then(res => {
+      APICall('POST', 'signUp', newStudiengangsleiter).then((res) => {
         console.log(res);
         if (res.data && res.status === 201) {
-
-          alert("User was created");
+          alert('User was created'); // TODO: exchange with snackbar
         } else {
-          alert("Problem occurred: User not created!")
+          alert('Problem occurred: User not created!'); // TODO: exchange with snackbar
         }
       });
     }
-  }
+  };
 
   const handleChangeMail = (e) => {
     e.preventDefault();
     const setMail = {
       username: newMail,
-      misc: "", // to be continued
-    }
+      misc: '', // to be continued
+    };
     console.log({ setMail });
-    APICall("PUT", 'directorOfStudies', setMail).then(res => {
+    APICall('PUT', 'directorOfStudies', setMail).then((res) => {
       console.log(res);
       if (res.data && res.status === 201) {
-
-        alert("Mail was changed");
+        alert('Mail was changed'); // TODO: exchange with snackbar
       } else {
-        alert("Problem occurred: Mail not changed!")
+        alert('Problem occurred: Mail not changed!'); // TODO: exchange with snackbar
       }
     });
-  }
+  };
 
   const handleChangePassword = (e) => {
     e.preventDefault();
-    if (newPW1 != newPW2) {
-      alert("Passwords do not match!");
+    if (newPW1 !== newPW2) {
+      alert('Passwords do not match!'); // TODO: exchange with snackbar
     } else {
       const setPassword = {
         oldPassword: oldPW,
         newPassword: newPW1,
         // to be continued and adapted by backend because API changes
-      }
+      };
       console.log({ setPassword });
-      
-      APICall("PUT", 'changePassword', setPassword).then(res => {
+
+      APICall('PUT', 'changePassword', setPassword).then((res) => {
         console.log(res);
         if (res.data && res.status === 201) {
-
-          alert("Password was changed");
+          alert('Password was changed'); // TODO: exchange with snackbar
         } else {
-          alert("Problem occurred: Password not changed!")
+          alert('Problem occurred: Password not changed!'); // TODO: exchange with snackbar
         }
       });
     }
-  }
-
+  };
 
   return (
-    <div className={classes.root} >
+    <div className={classes.root}>
       <Nav />
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Typography variant="h5" noWrap>
+        <Typography variant='h5' noWrap>
           Allgemeine Kontoeinstellungen
-          </Typography>
+        </Typography>
         <Grid container className={classes.Buttons} spacing={3} alignContent='center' alignItems='center'>
-          <Dialog open={Studiengangsleiter} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Neuen Studiengangsleiter hinzufügen</DialogTitle>
+          <Dialog open={Studiengangsleiter} onClose={handleClose} aria-labelledby='form-dialog-title'>
+            <DialogTitle id='form-dialog-title'>Neuen Studiengangsleiter hinzufügen</DialogTitle>
             <DialogContent>
               <Form onSubmit={handleCreateStudiengangsleiter}>
-                <Form.Group as={Row} controlId="Nutzer">
+                <Form.Group as={Row} controlId='Nutzer'>
                   <Col>
-                    <Form.Control type="name" placeholder="E-Mail eingeben" onChange={({ target: { value } }) => setMailOfStudiengangsleiter(value)} />
+                    <Form.Control
+                      type='name'
+                      placeholder='E-Mail eingeben'
+                      onChange={({ target: { value } }) => setMailOfStudiengangsleiter(value)}
+                    />
                   </Col>
                 </Form.Group>
-                <Form.Group as={Row} controlId="Passwort">
+                <Form.Group as={Row} controlId='Passwort'>
                   <Col>
-                    <Form.Control type="password" placeholder="Neues Passwort eingeben" onChange={({ target: { value } }) => setPasswordOfStudiengangsleiter1(value)} />
+                    <Form.Control
+                      type='password'
+                      placeholder='Neues Passwort eingeben'
+                      onChange={({ target: { value } }) => setPasswordOfStudiengangsleiter1(value)}
+                    />
                   </Col>
                 </Form.Group>
-                <Form.Group as={Row} controlId="Passwort">
+                <Form.Group as={Row} controlId='Passwort'>
                   <Col>
-                    <Form.Control type="password" placeholder="Neues Passwort wiederholen" onChange={({ target: { value } }) => setPasswordOfStudiengangsleiter2(value)} />
+                    <Form.Control
+                      type='password'
+                      placeholder='Neues Passwort wiederholen'
+                      onChange={({ target: { value } }) => setPasswordOfStudiengangsleiter2(value)}
+                    />
                   </Col>
                 </Form.Group>
                 <DialogActions>
                   <Form.Group as={Row}>
                     <Col sm={{ span: 8, offset: 0 }}>
-                      <Button variant="outlined" color="primary" type="reset" onClick={handleClose}>Abbrechen</Button>
+                      <Button variant='outlined' color='primary' type='reset' onClick={handleClose}>
+                        Abbrechen
+                      </Button>
                     </Col>
                   </Form.Group>
                   <Form.Group as={Row}>
                     <Col sm={{ span: 8, offset: 0 }}>
-                      <Button variant="outlined" color="primary" type="submit">Hinzufügen</Button>
+                      <Button variant='outlined' color='primary' type='submit'>
+                        Hinzufügen
+                      </Button>
                     </Col>
                   </Form.Group>
                 </DialogActions>
@@ -203,34 +207,50 @@ export default function KontoeinstellungenTable() {
         </Grid>
 
         <Grid container className={classes.Buttons} spacing={3} alignContent='center' alignItems='center'>
-          <Dialog open={Password} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Passwort ändern</DialogTitle>
+          <Dialog open={Password} onClose={handleClose} aria-labelledby='form-dialog-title'>
+            <DialogTitle id='form-dialog-title'>Passwort ändern</DialogTitle>
             <DialogContent>
-              <Form  onSubmit={handleChangePassword}>
-                <Form.Group as={Row} controlId="OldPW">
+              <Form onSubmit={handleChangePassword}>
+                <Form.Group as={Row} controlId='OldPW'>
                   <Col>
-                    <Form.Control type="password" placeholder="Altes Passwort eingeben" onChange={({ target: { value } }) => changePasswordOld(value)}/>
+                    <Form.Control
+                      type='password'
+                      placeholder='Altes Passwort eingeben'
+                      onChange={({ target: { value } }) => changePasswordOld(value)}
+                    />
                   </Col>
                 </Form.Group>
-                <Form.Group as={Row} controlId="Passwort">
+                <Form.Group as={Row} controlId='Passwort'>
                   <Col>
-                    <Form.Control type="password" placeholder="Neues Passwort eingeben" onChange={({ target: { value } }) => changePassword1(value)}/>
+                    <Form.Control
+                      type='password'
+                      placeholder='Neues Passwort eingeben'
+                      onChange={({ target: { value } }) => changePassword1(value)}
+                    />
                   </Col>
                 </Form.Group>
-                <Form.Group as={Row} controlId="Passwort2">
+                <Form.Group as={Row} controlId='Passwort2'>
                   <Col>
-                    <Form.Control type="password" placeholder="Neues Passwort wiederholen" onChange={({ target: { value } }) => changePassword2(value)}/>
+                    <Form.Control
+                      type='password'
+                      placeholder='Neues Passwort wiederholen'
+                      onChange={({ target: { value } }) => changePassword2(value)}
+                    />
                   </Col>
                 </Form.Group>
                 <DialogActions>
                   <Form.Group as={Row}>
                     <Col sm={{ span: 8, offset: 0 }}>
-                      <Button variant="outlined" color="primary" type="reset" onClick={handleClose}>Abbrechen</Button>
+                      <Button variant='outlined' color='primary' type='reset' onClick={handleClose}>
+                        Abbrechen
+                      </Button>
                     </Col>
                   </Form.Group>
                   <Form.Group as={Row}>
                     <Col sm={{ span: 8, offset: 0 }}>
-                      <Button variant="outlined" color="primary" type="submit">Bestätigen</Button>
+                      <Button variant='outlined' color='primary' type='submit'>
+                        Bestätigen
+                      </Button>
                     </Col>
                   </Form.Group>
                 </DialogActions>
@@ -240,24 +260,32 @@ export default function KontoeinstellungenTable() {
         </Grid>
 
         <Grid container className={classes.Buttons} spacing={3} alignContent='center' alignItems='center'>
-          <Dialog open={Mail} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Benutzerkonto E-Mail ändern</DialogTitle>
+          <Dialog open={Mail} onClose={handleClose} aria-labelledby='form-dialog-title'>
+            <DialogTitle id='form-dialog-title'>Benutzerkonto E-Mail ändern</DialogTitle>
             <DialogContent>
               <Form onSubmit={handleChangeMail}>
-                <Form.Group as={Row} controlId="Nutzer">
+                <Form.Group as={Row} controlId='Nutzer'>
                   <Col>
-                    <Form.Control type="name" placeholder="E-Mail eingeben" onChange={({ target: { value } }) => changeMail(value)} />
+                    <Form.Control
+                      type='name'
+                      placeholder='E-Mail eingeben'
+                      onChange={({ target: { value } }) => changeMail(value)}
+                    />
                   </Col>
                 </Form.Group>
                 <DialogActions>
                   <Form.Group as={Row}>
                     <Col sm={{ span: 8, offset: 0 }}>
-                      <Button variant="outlined" color="primary" type="reset" onClick={handleClose}>Abbrechen</Button>
+                      <Button variant='outlined' color='primary' type='reset' onClick={handleClose}>
+                        Abbrechen
+                      </Button>
                     </Col>
                   </Form.Group>
                   <Form.Group as={Row}>
                     <Col sm={{ span: 8, offset: 0 }}>
-                      <Button variant="outlined" color="primary" type="submit">Bestätigen</Button>
+                      <Button variant='outlined' color='primary' type='submit'>
+                        Bestätigen
+                      </Button>
                     </Col>
                   </Form.Group>
                 </DialogActions>
@@ -265,22 +293,21 @@ export default function KontoeinstellungenTable() {
             </DialogContent>
           </Dialog>
         </Grid>
-
 
         <Grid container className={classes.cardsGrid} alignContent='center' alignItems='center'>
           <Card className={classes.card}>
             <CardActionArea>
               <PersonIcon className={classes.icon} />
               <CardContent>
-                <Typography variant="body2" color="textSecondary" component="p">
+                <Typography variant='body2' color='textSecondary' component='p'>
                   Ändern Sie hier die E-Mail Ihres Benutzerkontos
-          </Typography>
+                </Typography>
               </CardContent>
             </CardActionArea>
             <CardActions>
-              <Button type="button" variant="outlined" style={{ margin: "0 auto" }} onClick={handleDialogMail}>
+              <Button type='button' variant='outlined' style={{ margin: '0 auto' }} onClick={handleDialogMail}>
                 E-Mail ändern
-        </Button>
+              </Button>
             </CardActions>
           </Card>
 
@@ -288,15 +315,15 @@ export default function KontoeinstellungenTable() {
             <CardActionArea>
               <VpnKeyIcon className={classes.icon} />
               <CardContent>
-                <Typography variant="body2" color="textSecondary" component="p">
+                <Typography variant='body2' color='textSecondary' component='p'>
                   Ändern Sie hier Ihr Passwort
-          </Typography>
+                </Typography>
               </CardContent>
             </CardActionArea>
             <CardActions>
-              <Button type="button" variant="outlined" style={{ margin: "0 auto" }} onClick={handleDialogPassword} >
+              <Button type='button' variant='outlined' style={{ margin: '0 auto' }} onClick={handleDialogPassword}>
                 Passwort ändern
-        </Button>
+              </Button>
             </CardActions>
           </Card>
 
@@ -304,22 +331,23 @@ export default function KontoeinstellungenTable() {
             <CardActionArea>
               <PersonAddIcon className={classes.icon} />
               <CardContent>
-                <Typography variant="body2" color="textSecondary" component="p">
+                <Typography variant='body2' color='textSecondary' component='p'>
                   Fügen Sie einen neuen Studiengangsleiter ein
-          </Typography>
+                </Typography>
               </CardContent>
             </CardActionArea>
-            <CardActions >
-              <Button type="button" variant="outlined" onClick={handleDialogStudiengangsleiter} style={{ margin: "0 auto" }} >
+            <CardActions>
+              <Button
+                type='button'
+                variant='outlined'
+                onClick={handleDialogStudiengangsleiter}
+                style={{ margin: '0 auto' }}>
                 Studiengangsleiter hinzufügen
-        </Button>
+              </Button>
             </CardActions>
           </Card>
         </Grid>
       </main>
     </div>
-  )
+  );
 }
-
-
-

@@ -1,32 +1,22 @@
-import { makeStyles } from '@material-ui/styles';
 import React, { useEffect, useState } from 'react';
-
 import { APICall } from '../../../helper/Api';
 import MyTable from './myTable';
 
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: 0,
-    minWidth: 150,
-  },
-}));
-
-//Funktion, welche das Auswahlmenü für einen Studiengang zurück gibt
+// Funktion, welche das Auswahlmenü für einen Studiengang zurück gibt
 const AddSemesterContent = (props) => {
   const [presentations, setPresentations] = useState([]);
 
-  // GET /presentations?courseId={ID}
   const loadData = () => {
     const Course = props.selectedCourse;
     if (Course) {
       const { course_id } = Course;
+      const { semester_id } = props.semester;
 
-      APICall('GET', 'presentations/?courseId=' + course_id, {}).then((res) => {
-        console.log(res);
+      APICall('GET', `presentations?courseId=${course_id}&semesterId=${semester_id}`).then((res) => {
         if (res.data && res.status === 200) {
           setPresentations(res.data.payload.Presentations);
         } else {
-          alert('Problem occurred: Not Loaded!');
+          //alert('Problem occurred: Not Loaded!'); // TODO: exchange with snackbar
         }
       });
     }
@@ -36,13 +26,13 @@ const AddSemesterContent = (props) => {
     loadData();
   }, [props]);
 
-  const classes = useStyles();
-
   return (
-    <div style={{ padding: 0 }}>
-      {/* <AddCourseTable /> */}
-      <MyTable presentations={presentations} />
-    </div>
+    <MyTable
+      presentations={presentations}
+      loadData={loadData}
+      course_id={props.selectedCourse.course_id}
+      semester_id={props.semester.semester_id}
+    />
   );
 };
 

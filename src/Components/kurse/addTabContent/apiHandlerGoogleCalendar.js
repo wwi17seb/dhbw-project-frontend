@@ -57,9 +57,9 @@ function handleAppointmentDelete(deleteAppointmentId, gapi) {
 
   request.execute(function (response) {
     if (response.error || response == false) {
-      alert('Error');
+      alert('Error'); // TODO: exchange with snackbar
     } else {
-      alert('Success');
+      alert('Success'); // TODO: exchange with snackbar
     }
   });
 }
@@ -86,9 +86,9 @@ function handleAppointmentInsert(insertAppointmentData, gapi) {
 
   request.execute(function (response) {
     if (response.error || response == false) {
-      alert('Error');
+      alert('Error'); // TODO: exchange with snackbar
     } else {
-      alert('Success');
+      alert('Success'); // TODO: exchange with snackbar
     }
   });
 }
@@ -116,9 +116,9 @@ function handleAppointmentChange(changedAppointmentData, gapi) {
 
   request.execute(function (response) {
     if (response.error || response == false) {
-      alert('Error');
+      alert('Error'); // TODO: exchange with snackbar
     } else {
-      alert('Success');
+      alert('Success'); // TODO: exchange with snackbar
     }
   });
 }

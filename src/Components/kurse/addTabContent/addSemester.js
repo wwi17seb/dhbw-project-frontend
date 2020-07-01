@@ -1,13 +1,10 @@
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import React from 'react';
-
-import Nav from '../../nav/Nav';
+import React, { Fragment } from 'react';
 import AddSemesterContent from '../addSemesterContent/addSemesterContent';
 
 function TabPanel(props) {
@@ -39,58 +36,48 @@ function a11yProps(index) {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: 20,
-    minWidth: 150,
-  },
-}));
-
 export default function ScrollableTabsButtonAuto(props) {
-  const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  console.log('Add Semester', props);
+  const { Semesters } = props.selectedCourse;
+  Semesters.sort((sem1, sem2) => {
+    return new Date(sem1.start_date).getTime() - new Date(sem2.start_date).getTime();
+  });
 
-  const tabLabels = ['Semester 1', 'Semester 2', 'Semester 3', 'Semester 4', 'Semester 5', 'Semester 6'];
   const finalTabLabels = [];
   const finalTabPanels = [];
-  const finalPanelContent = Object.values(tabLabels).map((entry) => <AddSemesterContent {...props} />);
-  let tabIndex = 0;
+  const finalPanelContent = [];
 
-  for (let tabLabel of tabLabels) {
-    finalTabLabels.push(<Tab key={tabIndex} label={tabLabel} {...a11yProps({ tabIndex })} />);
+  Semesters.forEach((sem, index) => {
+    finalPanelContent.push(<AddSemesterContent semester={sem} {...props} />);
+    finalTabLabels.push(<Tab key={index} label={sem.name} {...a11yProps({ index })} />);
     finalTabPanels.push(
-      <TabPanel key={tabIndex} value={value} index={tabIndex}>
-        {finalPanelContent[tabIndex]}
+      <TabPanel key={index} value={value} index={index}>
+        {finalPanelContent[index]}
       </TabPanel>
     );
-    tabIndex++;
-  }
+  });
 
   return (
-    <div className={classes.root}>
-      <Nav />
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        <Paper>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            indicatorColor='primary'
-            textColor='primary'
-            variant='scrollable'
-            scrollButtons='auto'
-            aria-label='scrollable auto tabs example'>
-            {finalTabLabels}
-          </Tabs>
-        </Paper>
-        {finalTabPanels}
-      </main>
-    </div>
+    <Fragment>
+      <Paper>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          indicatorColor='primary'
+          textColor='primary'
+          variant='scrollable'
+          scrollButtons='auto'
+          aria-label='scrollable auto tabs example'
+          style={{ marginBottom: '1.5rem' }}>
+          {finalTabLabels}
+        </Tabs>
+      </Paper>
+      {finalTabPanels}
+    </Fragment>
   );
 }

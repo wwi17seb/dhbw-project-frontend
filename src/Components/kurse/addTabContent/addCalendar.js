@@ -1,59 +1,59 @@
-import * as React from 'react';
-import Paper from '@material-ui/core/Paper';
-import {TodayButton, DateNavigator} from '@devexpress/dx-react-scheduler-material-ui';
-import {ViewState, EditingState } from '@devexpress/dx-react-scheduler';
+import MomentUtils from '@date-io/moment';
+import { connectProps } from '@devexpress/dx-react-core';
+import { EditingState, ViewState } from '@devexpress/dx-react-scheduler';
 import {
-  Scheduler,
-  Toolbar,
-  MonthView,
-  WeekView,
-  ViewSwitcher,
+  AllDayPanel,
+  AppointmentForm,
   Appointments,
   AppointmentTooltip,
-  AppointmentForm,
+  DateNavigator,
   DragDropProvider,
   EditRecurrenceMenu,
-  AllDayPanel,
+  MonthView,
+  Scheduler,
+  TodayButton,
+  Toolbar,
+  ViewSwitcher,
+  WeekView,
 } from '@devexpress/dx-react-scheduler-material-ui';
-import { connectProps } from '@devexpress/dx-react-core';
-import { KeyboardDateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import MomentUtils from '@date-io/moment';
-import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
 import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import AddIcon from '@material-ui/icons/Add';
+import CalendarToday from '@material-ui/icons/CalendarToday';
+import Close from '@material-ui/icons/Close';
+import Create from '@material-ui/icons/Create';
 import LocationOn from '@material-ui/icons/LocationOn';
 import Notes from '@material-ui/icons/Notes';
-import Close from '@material-ui/icons/Close';
-import CalendarToday from '@material-ui/icons/CalendarToday';
-import Create from '@material-ui/icons/Create';
-//import {handleAppointmentDelete, handleAppointmentInsert, handleAppointmentChange} from './apiHandlerGoogleCalendar';
-import {syncGoogleCalendar} from './apiHandlerGoogleCalendar';
+import { KeyboardDateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import * as React from 'react';
+
+//import { syncGoogleCalendar } from './apiHandlerGoogleCalendar';
+import { syncGoogleCalendar } from './apiHandlerGoogleCalendar';
 
 let appointments = [];
 
 function formatData(calendarData) {
-
   appointments = [];
 
   for (let i = 0; i < calendarData.length; i++) {
-
-    //let test = new Appointment("No title given", undefined, undefined, undefined, "No location given"); 
+    //let test = new Appointment("No title given", undefined, undefined, undefined, "No location given");
     let test = {
       title: 'No title given',
       startDate: undefined,
-      endDate: undefined, 
+      endDate: undefined,
       location: 'No location given',
-      id: i, 
-      gcId: "test",
-    }
+      id: i,
+      gcId: 'test',
+    };
 
     if (calendarData[i].location) {
       test.location = calendarData[i].location;
@@ -80,7 +80,7 @@ function formatData(calendarData) {
   return appointments;
 }
 
-const containerStyles = theme => ({
+const containerStyles = (theme) => ({
   container: {
     width: theme.spacing(68),
     padding: 0,
@@ -176,15 +176,7 @@ class AppointmentFormContainerBasic extends React.PureComponent {
   }
 
   render() {
-    const {
-      classes,
-      visible,
-      visibleChange,
-      appointmentData,
-      cancelAppointment,
-      target,
-      onHide,
-    } = this.props;
+    const { classes, visible, visibleChange, appointmentData, cancelAppointment, target, onHide } = this.props;
     const { appointmentChanges } = this.state;
 
     const displayAppointmentData = {
@@ -199,24 +191,28 @@ class AppointmentFormContainerBasic extends React.PureComponent {
       ? () => this.commitAppointment('added')
       : () => this.commitAppointment('changed');
 
-    const textEditorProps = field => ({
+    const textEditorProps = (field) => ({
       variant: 'outlined',
-      onChange: ({ target: change }) => this.changeAppointment({
-        field: [field], changes: change.value,
-      }),
+      onChange: ({ target: change }) =>
+        this.changeAppointment({
+          field: [field],
+          changes: change.value,
+        }),
       value: displayAppointmentData[field] || '',
       label: field[0].toUpperCase() + field.slice(1),
       className: classes.textField,
     });
 
-    const pickerEditorProps = field => ({
+    const pickerEditorProps = (field) => ({
       className: classes.picker,
       // keyboard: true,
       ampm: false,
       value: displayAppointmentData[field],
-      onChange: date => this.changeAppointment({
-        field: [field], changes: date ? date.toDate() : new Date(displayAppointmentData[field]),
-      }),
+      onChange: (date) =>
+        this.changeAppointment({
+          field: [field],
+          changes: date ? date.toDate() : new Date(displayAppointmentData[field]),
+        }),
       inputVariant: 'outlined',
       format: 'DD/MM/YYYY HH:mm',
       onError: () => null,
@@ -231,79 +227,55 @@ class AppointmentFormContainerBasic extends React.PureComponent {
     };
 
     return (
-      <AppointmentForm.Overlay
-        visible={visible}
-        target={target}
-        fullSize
-        onHide={onHide}
-      >
+      <AppointmentForm.Overlay visible={visible} target={target} fullSize onHide={onHide}>
         <div>
           <div className={classes.header}>
-            <IconButton
-              className={classes.closeButton}
-              onClick={cancelChanges}
-            >
-              <Close color="action" />
+            <IconButton className={classes.closeButton} onClick={cancelChanges}>
+              <Close color='action' />
             </IconButton>
           </div>
           <div className={classes.content}>
             <div className={classes.wrapper}>
-              <Create className={classes.icon} color="action" />
-              <TextField
-                {...textEditorProps('title')}
-              />
+              <Create className={classes.icon} color='action' />
+              <TextField {...textEditorProps('title')} />
             </div>
             <div className={classes.wrapper}>
-              <CalendarToday className={classes.icon} color="action" />
+              <CalendarToday className={classes.icon} color='action' />
               <MuiPickersUtilsProvider utils={MomentUtils}>
-                <KeyboardDateTimePicker
-                  label="Start Date"
-                  {...pickerEditorProps('startDate')}
-                />
-                <KeyboardDateTimePicker
-                  label="End Date"
-                  {...pickerEditorProps('endDate')}
-                />
+                <KeyboardDateTimePicker label='Start Date' {...pickerEditorProps('startDate')} />
+                <KeyboardDateTimePicker label='End Date' {...pickerEditorProps('endDate')} />
               </MuiPickersUtilsProvider>
             </div>
             <div className={classes.wrapper}>
-              <LocationOn className={classes.icon} color="action" />
-              <TextField
-                {...textEditorProps('location')}
-              />
+              <LocationOn className={classes.icon} color='action' />
+              <TextField {...textEditorProps('location')} />
             </div>
             <div className={classes.wrapper}>
-              <Notes className={classes.icon} color="action" />
-              <TextField
-                {...textEditorProps('notes')}
-                multiline
-                rows="6"
-              />
+              <Notes className={classes.icon} color='action' />
+              <TextField {...textEditorProps('notes')} multiline rows='6' />
             </div>
           </div>
           <div className={classes.buttonGroup}>
             {!isNewAppointment && (
               <Button
-                variant="outlined"
-                color="secondary"
+                variant='outlined'
+                color='secondary'
                 className={classes.button}
                 onClick={() => {
                   visibleChange();
                   this.commitAppointment('deleted');
-                }}
-              >
+                }}>
                 Delete
               </Button>
             )}
             <Button
-              variant="outlined"
-              color="primary"
+              variant='outlined'
+              color='primary'
               className={classes.button}
               onClick={() => {
                 visibleChange();
                 applyChanges();
-              }}
-            >
+              }}>
               {isNewAppointment ? 'Create' : 'Save'}
             </Button>
           </div>
@@ -313,12 +285,14 @@ class AppointmentFormContainerBasic extends React.PureComponent {
   }
 }
 
-const AppointmentFormContainer = withStyles(containerStyles, { name: 'AppointmentFormContainer' })(AppointmentFormContainerBasic);
+const AppointmentFormContainer = withStyles(containerStyles, { name: 'AppointmentFormContainer' })(
+  AppointmentFormContainerBasic
+);
 
-const styles = theme => ({
+const styles = (theme) => ({
   addButton: {
     float: 'right',
-    marginTop:  '1vh'
+    marginTop: '1vh',
   },
 });
 
@@ -328,7 +302,6 @@ var mm = String(today.getMonth() + 1).padStart(2, '0');
 var yyyy = today.getFullYear();
 
 today = mm + '-' + dd + '-' + yyyy;
-
 
 /* eslint-disable-next-line react/no-multi-comp */
 class Demo extends React.PureComponent {
@@ -358,7 +331,6 @@ class Demo extends React.PureComponent {
     this.onEditingAppointmentChange = this.onEditingAppointmentChange.bind(this);
     this.onAddedAppointmentChange = this.onAddedAppointmentChange.bind(this);
     this.appointmentForm = connectProps(AppointmentFormContainer, () => {
-
       const {
         editingFormVisible,
         editingAppointment,
@@ -368,11 +340,13 @@ class Demo extends React.PureComponent {
         previousAppointment,
       } = this.state;
 
-      this.currentDateChange = (currentDate) => { this.setState({ currentDate }); };
-      
-      const currentAppointment = data
-        .filter(appointment => editingAppointment && appointment.id === editingAppointment.id)[0]
-        || addedAppointment;
+      this.currentDateChange = (currentDate) => {
+        this.setState({ currentDate });
+      };
+
+      const currentAppointment =
+        data.filter((appointment) => editingAppointment && appointment.id === editingAppointment.id)[0] ||
+        addedAppointment;
       const cancelAppointment = () => {
         if (isNewAppointment) {
           this.setState({
@@ -409,32 +383,32 @@ class Demo extends React.PureComponent {
       this.setState({ dataReady: true}) //, data: formatData(appointments.items)
       console.log(formatData(appointments.items));
     });
-  } */ 
+  } */
 
-  componentDidMount(){
-    this.loadData(); 
+  componentDidMount() {
+    this.loadData();
   }
 
   loadData() {
-    const PUBLIC_KEY =  'AIzaSyA5OGAMBup2tHpeQvt7EA0w2zR-3ZCQ6-0', //'AIzaSyDW9fNZ9R0VhCkBf8KtOqpsTdPAtp6sbD4',
+    const PUBLIC_KEY = 'AIzaSyA5OGAMBup2tHpeQvt7EA0w2zR-3ZCQ6-0', //'AIzaSyDW9fNZ9R0VhCkBf8KtOqpsTdPAtp6sbD4',
       CALENDAR_ID = 'iq90i34lq6v196rqs4986dp370@group.calendar.google.com';
-    const dataUrl = ['https://www.googleapis.com/calendar/v3/calendars/',
-      CALENDAR_ID, '/events?key=', PUBLIC_KEY].join('');
-    
-    fetch(dataUrl).then(
-      (response) => response.json()
-    ).then((appointments) => {
+    const dataUrl = ['https://www.googleapis.com/calendar/v3/calendars/', CALENDAR_ID, '/events?key=', PUBLIC_KEY].join(
+      ''
+    );
+
+    fetch(dataUrl)
+      .then((response) => response.json())
+      .then((appointments) => {
         setTimeout(() => {
           this.setState({
-            data: formatData(appointments.items), 
-            dataReady: true
+            data: formatData(appointments.items),
+            dataReady: true,
           });
         }, 600);
-        console.log(this.state.data); 
+        console.log(this.state.data);
         console.log(appointments.items);
-        
       })
-      .catch(() => this.setState({dataReady: true}));
+      .catch(() => this.setState({ dataReady: true }));
   }
 
   componentDidUpdate() {
@@ -475,9 +449,9 @@ class Demo extends React.PureComponent {
   commitDeletedAppointment() {
     this.setState((state) => {
       const { data, deletedAppointmentId } = state;
-      const nextData = data.filter(appointment => appointment.id !== deletedAppointmentId);
+      const nextData = data.filter((appointment) => appointment.id !== deletedAppointmentId);
       /** Google Calendar Delete */
-      syncGoogleCalendar("delete", data[deletedAppointmentId].gcId);
+      syncGoogleCalendar('delete', data[deletedAppointmentId].gcId);
       return { data: nextData, deletedAppointmentId: null };
     });
     this.toggleConfirmationVisible();
@@ -489,20 +463,20 @@ class Demo extends React.PureComponent {
       if (added) {
         const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0;
         data = [...data, { id: startingAddedId, ...added }];
-        syncGoogleCalendar("insert", added)
+        syncGoogleCalendar('insert', added);
       }
       if (changed) {
-        data = data.map(appointment => (
+        data = data.map((appointment) =>
           changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment
-        ));
+        );
 
-        if(changed[state.editingAppointment.id].title === undefined){
-          data[state.editingAppointment.id].startDate = changed[state.editingAppointment.id].startDate; 
+        if (changed[state.editingAppointment.id].title === undefined) {
+          data[state.editingAppointment.id].startDate = changed[state.editingAppointment.id].startDate;
           data[state.editingAppointment.id].endDate = changed[state.editingAppointment.id].endDate;
-          syncGoogleCalendar("change", data[state.editingAppointment.id]);
-        }else{
-          syncGoogleCalendar("change", changed[state.editingAppointment.id]);
-        };
+          syncGoogleCalendar('change', data[state.editingAppointment.id]);
+        } else {
+          syncGoogleCalendar('change', changed[state.editingAppointment.id]);
+        }
       }
       if (deleted !== undefined) {
         this.setDeletedAppointmentId(deleted);
@@ -525,42 +499,27 @@ class Demo extends React.PureComponent {
     const { classes } = this.props;
 
     if (!dataReady) {
-      return (
-        <p>Loading...</p>
-      );
+      return <p>Loading...</p>;
     } else {
       return (
         <Paper>
-          <Scheduler
-            data={data}
-            height={700}
-          >
-            <ViewState
-              currentDate={currentDate}
-              onCurrentDateChange={this.currentDateChange}
-            />
+          <Scheduler data={data} height={700}>
+            <ViewState currentDate={currentDate} onCurrentDateChange={this.currentDateChange} />
             <EditingState
               onCommitChanges={this.commitChanges}
               onEditingAppointmentChange={this.onEditingAppointmentChange}
               onAddedAppointmentChange={this.onAddedAppointmentChange}
             />
-            <WeekView
-              startDayHour={startDayHour}
-              endDayHour={endDayHour}
-            />
+            <WeekView startDayHour={startDayHour} endDayHour={endDayHour} />
             <MonthView />
             <AllDayPanel />
             <EditRecurrenceMenu />
             <Appointments />
-            <AppointmentTooltip
-              showOpenButton
-              showCloseButton
-              showDeleteButton
-            />
+            <AppointmentTooltip showOpenButton showCloseButton showDeleteButton />
             <Toolbar />
-            <DateNavigator/>
+            <DateNavigator />
             <ViewSwitcher />
-            <TodayButton/>
+            <TodayButton />
             <AppointmentForm
               overlayComponent={this.appointmentForm}
               visible={editingFormVisible}
@@ -569,29 +528,22 @@ class Demo extends React.PureComponent {
             <DragDropProvider />
           </Scheduler>
 
-          <Dialog
-            open={confirmationVisible}
-            onClose={this.cancelDelete}
-          >
-            <DialogTitle>
-              Delete Appointment
-          </DialogTitle>
+          <Dialog open={confirmationVisible} onClose={this.cancelDelete}>
+            <DialogTitle>Delete Appointment</DialogTitle>
             <DialogContent>
-              <DialogContentText>
-                Are you sure you want to delete this appointment?
-            </DialogContentText>
+              <DialogContentText>Are you sure you want to delete this appointment?</DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.toggleConfirmationVisible} color="primary" variant="outlined">
+              <Button onClick={this.toggleConfirmationVisible} color='primary' variant='outlined'>
                 Cancel
-            </Button>
-              <Button onClick={this.commitDeletedAppointment} color="secondary" variant="outlined">
+              </Button>
+              <Button onClick={this.commitDeletedAppointment} color='secondary' variant='outlined'>
                 Delete
-            </Button>
+              </Button>
             </DialogActions>
           </Dialog>
           <Fab
-            color="primary"
+            color='primary'
             className={classes.addButton}
             onClick={() => {
               this.setState({ editingFormVisible: true });
@@ -600,8 +552,7 @@ class Demo extends React.PureComponent {
                 startDate: new Date(currentDate).setHours(startDayHour),
                 endDate: new Date(currentDate).setHours(startDayHour + 1),
               });
-            }}
-          >
+            }}>
             <AddIcon />
           </Fab>
         </Paper>
