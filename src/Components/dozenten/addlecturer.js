@@ -58,7 +58,6 @@ export default function AddLecturer(props) {
     const [mainFocus, setMainFocus] = React.useState([]);
     const [mainFocuses, setMainFocuses] = React.useState(null);
     const [mainFocusList, setMainFocusList] = React.useState(null);
-    const [cv, setCv] = React.useState(null);
     const [submit, setSubmit] = React.useState(true);
     const [open, setOpen] = React.useState(props.open);
     const [open2, setOpen2] = React.useState(false);
@@ -115,7 +114,6 @@ export default function AddLecturer(props) {
             "phonenumber": telnr,
             "experience": "",
             "mainFocus_ids": selectedIds,
-            "cv": cv,
             "comment": "",
             "is_extern": extern,
             "allow_manipulation": manipulation
@@ -183,9 +181,6 @@ export default function AddLecturer(props) {
     const handleMainFocus = (event) => {
         setMainFocus(event.target.value);
     };
-    const handleUpload = event => {
-        setCv(event.target.files[0])
-    }
 
     const getMainFocuses = () => {
         const url = "api/mainFocuses?token=" + localStorage.getItem("ExoplanSessionToken")
@@ -304,14 +299,6 @@ export default function AddLecturer(props) {
                                         <MenuItem value={false}>Nein</MenuItem>
                                     </Select>
                                 </FormControl>
-                            </Grid>
-
-                            <Grid item xs={12}>
-                                <FormControl style={{ marginTop: 10 }} required className={classes.formControl}>
-                                    <Input id="my-input" type="file" aria-describedby="my-helper-text" onChange={handleUpload} />
-                                    <FormHelperText id="my-helper-text">Upload Lebenslauf</FormHelperText>
-                                </FormControl>
-
                             </Grid>
                         </Grid>
                     </DialogContentText>
