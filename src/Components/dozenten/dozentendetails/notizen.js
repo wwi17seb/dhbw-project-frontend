@@ -53,7 +53,7 @@ export default function Notizen(props) {
         delete data["lecturer_id"]
         data["comment"] = comment
         axios.put(url, data).then(res => {
-            window.location.reload()
+            window.location.assign("/dozenten")
         })
     }
 
