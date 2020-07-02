@@ -43,7 +43,7 @@ export default function FormDialog() {
                 "name": majorSubject,
                 "catalog_effective_from": year.toString()
             } ).then((res) => {
-                history.push("/modulkatalog");
+                history.push("/modulkatalog/details/"+fieldOfStudy + " " + majorSubject + " " + year);
             }).catch((err) => {
                 console.log(err)
             })
