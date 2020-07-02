@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import AddCalendar from './addCalendar'
+import GetGoogleCalendar from './getGoogleCalendar'
 import AddSemester from './addSemester'
 
 const useStyles = makeStyles(theme => ({
@@ -17,7 +17,7 @@ const AddTabContent = () => {
     return (
         <div style={{padding:0}}>
         <AddSemester></AddSemester>
-        <AddCalendar></AddCalendar>
+        <GetGoogleCalendar></GetGoogleCalendar>
         </div>
     )
 }
