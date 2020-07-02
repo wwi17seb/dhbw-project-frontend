@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Nav from '../nav/Nav';
 import { Tabs } from '@material-ui/core';
+import GeneralTab from './GeneralTab';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -57,21 +58,52 @@ const DataTabs = (props) => {
     setValue(newValue);
   };
 
-  const tabLabels = ['Studiengänge', 'Schwerpunkte', 'Prüfungsleistungen'];
+  const config = [
+    {
+      label: 'Studiengänge',
+      labelSingular: 'Studiengang',
+      route: 'fieldsOfStudy',
+      idQueryName: 'fieldOfStudyId',
+      idDbName: 'fieldOfStudy_id',
+      payloadName: 'FieldsOfStudy',
+      attributes: [{ db: 'name', name: 'Studiengang', namePlural: 'Studiengänge' }],
+    },
+    {
+      label: 'Schwerpunkte',
+      labelSingular: 'Schwerpunkt',
+      route: 'mainFocuses',
+      idQueryName: 'mainFocusId',
+      idDbName: 'mainFocus_id',
+      payloadName: 'MainFocuses',
+      attributes: [{ db: 'name', name: 'Schwerpunkt', namePlural: 'Schwerpunkte' }],
+    },
+    {
+      label: 'Prüfungsleistungen',
+      labelSingular: 'Prüfungsleistung',
+      route: 'academicRecords',
+      idQueryName: 'academicRecordId',
+      idDbName: 'academicRecord_id',
+      payloadName: 'AcademicRecords',
+      attributes: [
+        { db: 'type', name: 'Prüfungsleistung', namePlural: 'Prüfungsleistungen' },
+        { db: 'abbreviation', name: 'Abkürzung', namePlural: 'Abkürzungen' },
+      ],
+    },
+  ];
+
   const finalTabLabels = [];
   const finalTabPanels = [];
-  const finalPanelContent = [];
   let tabIndex = 0;
 
-  for (let tabLabel of tabLabels) {
-    finalTabLabels.push(<Tab key={tabIndex} label={tabLabel} {...a11yProps({ tabIndex })} />);
+  config.forEach((conf) => {
+    finalTabLabels.push(<Tab key={tabIndex} label={conf.label} {...a11yProps({ tabIndex })} />);
     finalTabPanels.push(
       <TabPanel key={tabIndex} value={value} index={tabIndex}>
-        {finalPanelContent[tabIndex]}
+        {<GeneralTab {...conf} key={tabIndex} />}
       </TabPanel>
     );
     tabIndex++;
-  }
+  });
 
   return (
     <div className={classes.root}>

@@ -24,7 +24,7 @@ const AddUserDialog = ({ openAddUserDialog, handleClose, showSnackbar, reloadDat
 
     APICall('POST', 'createUser', userToCreate).then((res) => {
       res.status === 201 && res.data
-        ? showSnackbar('Der Nutzer wurdeerfolgreich zangelegt', SEVERITY.SUCCESS)
+        ? showSnackbar('Erfolgreich angelegt.', SEVERITY.SUCCESS)
         : showSnackbar('Es ist ein Fehler aufgetreten.', SEVERITY.WARNING);
       handleClose();
       reloadData();
