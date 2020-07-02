@@ -37,11 +37,11 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 const routing = (
   <MuiThemeProvider theme={theme}>
     <Router>
-      <Route path="/kontoeinstellungen" component={Kontoeinstellungen} />
-      <Route path="/kurse" component={Kurse} />
-      <Route path="/dozenten" component={Dozenten} />
-      <Route exact path='/modulkatalog' component={Modulkatalog} />
-      <Route exact path='/modulkatalog/details/:name' component={ModulkatalogDetail} />
+      <PrivateRoute path="/kontoeinstellungen" component={Kontoeinstellungen} />
+      <PrivateRoute path="/kurse" component={Kurse} />
+      <PrivateRoute path="/dozenten" component={Dozenten} />
+      <PrivateRoute exact path='/modulkatalog' component={Modulkatalog} />
+      <PrivateRoute exact path='/modulkatalog/details/:name' component={ModulkatalogDetail} />
       <Route exact path='/' component={Login} />
       <Route exact path="/reset" component={ResetPassword} />
     </Router>
