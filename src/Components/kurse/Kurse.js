@@ -93,14 +93,6 @@ export default function ScrollableTabsButtonAuto(props) {
       <main className={classes.content}>
         <div className={classes.toolbar} />
 
-        {props.location.state !== undefined ?
-          <div className="alert alert-success alert-dismissible fadeOut" role="alert" id="success-alert">
-            <strong>{props.location.state.message}</strong>
-            <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div> : null}
-
         <Paper>
           <Tabs
             value={value}

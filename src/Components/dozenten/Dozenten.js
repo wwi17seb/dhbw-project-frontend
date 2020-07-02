@@ -23,7 +23,6 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
-import './dozenten.css';
 import Nav from '../nav/Nav';
 import LecturerList from './lecturerlist'
 import { Route, Switch } from 'react-router-dom'

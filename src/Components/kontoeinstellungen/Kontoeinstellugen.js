@@ -188,12 +188,12 @@ export default function KontoeinstellungenTable() {
                 <DialogActions>
                   <Form.Group as={Row}>
                     <Col sm={{ span: 8, offset: 0 }}>
-                      <Button variant="outlined" color="primary" type="reset" onClick={handleClose}>Abbrechen</Button>
+                      <Button color="primary" type="reset" onClick={handleClose}>Abbrechen</Button>
                     </Col>
                   </Form.Group>
                   <Form.Group as={Row}>
                     <Col sm={{ span: 8, offset: 0 }}>
-                      <Button variant="outlined" color="primary" type="submit">Hinzufügen</Button>
+                      <Button color="primary" type="submit">Hinzufügen</Button>
                     </Col>
                   </Form.Group>
                 </DialogActions>
@@ -225,12 +225,12 @@ export default function KontoeinstellungenTable() {
                 <DialogActions>
                   <Form.Group as={Row}>
                     <Col sm={{ span: 8, offset: 0 }}>
-                      <Button variant="outlined" color="primary" type="reset" onClick={handleClose}>Abbrechen</Button>
+                      <Button color="primary" type="reset" onClick={handleClose}>Abbrechen</Button>
                     </Col>
                   </Form.Group>
                   <Form.Group as={Row}>
                     <Col sm={{ span: 8, offset: 0 }}>
-                      <Button variant="outlined" color="primary" type="submit">Bestätigen</Button>
+                      <Button color="primary" type="submit">Bestätigen</Button>
                     </Col>
                   </Form.Group>
                 </DialogActions>
@@ -252,12 +252,12 @@ export default function KontoeinstellungenTable() {
                 <DialogActions>
                   <Form.Group as={Row}>
                     <Col sm={{ span: 8, offset: 0 }}>
-                      <Button variant="outlined" color="primary" type="reset" onClick={handleClose}>Abbrechen</Button>
+                      <Button color="primary" type="reset" onClick={handleClose}>Abbrechen</Button>
                     </Col>
                   </Form.Group>
                   <Form.Group as={Row}>
                     <Col sm={{ span: 8, offset: 0 }}>
-                      <Button variant="outlined" color="primary" type="submit">Bestätigen</Button>
+                      <Button color="primary" type="submit">Bestätigen</Button>
                     </Col>
                   </Form.Group>
                 </DialogActions>
@@ -278,7 +278,7 @@ export default function KontoeinstellungenTable() {
               </CardContent>
             </CardActionArea>
             <CardActions>
-              <Button type="button" variant="outlined" style={{ margin: "0 auto" }} onClick={handleDialogMail}>
+              <Button type="button" variant="contained" color="primary" style={{ margin: "0 auto" }} onClick={handleDialogMail}>
                 E-Mail ändern
         </Button>
             </CardActions>
@@ -294,7 +294,7 @@ export default function KontoeinstellungenTable() {
               </CardContent>
             </CardActionArea>
             <CardActions>
-              <Button type="button" variant="outlined" style={{ margin: "0 auto" }} onClick={handleDialogPassword} >
+              <Button type="button" variant="contained" color="primary" style={{ margin: "0 auto" }} onClick={handleDialogPassword} >
                 Passwort ändern
         </Button>
             </CardActions>
@@ -310,7 +310,7 @@ export default function KontoeinstellungenTable() {
               </CardContent>
             </CardActionArea>
             <CardActions >
-              <Button type="button" variant="outlined" onClick={handleDialogStudiengangsleiter} style={{ margin: "0 auto" }} >
+              <Button type="button" variant="contained" color="primary" onClick={handleDialogStudiengangsleiter} style={{ margin: "0 auto" }} >
                 Studiengangsleiter hinzufügen
         </Button>
             </CardActions>
