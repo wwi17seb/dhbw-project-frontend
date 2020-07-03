@@ -1,10 +1,15 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { APICall } from '../../helper/Api';
 import { Grid, TextField, Button } from '@material-ui/core';
+import { SEVERITY } from '../Snackbar/SnackbarSeverity';
+import SnackBar from '../Snackbar/Snackbar';
 
 const RegisterContent = () => {
   const [registerKey, setRegisterKey] = useState('');
   const [isRegisterKeyDisabled, setIsRegisterKeyDisabled] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const getRegisterKey = async () => {
     APICall('GET', 'registerKey').then((res) => {
@@ -20,10 +25,19 @@ const RegisterContent = () => {
     setRegisterKey(event.target.value);
   };
 
+  const showSnackbar = (message, severity) => {
+    setMessage(message);
+    setSeverity(severity);
+    setSnackbarOpen(true);
+  };
+
   const handleUpdate = () => {
     APICall('PUT', 'registerKey', { registerKey }).then((res) => {
       if (res.status === 200) {
+        showSnackbar('Der Registrierungsschlüssel wurde erfolgreich aktualisiert.', SEVERITY.SUCCESS);
         setIsRegisterKeyDisabled(!registerKey);
+      } else {
+        showSnackbar('Die Aktualisierung des Registrierungsschlüssels ist fehlgeschlagen.', SEVERITY.WARNING);
       }
     });
   };
@@ -32,7 +46,10 @@ const RegisterContent = () => {
     setRegisterKey('');
     APICall('PUT', 'registerKey', { registerKey: '' }).then((res) => {
       if (res.status === 200) {
+        showSnackbar('Der Registrierungsschlüssel wurde erfolgreich deaktiviert.', SEVERITY.SUCCESS);
         setIsRegisterKeyDisabled(true);
+      } else {
+        showSnackbar('Die Deaktivierung des Registrierungsschlüssels ist fehlgeschlagen.', SEVERITY.WARNING);
       }
     });
   };
@@ -53,6 +70,7 @@ const RegisterContent = () => {
       <Button onClick={handleDisable} color='primary'>
         Deaktivieren
       </Button>
+      <SnackBar isOpen={snackbarOpen} message={message} severity={severity} />
     </Fragment>
   );
 };
