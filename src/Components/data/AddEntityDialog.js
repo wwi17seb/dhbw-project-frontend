@@ -9,6 +9,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { APICall } from '../../helper/Api';
 import { SEVERITY } from '../Snackbar/SnackbarSeverity';
+import { TextField } from '@material-ui/core';
 
 const AddEntityDialog = ({
   addDialog,
@@ -20,20 +21,22 @@ const AddEntityDialog = ({
   labelSingular,
   idToBeUpdated,
   idQueryName,
+  valueToBeUpdated,
 }) => {
   const [attributeState, setAttributeState] = useState({});
 
   const setAttribute = (key, value) => {
-    const newAttributeState = { ...attributeState };
-    newAttributeState[key] = value;
-    setAttributeState(newAttributeState);
+    setAttributeState((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
   };
 
   useEffect(() => {
     attributes.forEach((attr) => {
-      setAttribute(attr.db, '');
+      setAttribute(attr.db, idToBeUpdated === undefined ? '' : valueToBeUpdated[attr.db]);
     });
-  }, [attributes]);
+  }, [attributes, valueToBeUpdated, idToBeUpdated]);
 
   const getAttribute = (key) => {
     return attributeState[key];
@@ -76,10 +79,11 @@ const AddEntityDialog = ({
           {attributes.map((attr) => (
             <Form.Group as={Row} controlId={attr.db}>
               <Col>
-                <Form.Control
-                  type='text'
-                  placeholder={attr.name}
+                <TextField
+                  label={attr.name}
+                  value={getAttribute(attr.db)}
                   onChange={({ target: { value } }) => setAttribute(attr.db, value)}
+                  variant="outlined"
                 />
               </Col>
             </Form.Group>

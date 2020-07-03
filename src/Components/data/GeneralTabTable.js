@@ -40,6 +40,7 @@ const GeneralTabTable = ({
   const [severity, setSeverity] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [idToBeUpdated, setIdToBeUpdated] = useState(undefined);
+  const [valueToUpdate, setValueToUpdate] = useState({});
 
   const showDeleteDialog = (entityId) => {
     setIdToBeDeletedWhenConfirmedInDialog(entityId);
@@ -61,9 +62,10 @@ const GeneralTabTable = ({
     });
   };
 
-  const updateData = async (entityId) => {
+  const updateData = async (entityId, valueToUpdate) => {
     setIdToBeUpdated(entityId);
     setAddDialog(true);
+    setValueToUpdate(valueToUpdate)
   };
 
   const onDelete = async (e) => {
@@ -100,7 +102,7 @@ const GeneralTabTable = ({
               labelSingular={labelSingular}
               key={index}
               onDelete={() => showDeleteDialog(entry[idDbName])}
-              onEdit={() => updateData(entry[idDbName])}
+              onEdit={(valueToUpdate) => updateData(entry[idDbName], valueToUpdate)}
             />
           ))}
         </Paper>
@@ -115,6 +117,7 @@ const GeneralTabTable = ({
         attributes={attributes}
         labelSingular={labelSingular}
         idToBeUpdated={idToBeUpdated}
+        valueToBeUpdated={valueToUpdate}
         idQueryName={idQueryName}
       />
       <DeleteEntityDialog

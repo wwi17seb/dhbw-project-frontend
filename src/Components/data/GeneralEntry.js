@@ -12,7 +12,7 @@ const GeneralEntry = ({ attributes, entry, onDelete, onEdit, labelSingular }) =>
           ))}
           <Grid item xs style={{textAlign: "right"}}>
             <Tooltip title={`${labelSingular} editieren`}>
-              <Edit style={{ cursor: 'pointer' }} onClick={() => onEdit()} />
+              <Edit style={{ cursor: 'pointer' }} onClick={() => onEdit(entry)} />
             </Tooltip>
             <Tooltip title={`${labelSingular} löschen`}>
               <Delete style={{ cursor: 'pointer' }} onClick={() => onDelete()} />

@@ -16,3 +16,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.MuiBox-root {
+  padding: 24px 0 !important;
+}
+.MuiGrid-spacing-xs-2 {
+  width: 100% !important;
+  margin: 0 !important;
+}

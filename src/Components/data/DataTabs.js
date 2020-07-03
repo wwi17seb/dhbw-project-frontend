@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import Nav from '../nav/Nav';
 import { Tabs } from '@material-ui/core';
 import GeneralTab from './GeneralTab';
@@ -50,9 +50,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DataTabs = (props) => {
+const DataTabs = () => {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
