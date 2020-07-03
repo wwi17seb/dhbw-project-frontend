@@ -7,8 +7,8 @@ const GeneralEntry = ({ attributes, entry, onDelete, onEdit, labelSingular }) =>
     <Fragment>
       <Grid item xs={12}>
         <Grid container spacing={2}>
-          {attributes.map((attr) => (
-            <Grid item xs>{entry[attr.db]}</Grid>
+          {attributes.map((attr, index) => (
+            <Grid item xs key={index}>{entry[attr.db]}</Grid>
           ))}
           <Grid item xs style={{textAlign: "right"}}>
             <Tooltip title={`${labelSingular} editieren`}>

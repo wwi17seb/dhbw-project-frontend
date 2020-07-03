@@ -35,7 +35,7 @@ const GoogleCalendar = () => {
       }
     });
   };
-  
+
   const handleUpdate = () => {
     const req = {};
     attributes.forEach((attr) => (req[attr.db] = getAttribute(attr.db)));
@@ -58,25 +58,26 @@ const GoogleCalendar = () => {
 
   return (
     <Fragment>
-      {attributes.map((attr, index) => (
-        <div key={index}>
-          <TextField
-            label={attr.name}
-            value={getAttribute(attr.db) || ""}
-            onChange={({ target: { value } }) => setAttribute(attr.db, value)}
-            variant="outlined"
-          />
-        </div>
-      ))}
-      <Grid item xs={4}>
-        <Button
-          style={{ color: '#ffffff', backgroundColor: '#e30613' }}
-          variant='outlined'
-          color='primary'
-          onClick={handleUpdate}>
-          Speichern
-        </Button>
+      <Grid item xs={6} style={{ margin: '0.5em 0' }}>
+        {attributes.map((attr, index) => (
+          <div key={index}>
+            <TextField
+              label={attr.name}
+              value={getAttribute(attr.db) || ''}
+              onChange={({ target: { value } }) => setAttribute(attr.db, value)}
+              variant='outlined'
+              style={{marginTop: index === 0 ? '0' : '1.5em'}}
+            />
+          </div>
+        ))}
       </Grid>
+      <Button
+        style={{ color: '#ffffff', backgroundColor: '#e30613' }}
+        variant='outlined'
+        color='primary'
+        onClick={handleUpdate}>
+        Speichern
+      </Button>
       <SnackBar isOpen={snackbarOpen} message={message} severity={severity} />
     </Fragment>
   );

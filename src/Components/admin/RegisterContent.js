@@ -62,7 +62,7 @@ const RegisterContent = () => {
 
   return (
     <Fragment>
-      {isRegisterKeyDisabled ? 'Aktuell ist die Registrierung mit einem Registrierungsschlüssel deaktiviert' : ''}
+      {isRegisterKeyDisabled ? 'Aktuell ist die Registrierung mit einem Registrierungsschlüssel deaktiviert' : null}
       <Grid item xs={6} style={{margin: '0.5em 0' }}>
         <TextField
           value={registerKey}

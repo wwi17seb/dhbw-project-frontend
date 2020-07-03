@@ -6,7 +6,6 @@ import Logo from '../../images/dhbw_logo.png';
 import { NAV_ITEMS } from '../../shared/navConstants';
 import SnackBar from '../Snackbar/Snackbar';
 import { SEVERITY } from '../Snackbar/SnackbarSeverity';
-import './login.css';
 
 const PasswordResetForced = (props) => {
   const [oldPassword, setOldPassword] = useState('');

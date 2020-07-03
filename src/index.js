@@ -1,3 +1,4 @@
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom';
@@ -16,6 +17,22 @@ import ModulkatalogDetail from './Components/modulkatalog/ModulkatalogDetail';
 import './index.css';
 import { NAV_ITEMS } from './shared/navConstants';
 
+// Color theme for whole app
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#e2001a',
+      light: '#ff5444',
+      dark: '#a70000',
+    },
+    secondary: {
+      main: '#5c6971',
+      light: '#89979f',
+      dark: '#323e49',
+    },
+  },
+});
+
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
@@ -26,17 +43,19 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 );
 
 const routing = (
-  <Router>
-    <Route path={NAV_ITEMS.SETTINGS.link} component={Kontoeinstellungen} />
-    <Route path={NAV_ITEMS.COURSES.link} component={Kurse} />
-    <Route path={NAV_ITEMS.LECTURERS.link} component={Dozenten} />
-    <Route exact path={NAV_ITEMS.MODULECATALOG.link} component={Modulkatalog} />
-    <Route exact path={`${NAV_ITEMS.MODULECATALOG.link}/details/:name`} component={ModulkatalogDetail} />
-    <Route exact path={NAV_ITEMS.LOGIN.link} component={Login} />
-    <Route exact path={NAV_ITEMS.RESET.link} component={ResetPassword} />
-    <Route exact path={NAV_ITEMS.PASSWORD_RESET_FORCED.link} component={PasswordResetForced} />
-    <Route exact path={NAV_ITEMS.ADMIN.link} component={Admin} />
-    <Route exact path={NAV_ITEMS.DATA.link} component={Data} />
-  </Router>
+  <MuiThemeProvider theme={theme}>
+    <Router>
+      <PrivateRoute path={NAV_ITEMS.SETTINGS.link} component={Kontoeinstellungen} />
+      <PrivateRoute path={NAV_ITEMS.COURSES.link} component={Kurse} />
+      <PrivateRoute path={NAV_ITEMS.LECTURERS.link} component={Dozenten} />
+      <PrivateRoute exact path={NAV_ITEMS.MODULECATALOG.link} component={Modulkatalog} />
+      <PrivateRoute exact path={`${NAV_ITEMS.MODULECATALOG.link}/details/:name`} component={ModulkatalogDetail} />
+      <Route exact path={NAV_ITEMS.LOGIN.link} component={Login} />
+      <Route exact path={NAV_ITEMS.RESET.link} component={ResetPassword} /> {/* DEPRECATED */}
+      <Route exact path={NAV_ITEMS.PASSWORD_RESET_FORCED.link} component={PasswordResetForced} />
+      <PrivateRoute exact path={NAV_ITEMS.ADMIN.link} component={Admin} />
+      <PrivateRoute exact path={NAV_ITEMS.DATA.link} component={Data} />
+    </Router>
+  </MuiThemeProvider>
 );
 ReactDOM.render(routing, document.getElementById('root'));

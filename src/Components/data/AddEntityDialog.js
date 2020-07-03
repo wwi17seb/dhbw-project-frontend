@@ -76,8 +76,8 @@ const AddEntityDialog = ({
       </DialogTitle>
       <DialogContent>
         <Form onSubmit={createNew}>
-          {attributes.map((attr) => (
-            <Form.Group as={Row} controlId={attr.db}>
+          {attributes.map((attr, index) => (
+            <Form.Group as={Row} controlId={attr.db} key={index}>
               <Col>
                 <TextField
                   label={attr.name}

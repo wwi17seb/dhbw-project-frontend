@@ -13,8 +13,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../../images/ExoPlanLogo_transparent.png';
-import { NAV_LINKS } from '../../shared/navConstants';
-import './nav.css';
+import { NAV_LINKS, NAV_ITEMS } from '../../shared/navConstants';
 
 const drawerWidth = 240;
 
@@ -24,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
+    backgroundColor: theme.palette.secondary.dark,
   },
   toolbarButtons: {
     marginLeft: 'auto',
@@ -36,6 +36,10 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
   },
   toolbar: theme.mixins.toolbar,
+  navBarLogo: {
+    width: '8rem',
+    height: 'auto',
+  },
 }));
 
 export default function PermanentDrawerLeft() {
@@ -66,9 +70,11 @@ export default function PermanentDrawerLeft() {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar style={{ background: '#323e46' }} position='fixed' className={classes.appBar}>
+      <AppBar position='fixed' className={classes.appBar}>
         <Toolbar>
-          <img src={Logo} alt='ExoPlan Logo' className='NavBarLogo'></img>
+          <Link to={NAV_ITEMS.COURSES.link}>
+            <img src={Logo} alt='ExoPlan Logo' className={classes.navBarLogo} style={{ cursor: 'pointer' }} />
+          </Link>
           <div className={classes.toolbarButtons}>
             <IconButton
               aria-label='account of current user'
