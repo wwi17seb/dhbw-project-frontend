@@ -17,6 +17,8 @@ const RegisterContent = () => {
         const registerKey = res.data.payload.registerKey;
         setRegisterKey(registerKey);
         setIsRegisterKeyDisabled(!registerKey);
+      } else {
+        showSnackbar('Beim Laden der Daten ist ein Fehler aufgetreten.', SEVERITY.ERROR);
       }
     });
   };
@@ -37,7 +39,7 @@ const RegisterContent = () => {
         showSnackbar('Der Registrierungsschlüssel wurde erfolgreich aktualisiert.', SEVERITY.SUCCESS);
         setIsRegisterKeyDisabled(!registerKey);
       } else {
-        showSnackbar('Die Aktualisierung des Registrierungsschlüssels ist fehlgeschlagen.', SEVERITY.WARNING);
+        showSnackbar('Die Aktualisierung des Registrierungsschlüssels ist fehlgeschlagen.', SEVERITY.ERROR);
       }
     });
   };
@@ -49,7 +51,7 @@ const RegisterContent = () => {
         showSnackbar('Der Registrierungsschlüssel wurde erfolgreich deaktiviert.', SEVERITY.SUCCESS);
         setIsRegisterKeyDisabled(true);
       } else {
-        showSnackbar('Die Deaktivierung des Registrierungsschlüssels ist fehlgeschlagen.', SEVERITY.WARNING);
+        showSnackbar('Die Deaktivierung des Registrierungsschlüssels ist fehlgeschlagen.', SEVERITY.ERROR);
       }
     });
   };
@@ -61,13 +63,26 @@ const RegisterContent = () => {
   return (
     <Fragment>
       {isRegisterKeyDisabled ? 'Aktuell ist die Registrierung mit einem Registrierungsschlüssel deaktiviert' : ''}
-      <Grid item xs={6}>
-        <TextField value={registerKey} onChange={handleRegisterKey} label='Registrierungsschlüssel' />
+      <Grid item xs={6} style={{margin: '0.5em 0' }}>
+        <TextField
+          value={registerKey}
+          onChange={handleRegisterKey}
+          label='Registrierungsschlüssel'
+          variant='outlined'
+        />
       </Grid>
-      <Button onClick={handleUpdate} color='primary'>
+      <Button
+        style={{ color: '#ffffff', backgroundColor: '#e30613', marginRight: '0.5em' }}
+        variant='outlined'
+        color='primary'
+        onClick={handleUpdate}>
         Speichern
       </Button>
-      <Button onClick={handleDisable} color='primary'>
+      <Button
+        style={{ marginLeft: '0.5rem', color: '#ffffff', backgroundColor: '#e30613'}}
+        variant='outlined'
+        color='primary'
+        onClick={handleDisable}>
         Deaktivieren
       </Button>
       <SnackBar isOpen={snackbarOpen} message={message} severity={severity} />
