@@ -16,6 +16,7 @@ import Switch from '@material-ui/core/Switch'
 import InputLabel from '@material-ui/core/InputLabel'
 import Chip from '@material-ui/core/Chip'
 import FormControl from '@material-ui/core/FormControl'
+import { Input } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -56,8 +57,8 @@ export default function ModulAddStepper() {
     const [steps, setSteps] = React.useState(STEPS);
     const [data, setData] = React.useState({
         'wahlmodul': false,
-        'semestervon': '2020',
-        'prüfungsleistungen': []
+        'prüfungsleistungen': ["Klausur"],
+        'benotet': true
     });
 
     const ITEM_HEIGHT = 48;
@@ -78,7 +79,11 @@ export default function ModulAddStepper() {
     const handleClose = () => {
         setActiveStep(0)
         setSteps(STEPS)
-        setData({})
+        setData({
+            'wahlmodul': false,
+            'prüfungsleistungen': ["Klausur"],
+            'benotet': true
+        })
         setOpen(false)
 
     };
@@ -110,6 +115,14 @@ export default function ModulAddStepper() {
         let newLecture = `Lehr- und Lerninhalte (Vorlesung ${steps.length - 1})`
         setSteps([...steps, newLecture])
         setActiveStep(steps.length);
+    }
+
+    const getSemesterInterval = () => {
+        let semesters = [1,2,3,4,5,6];
+        return ( (semesters).map((semester) => (
+            <MenuItem key={semester} value={semester}>{semester}</MenuItem>
+            ))
+        );
     }
 
     return (
@@ -178,7 +191,6 @@ export default function ModulAddStepper() {
                         label="Modul"
                         type="text"
                         fullWidth
-                        variant="filled"
                         onChange={updateField}
                     />
                     <TextField
@@ -189,7 +201,6 @@ export default function ModulAddStepper() {
                         fullWidth
                         rows={6}
                         multiline
-                        variant="filled"
                         onChange={updateField}
                     />
                     <TextField
@@ -199,7 +210,6 @@ export default function ModulAddStepper() {
                         label="Gruppenname"
                         type="text"
                         fullWidth
-                        variant="filled"
                         onChange={updateField}
                     />
                     <TextField
@@ -209,7 +219,6 @@ export default function ModulAddStepper() {
                         label="Alternativ-Modul"
                         type="text"
                         fullWidth
-                        variant="filled"
                         onChange={updateField}
                     />
                     <TextField
@@ -218,8 +227,9 @@ export default function ModulAddStepper() {
                         id="Beschreibung"
                         label="Beschreibung"
                         type="text"
+                        rows={6}
+                        multiline
                         fullWidth
-                        variant="filled"
                         onChange={updateField}
                     />
                 </>)
@@ -227,32 +237,53 @@ export default function ModulAddStepper() {
         else if (step === 1) {
             return (
                 <>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="SemesterVon"
-                        label="Von Semester"
-                        type="text"
-                        fullWidth
-                        variant="filled"
-                    />
-                    <TextField
-                        margin="dense"
-                        id="SemesterBis"
-                        label="Bis Semester"
-                        type="text"
-                        fullWidth
-                        variant="filled"
-                    />
+                    <FormControl className={classes.formControl}>
+                        <InputLabel id="semesterVon-label">von Semester</InputLabel>
+                        <Select
+                            id="semesterVon-select"
+                            name="semesterVon"
+                            labelId="semesterVon-label"
+                            value={data.semestervon}
+                            onChange={updateSelect}
+                            >
+                            {getSemesterInterval()}
+                        </Select>
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                        <InputLabel id="semesterBis-label">bis Semester</InputLabel>
+                        <Select
+                            id="semesterBis-select"
+                            name="semesterBis"
+                            labelId="semesterBis-label"
+                            value={data.semesterbis}
+                            onChange={updateSelect}
+                            >
+                            {getSemesterInterval()}
+                        </Select>
+                    </FormControl>
                     <TextField
                         margin="dense"
                         id="Voraussetzung"
                         label="Voraussetzung für Teilnahme"
                         type="text"
                         fullWidth
-                        variant="filled"
                     />
 
+                    <FormControl className={classes.formControl}>
+                        <FormControlLabel
+                            label="Benotet"
+                            control={
+                                <Switch
+                                    id='Benotet'
+                                    checked={data.benotet}
+                                    onChange={updateSwitch}
+                                    name="checkedB"
+                                    color="primary"
+                                />
+                            }
+                        />
+                    </FormControl>
+                    <br></br>
                     <FormControl>
                         <InputLabel margin='dense' id="labelPrüfungsleistungen">Prüfungsleistung</InputLabel>
                         <Select
@@ -260,6 +291,8 @@ export default function ModulAddStepper() {
                             name='prüfungsleistungen'
                             multiple
                             margin='dense'
+                            fullWidth
+                            placeholder="mehrfach auswählen"
                             value={data.prüfungsleistungen}
                             onChange={updateSelect}
                             renderValue={(selected) => (
@@ -275,21 +308,13 @@ export default function ModulAddStepper() {
                         ))}
                         </Select>
                     </FormControl>
-                    <TextField
-                        margin="dense"
-                        id="Benotet"
-                        label="Benotet"
-                        type="text"
-                        fullWidth
-                        variant="filled"
-                    />
+                    
                     <TextField
                         margin="dense"
                         id="ECTS"
                         label="ECTS"
                         type="text"
                         fullWidth
-                        variant="filled"
                     />
                     <TextField
                         margin="dense"
@@ -297,15 +322,6 @@ export default function ModulAddStepper() {
                         label="Katalog-ID"
                         type="text"
                         fullWidth
-                        variant="filled"
-                    />
-                    <TextField
-                        margin="dense"
-                        id="Beschreibung"
-                        label="Beschreibung"
-                        type="text"
-                        fullWidth
-                        variant="filled"
                     />
                 </>)
         }
@@ -319,7 +335,6 @@ export default function ModulAddStepper() {
                         label="Vorlesung"
                         type="text"
                         fullWidth
-                        variant="filled"
                     />
                     <TextField
                         margin="dense"
@@ -327,7 +342,6 @@ export default function ModulAddStepper() {
                         label="Präsenzzeit"
                         type="text"
                         fullWidth
-                        variant="filled"
                     />
                     <TextField
                         margin="dense"
@@ -335,7 +349,6 @@ export default function ModulAddStepper() {
                         label="Selbststudium"
                         type="text"
                         fullWidth
-                        variant="filled"
                     />
                     <TextField
                         margin="dense"
@@ -343,7 +356,6 @@ export default function ModulAddStepper() {
                         label="Katalog-ID"
                         type="text"
                         fullWidth
-                        variant="filled"
                     />
                 </>)
         }
@@ -357,7 +369,6 @@ export default function ModulAddStepper() {
                         label="Vorlesung"
                         type="text"
                         fullWidth
-                        variant="filled"
                     />
                     <TextField
                         margin="dense"
@@ -365,7 +376,6 @@ export default function ModulAddStepper() {
                         label="Präsenzzeit"
                         type="text"
                         fullWidth
-                        variant="filled"
                     />
                     <TextField
                         margin="dense"
@@ -373,7 +383,6 @@ export default function ModulAddStepper() {
                         label="Selbststudium"
                         type="text"
                         fullWidth
-                        variant="filled"
                     />
                     <TextField
                         margin="dense"
@@ -381,7 +390,6 @@ export default function ModulAddStepper() {
                         label="Katalog-ID"
                         type="text"
                         fullWidth
-                        variant="filled"
                     />
                 </>)
         }
