@@ -17,6 +17,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Chip from '@material-ui/core/Chip'
 import FormControl from '@material-ui/core/FormControl'
 import { Input } from '@material-ui/core';
+import { APICall } from '../../helper/Api';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -48,11 +49,12 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function ModulAddStepper() {
+export default function ModulAddStepper(props) {
     const STEPS = ['Modul', 'Modulinfo', 'Lehr- und Lerninhalte (Vorlesung)']
     const PRÜFUNGSLEISTUNGEN = ['Klausur', 'Seminararbeit', 'Mündliche Prüfung']
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+    const [disabled, setDisabled] = React.useState(false);
     const [activeStep, setActiveStep] = React.useState(0);
     const [steps, setSteps] = React.useState(STEPS);
     const [data, setData] = React.useState({
@@ -87,6 +89,39 @@ export default function ModulAddStepper() {
         setOpen(false)
 
     };
+
+    const handleSend = () => {
+        APICall("POST", "/moduleGroups", {
+            "majorSubject_id": props.majorSubjectId,
+            "name": data.Modul,
+            "number_of_modules_to_attend": 0,
+            "from_semester_number": data.semestervon,
+            "to_semester_number": data.semesterbis,
+            "Modules": [
+                {
+                    "name": "[NAME_DES_MODULS]",
+                    "description": data.Beschreibung,
+                    "ects": data.ECTS,
+                    "catalog_id": data.KatalogID,
+                    "academicRecord_ids": [ 0, 0 ],
+                    "number_of_lectures_to_attend": 0,
+                    "rated": true,
+                    "requirements": "[ANFODERUNGEN]",
+                    "Lectures": [
+                        {
+                            "name": "[NAME_DER_VORLESUNG]",
+                            "workload_home": 0,
+                            "workload_dhbw": 0,
+                            "catalog_id": data.KatalogID,
+                            "mainFocus_ids": [ 1, 2 ]
+                        }
+                    ]
+                }
+            ]
+        }).then((res) => {
+            console.log(res);
+        });
+    }
 
     const updateField = (e) => {
         setData({ ...data, [e.target.id]: e.target.value })
@@ -162,7 +197,7 @@ export default function ModulAddStepper() {
                 </Stepper>
                 <DialogActions>
                     <Button onClick={handleClose}>Abbrechen</Button>
-                    <Button disabled>Modul hinzufügen</Button>
+                    <Button onClick={handleSend} disabled={disabled}>Modul hinzufügen</Button>
                 </DialogActions>
             </Dialog>
         </div>
@@ -224,7 +259,7 @@ export default function ModulAddStepper() {
                     <TextField
                         disabled={data.wahlmodul === true ? false : true}
                         margin="dense"
-                        id="Beschreibung"
+                        id="BeschreibungWahl"
                         label="Beschreibung"
                         type="text"
                         rows={6}
@@ -318,7 +353,7 @@ export default function ModulAddStepper() {
                     />
                     <TextField
                         margin="dense"
-                        id="Katalog-ID"
+                        id="KatalogID"
                         label="Katalog-ID"
                         type="text"
                         fullWidth

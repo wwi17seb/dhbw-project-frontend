@@ -53,7 +53,7 @@ function ModulkatalogDetail(props) {
                     </Typography>
                 </Breadcrumbs>
                 <ExpansionPanels studyName={studyName} content={lectureSample} />
-                <ModulAddStepper />
+                <ModulAddStepper majorSubjectId={4}/>
             </main>
         </div>
 
