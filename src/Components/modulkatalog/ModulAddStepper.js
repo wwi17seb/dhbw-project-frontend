@@ -57,6 +57,7 @@ export default function ModulAddStepper(props) {
     const [disabled, setDisabled] = React.useState(false);
     const [activeStep, setActiveStep] = React.useState(0);
     const [steps, setSteps] = React.useState(STEPS);
+    const [vorlesungen, setVorlesungen] = React.useState([]);
     const [data, setData] = React.useState({
         'wahlmodul': false,
         'prüfungsleistungen': ["Klausur"],
@@ -99,12 +100,12 @@ export default function ModulAddStepper(props) {
             "to_semester_number": data.semesterbis,
             "Modules": [
                 {
-                    "name": "[NAME_DES_MODULS]",
+                    "name": data.wahlmodul? data.Gruppenname : data.Modul, 
                     "description": data.Beschreibung,
                     "ects": data.ECTS,
                     "catalog_id": data.KatalogID,
                     "academicRecord_ids": [ 0, 0 ],
-                    "number_of_lectures_to_attend": 0,
+                    "number_of_lectures_to_attend": 0, //vorlesungen array length
                     "rated": true,
                     "requirements": "[ANFODERUNGEN]",
                     "Lectures": [
@@ -113,7 +114,7 @@ export default function ModulAddStepper(props) {
                             "workload_home": 0,
                             "workload_dhbw": 0,
                             "catalog_id": data.KatalogID,
-                            "mainFocus_ids": [ 1, 2 ]
+                            "mainFocus_ids": []
                         }
                     ]
                 }
@@ -126,6 +127,11 @@ export default function ModulAddStepper(props) {
     const updateField = (e) => {
         setData({ ...data, [e.target.id]: e.target.value })
         console.log(data)
+    }
+    const handleVorlesungen = (e, step) => {
+        console.log(step)
+        setVorlesungen( { ...vorlesungen, [step]: {[e.target.id]: e.target.value }})
+        console.log(vorlesungen)
     }
 
     const updateSwitch = (e) => {
@@ -350,6 +356,7 @@ export default function ModulAddStepper(props) {
                         label="ECTS"
                         type="text"
                         fullWidth
+                        onChange={updateField}
                     />
                     <TextField
                         margin="dense"
@@ -357,6 +364,7 @@ export default function ModulAddStepper(props) {
                         label="Katalog-ID"
                         type="text"
                         fullWidth
+                        onChange={updateField}
                     />
                 </>)
         }
@@ -370,6 +378,7 @@ export default function ModulAddStepper(props) {
                         label="Vorlesung"
                         type="text"
                         fullWidth
+                        onChange={(e) => handleVorlesungen(e, step-1)}
                     />
                     <TextField
                         margin="dense"
@@ -377,6 +386,7 @@ export default function ModulAddStepper(props) {
                         label="Präsenzzeit"
                         type="text"
                         fullWidth
+                        onChange={(e) => handleVorlesungen(e, step-1)}
                     />
                     <TextField
                         margin="dense"
@@ -384,6 +394,7 @@ export default function ModulAddStepper(props) {
                         label="Selbststudium"
                         type="text"
                         fullWidth
+                        onChange={(e) => handleVorlesungen(e, step-1)}
                     />
                     <TextField
                         margin="dense"
@@ -391,6 +402,7 @@ export default function ModulAddStepper(props) {
                         label="Katalog-ID"
                         type="text"
                         fullWidth
+                        onChange={(e) => handleVorlesungen(e, step-1)}
                     />
                 </>)
         }
@@ -404,6 +416,7 @@ export default function ModulAddStepper(props) {
                         label="Vorlesung"
                         type="text"
                         fullWidth
+                        onChange={(e) => handleVorlesungen(e, step-1)}
                     />
                     <TextField
                         margin="dense"
@@ -411,6 +424,7 @@ export default function ModulAddStepper(props) {
                         label="Präsenzzeit"
                         type="text"
                         fullWidth
+                        onChange={(e) => handleVorlesungen(e, step-1)}
                     />
                     <TextField
                         margin="dense"
@@ -418,6 +432,7 @@ export default function ModulAddStepper(props) {
                         label="Selbststudium"
                         type="text"
                         fullWidth
+                        onChange={(e) => handleVorlesungen(e, step-1)}
                     />
                     <TextField
                         margin="dense"
@@ -425,6 +440,7 @@ export default function ModulAddStepper(props) {
                         label="Katalog-ID"
                         type="text"
                         fullWidth
+                        onChange={(e) => handleVorlesungen(e, step-1)}
                     />
                 </>)
         }
