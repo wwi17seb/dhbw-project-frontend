@@ -54,15 +54,20 @@ export default function ModulAddStepper(props) {
     const PRÜFUNGSLEISTUNGEN = ['Klausur', 'Seminararbeit', 'Mündliche Prüfung']
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
-    const [disabled, setDisabled] = React.useState(false);
+    const [disabled, setDisabled] = React.useState(true);
     const [activeStep, setActiveStep] = React.useState(0);
     const [steps, setSteps] = React.useState(STEPS);
     const [vorlesungen, setVorlesungen] = React.useState([]);
-    const [data, setData] = React.useState({
+    const initialData = {
         'wahlmodul': false,
         'prüfungsleistungen': ["Klausur"],
-        'benotet': true
-    });
+        'Modul': "",
+        'benotet': true,
+        'Beschreibung': "",
+        'semesterBis': "",
+        'semesterVon': "",
+    }
+    const [data, setData] = React.useState(initialData);
 
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
@@ -82,11 +87,7 @@ export default function ModulAddStepper(props) {
     const handleClose = () => {
         setActiveStep(0)
         setSteps(STEPS)
-        setData({
-            'wahlmodul': false,
-            'prüfungsleistungen': ["Klausur"],
-            'benotet': true
-        })
+        setData(initialData)
         setOpen(false)
 
     };
@@ -95,43 +96,66 @@ export default function ModulAddStepper(props) {
         APICall("POST", "/moduleGroups", {
             "majorSubject_id": props.majorSubjectId,
             "name": data.Modul,
-            "number_of_modules_to_attend": 0,
-            "from_semester_number": data.semestervon,
-            "to_semester_number": data.semesterbis,
+            "number_of_modules_to_attend": 1,
+            "from_semester_number": data.semesterVon,
+            "to_semester_number": data.semesterBis,
             "Modules": [
                 {
                     "name": data.wahlmodul? data.Gruppenname : data.Modul, 
                     "description": data.Beschreibung,
                     "ects": data.ECTS,
-                    "catalog_id": data.KatalogID,
-                    "academicRecord_ids": [ 0, 0 ],
-                    "number_of_lectures_to_attend": 0, //vorlesungen array length
-                    "rated": true,
-                    "requirements": "[ANFODERUNGEN]",
-                    "Lectures": [
-                        {
-                            "name": "[NAME_DER_VORLESUNG]",
-                            "workload_home": 0,
-                            "workload_dhbw": 0,
-                            "catalog_id": data.KatalogID,
+                    "catalog_id": data.ModulKatalogID,
+                    "academicRecord_ids": [ 1, 2 ], //this is static right now -> Klausur, Seminararbeit
+                    "number_of_lectures_to_attend": vorlesungen.length,
+                    "rated": data.benotet,
+                    "requirements": data.Voraussetzung,
+                    "Lectures": vorlesungen.map((vorlesung) => { 
+                        return {
+                            "name": vorlesung.Vorlesung,
+                            "workload_home": vorlesung.Selbststudium,
+                            "workload_dhbw": vorlesung.Präsenzzeit,
+                            "catalog_id": vorlesung.VorlesungKatalogID,
                             "mainFocus_ids": []
-                        }
-                    ]
+                    }})
+                    
                 }
             ]
         }).then((res) => {
             console.log(res);
         });
+        handleClose();
     }
 
     const updateField = (e) => {
         setData({ ...data, [e.target.id]: e.target.value })
         console.log(data)
     }
+    const updateVorlesungen =(index, key, value) => {
+        let arr = vorlesungen;
+        if (typeof arr[index] !== 'undefined') {
+            arr[index][key] = value;
+        }
+        else {
+            arr = vorlesungen;
+            arr.push({[key]:value})
+        }
+        setVorlesungen(arr)
+    }
     const handleVorlesungen = (e, step) => {
-        console.log(step)
-        setVorlesungen( { ...vorlesungen, [step]: {[e.target.id]: e.target.value }})
+        updateVorlesungen(step-1, e.target.id, e.target.value);
         console.log(vorlesungen)
+        if (allFieldsFilled()){
+            setDisabled(false)
+        }
+    }
+    const allFieldsFilled = () => {
+        for (let prop in data) {
+            if (data[prop] === "") return false
+        }
+        /* if (vorlesungen.length == 0 || vorlesungen[0] == undefined ) return false
+        if (vorlesungen[0].keys().length < 4) return false */
+        
+        return true;
     }
 
     const updateSwitch = (e) => {
@@ -219,6 +243,7 @@ export default function ModulAddStepper(props) {
                             <Switch
                                 id='wahlmodul'
                                 checked={data.wahlmodul}
+                                value={data.wahlmodul}
                                 onChange={updateSwitch}
                                 name="checkedB"
                                 color="primary"
@@ -232,6 +257,7 @@ export default function ModulAddStepper(props) {
                         label="Modul"
                         type="text"
                         fullWidth
+                        value={data.Modul == undefined ? "" : data.Modul}
                         onChange={updateField}
                     />
                     <TextField
@@ -242,6 +268,7 @@ export default function ModulAddStepper(props) {
                         fullWidth
                         rows={6}
                         multiline
+                        value={data.Beschreibung == undefined ? "" : data.Beschreibung}
                         onChange={updateField}
                     />
                     <TextField
@@ -251,15 +278,17 @@ export default function ModulAddStepper(props) {
                         label="Gruppenname"
                         type="text"
                         fullWidth
+                        value={data.Gruppenname == undefined ? "" : data.Gruppenname}
                         onChange={updateField}
                     />
                     <TextField
                         disabled={data.wahlmodul === true ? false : true}
                         margin="dense"
-                        id="Alternativ-Modul"
+                        id="AlternativModul"
                         label="Alternativ-Modul"
                         type="text"
                         fullWidth
+                        value={data.AlternativModul == undefined ? "" : data.AlternativModul}
                         onChange={updateField}
                     />
                     <TextField
@@ -271,6 +300,7 @@ export default function ModulAddStepper(props) {
                         rows={6}
                         multiline
                         fullWidth
+                        value={data.BeschreibungWahl == undefined ? "" : data.BeschreibungWahl}
                         onChange={updateField}
                     />
                 </>)
@@ -284,7 +314,7 @@ export default function ModulAddStepper(props) {
                             id="semesterVon-select"
                             name="semesterVon"
                             labelId="semesterVon-label"
-                            value={data.semestervon}
+                            value={data.semesterVon}
                             onChange={updateSelect}
                             >
                             {getSemesterInterval()}
@@ -296,7 +326,7 @@ export default function ModulAddStepper(props) {
                             id="semesterBis-select"
                             name="semesterBis"
                             labelId="semesterBis-label"
-                            value={data.semesterbis}
+                            value={data.semesterBis}
                             onChange={updateSelect}
                             >
                             {getSemesterInterval()}
@@ -308,6 +338,8 @@ export default function ModulAddStepper(props) {
                         label="Voraussetzung für Teilnahme"
                         type="text"
                         fullWidth
+                        value={data.Voraussetzung == undefined ? "" : data.Voraussetzung}
+                        onChange={updateField}
                     />
 
                     <FormControl className={classes.formControl}>
@@ -356,53 +388,17 @@ export default function ModulAddStepper(props) {
                         label="ECTS"
                         type="text"
                         fullWidth
+                        value={data.ECTS == undefined ? "" : data.ECTS}
                         onChange={updateField}
                     />
                     <TextField
                         margin="dense"
-                        id="KatalogID"
+                        id="ModulKatalogID"
                         label="Katalog-ID"
                         type="text"
                         fullWidth
+                        value={data.ModulKatalogID == undefined ? "" : data.ModulKatalogID}
                         onChange={updateField}
-                    />
-                </>)
-        }
-        else if (step === 2) {
-            return (
-                <>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="Vorlesung"
-                        label="Vorlesung"
-                        type="text"
-                        fullWidth
-                        onChange={(e) => handleVorlesungen(e, step-1)}
-                    />
-                    <TextField
-                        margin="dense"
-                        id="Präsenzzeit"
-                        label="Präsenzzeit"
-                        type="text"
-                        fullWidth
-                        onChange={(e) => handleVorlesungen(e, step-1)}
-                    />
-                    <TextField
-                        margin="dense"
-                        id="Selbststudium"
-                        label="Selbststudium"
-                        type="text"
-                        fullWidth
-                        onChange={(e) => handleVorlesungen(e, step-1)}
-                    />
-                    <TextField
-                        margin="dense"
-                        id="Katalog-ID"
-                        label="Katalog-ID"
-                        type="text"
-                        fullWidth
-                        onChange={(e) => handleVorlesungen(e, step-1)}
                     />
                 </>)
         }
@@ -436,7 +432,7 @@ export default function ModulAddStepper(props) {
                     />
                     <TextField
                         margin="dense"
-                        id="Katalog-ID"
+                        id="VorlesungKatalogID"
                         label="Katalog-ID"
                         type="text"
                         fullWidth
