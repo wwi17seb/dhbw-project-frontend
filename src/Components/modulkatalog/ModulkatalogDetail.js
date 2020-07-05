@@ -32,7 +32,6 @@ function ModulkatalogDetail(props) {
 
     const handleAPIresponse = (response) => {
         setPayload(response.data.payload);
-        console.log(response.data.payload);
         if (typeof response.data.payload.FieldsOfStudy !== "undefined" && response.data.payload.FieldsOfStudy.length > 0) {
             setLectureSample(response.data.payload.FieldsOfStudy[0].Modules[0].Lectures);
         }
@@ -53,7 +52,7 @@ function ModulkatalogDetail(props) {
                     </Typography>
                 </Breadcrumbs>
                 <ExpansionPanels studyName={studyName} content={lectureSample} />
-                <ModulAddStepper majorSubjectId={4}/>
+                <ModulAddStepper majorSubjectId={4} />
             </main>
         </div>
 

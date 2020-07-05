@@ -1,5 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -16,8 +17,12 @@ import Switch from '@material-ui/core/Switch'
 import InputLabel from '@material-ui/core/InputLabel'
 import Chip from '@material-ui/core/Chip'
 import FormControl from '@material-ui/core/FormControl'
-import { Input } from '@material-ui/core';
 import { APICall } from '../../helper/Api';
+import IconButton from '@material-ui/core/IconButton';
+import Alert from '@material-ui/lab/Alert';
+import Collapse from '@material-ui/core/Collapse';
+import CloseIcon from '@material-ui/icons/Close';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -50,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function ModulAddStepper(props) {
+    const history = useHistory();
     const STEPS = ['Modul', 'Modulinfo', 'Lehr- und Lerninhalte (Vorlesung)']
     const PRÜFUNGSLEISTUNGEN = ['Klausur', 'Seminararbeit', 'Mündliche Prüfung']
     const classes = useStyles();
@@ -58,6 +64,9 @@ export default function ModulAddStepper(props) {
     const [activeStep, setActiveStep] = React.useState(0);
     const [steps, setSteps] = React.useState(STEPS);
     const [vorlesungen, setVorlesungen] = React.useState([]);
+    const [message, setMessage] = React.useState('');
+    const [error, setError] = React.useState('');
+    const [alertOpen, setAlertOpen] = React.useState(false);
     const initialData = {
         'wahlmodul': false,
         'prüfungsleistungen': ["Klausur"],
@@ -89,6 +98,9 @@ export default function ModulAddStepper(props) {
         setSteps(STEPS)
         setData(initialData)
         setOpen(false)
+        setError('')
+        setMessage('')
+        setAlertOpen(false)
 
     };
 
@@ -101,50 +113,63 @@ export default function ModulAddStepper(props) {
             "to_semester_number": data.semesterBis,
             "Modules": [
                 {
-                    "name": data.wahlmodul? data.Gruppenname : data.Modul, 
+                    "name": data.wahlmodul ? data.Gruppenname : data.Modul,
                     "description": data.Beschreibung,
                     "ects": data.ECTS,
                     "catalog_id": data.ModulKatalogID,
-                    "academicRecord_ids": [ 1, 2 ], //this is static right now -> Klausur, Seminararbeit
+                    "academicRecord_ids": [1, 2], //this is static right now -> Klausur, Seminararbeit
                     "number_of_lectures_to_attend": vorlesungen.length,
                     "rated": data.benotet,
                     "requirements": data.Voraussetzung,
-                    "Lectures": vorlesungen.map((vorlesung) => { 
+                    "Lectures": vorlesungen.map((vorlesung) => {
                         return {
                             "name": vorlesung.Vorlesung,
                             "workload_home": vorlesung.Selbststudium,
                             "workload_dhbw": vorlesung.Präsenzzeit,
                             "catalog_id": vorlesung.VorlesungKatalogID,
                             "mainFocus_ids": []
-                    }})
-                    
+                        }
+                    })
+
                 }
             ]
         }).then((res) => {
             console.log(res);
-        });
-        handleClose();
+            if (res.data && res.status === 201) {
+                setAlertOpen(true)
+                setMessage('Modul wurde erfolgreich hinzugefügt')
+                setTimeout(() => {
+                    handleClose()
+                }, 2000)
+
+            } else {
+                setAlertOpen(true)
+                setError('Modul konnte nicht erfolgreich hinzugefügt werden. Fehler: ' + res.data.message)
+            }
+
+
+        })
     }
 
     const updateField = (e) => {
+        setAlertOpen(false)
         setData({ ...data, [e.target.id]: e.target.value })
-        console.log(data)
     }
-    const updateVorlesungen =(index, key, value) => {
+    const updateVorlesungen = (index, key, value) => {
         let arr = vorlesungen;
         if (typeof arr[index] !== 'undefined') {
             arr[index][key] = value;
         }
         else {
             arr = vorlesungen;
-            arr.push({[key]:value})
+            arr.push({ [key]: value })
         }
         setVorlesungen(arr)
     }
     const handleVorlesungen = (e, step) => {
-        updateVorlesungen(step-1, e.target.id, e.target.value);
-        console.log(vorlesungen)
-        if (allFieldsFilled()){
+        setAlertOpen(false)
+        updateVorlesungen(step - 1, e.target.id, e.target.value);
+        if (allFieldsFilled()) {
             setDisabled(false)
         }
     }
@@ -154,18 +179,18 @@ export default function ModulAddStepper(props) {
         }
         /* if (vorlesungen.length == 0 || vorlesungen[0] == undefined ) return false
         if (vorlesungen[0].keys().length < 4) return false */
-        
+
         return true;
     }
 
     const updateSwitch = (e) => {
-        console.log(e.target.checked)
+        setAlertOpen(false)
         setData({ ...data, [e.target.id]: e.target.checked })
     }
 
     const updateSelect = (e) => {
+        setAlertOpen(false)
         setData({ ...data, [e.target.name]: e.target.value })
-        console.log(data)
     };
 
     const handleNext = () => {
@@ -183,10 +208,10 @@ export default function ModulAddStepper(props) {
     }
 
     const getSemesterInterval = () => {
-        let semesters = [1,2,3,4,5,6];
-        return ( (semesters).map((semester) => (
+        let semesters = [1, 2, 3, 4, 5, 6];
+        return ((semesters).map((semester) => (
             <MenuItem key={semester} value={semester}>{semester}</MenuItem>
-            ))
+        ))
         );
     }
 
@@ -225,6 +250,42 @@ export default function ModulAddStepper(props) {
                         </Step>
                     ))}
                 </Stepper>
+                {/* Alert error message */}
+                {error !== "" ?
+                    <div className={classes.root}>
+                        <Collapse in={alertOpen}>
+                            <Alert severity="error" action={
+                                <IconButton
+                                    aria-label="close"
+                                    color="inherit"
+                                    size="small"
+                                    onClick={() => setAlertOpen(false)}
+                                >
+                                    <CloseIcon fontSize="inherit" />
+                                </IconButton>
+                            }>
+                                {error}
+                            </Alert>
+                        </Collapse>
+                    </div> : null}
+                {/* Alert success message */}
+                {message !== "" ?
+                    <div className={classes.root}>
+                        <Collapse in={alertOpen}>
+                            <Alert action={
+                                <IconButton
+                                    aria-label="close"
+                                    color="inherit"
+                                    size="small"
+                                    onClick={() => setAlertOpen(false)}
+                                >
+                                    <CloseIcon fontSize="inherit" />
+                                </IconButton>
+                            }>
+                                {message}
+                            </Alert>
+                        </Collapse>
+                    </div> : null}
                 <DialogActions>
                     <Button onClick={handleClose}>Abbrechen</Button>
                     <Button onClick={handleSend} disabled={disabled}>Modul hinzufügen</Button>
@@ -316,7 +377,7 @@ export default function ModulAddStepper(props) {
                             labelId="semesterVon-label"
                             value={data.semesterVon}
                             onChange={updateSelect}
-                            >
+                        >
                             {getSemesterInterval()}
                         </Select>
                     </FormControl>
@@ -328,7 +389,7 @@ export default function ModulAddStepper(props) {
                             labelId="semesterBis-label"
                             value={data.semesterBis}
                             onChange={updateSelect}
-                            >
+                        >
                             {getSemesterInterval()}
                         </Select>
                     </FormControl>
@@ -381,7 +442,7 @@ export default function ModulAddStepper(props) {
                         ))}
                         </Select>
                     </FormControl>
-                    
+
                     <TextField
                         margin="dense"
                         id="ECTS"
@@ -412,7 +473,7 @@ export default function ModulAddStepper(props) {
                         label="Vorlesung"
                         type="text"
                         fullWidth
-                        onChange={(e) => handleVorlesungen(e, step-1)}
+                        onChange={(e) => handleVorlesungen(e, step - 1)}
                     />
                     <TextField
                         margin="dense"
@@ -420,7 +481,7 @@ export default function ModulAddStepper(props) {
                         label="Präsenzzeit"
                         type="text"
                         fullWidth
-                        onChange={(e) => handleVorlesungen(e, step-1)}
+                        onChange={(e) => handleVorlesungen(e, step - 1)}
                     />
                     <TextField
                         margin="dense"
@@ -428,7 +489,7 @@ export default function ModulAddStepper(props) {
                         label="Selbststudium"
                         type="text"
                         fullWidth
-                        onChange={(e) => handleVorlesungen(e, step-1)}
+                        onChange={(e) => handleVorlesungen(e, step - 1)}
                     />
                     <TextField
                         margin="dense"
@@ -436,7 +497,7 @@ export default function ModulAddStepper(props) {
                         label="Katalog-ID"
                         type="text"
                         fullWidth
-                        onChange={(e) => handleVorlesungen(e, step-1)}
+                        onChange={(e) => handleVorlesungen(e, step - 1)}
                     />
                 </>)
         }

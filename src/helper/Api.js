@@ -19,7 +19,7 @@ export const APICall = async (method, url, data) => { //not in use
         }
     })
         .then(res => { return res })
-        .catch(err => { return err })
+        .catch(err => { return err.response })
 }
 
 function ApiHandler(props) {
