@@ -1,39 +1,18 @@
-import * as React from 'react';
-import Paper from '@material-ui/core/Paper';
-import { TodayButton, DateNavigator } from '@devexpress/dx-react-scheduler-material-ui';
-import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
+//import { syncGoogleCalendar } from './apiHandlerGoogleCalendar';
 import MomentUtils from '@date-io/moment';
 import { connectProps } from '@devexpress/dx-react-core';
 import { EditingState, ViewState } from '@devexpress/dx-react-scheduler';
-import {
-  AllDayPanel,
-  AppointmentForm,
-  Appointments,
-  AppointmentTooltip,
-  DateNavigator,
-  DragDropProvider,
-  EditRecurrenceMenu,
-  MonthView,
-  Scheduler,
-  TodayButton,
-  Toolbar,
-  ViewSwitcher,
-  WeekView,
-} from '@devexpress/dx-react-scheduler-material-ui';
+import { AllDayPanel, AppointmentForm, Appointments, AppointmentTooltip, DateNavigator, DragDropProvider, EditRecurrenceMenu, MonthView, Scheduler, TodayButton, Toolbar, ViewSwitcher, WeekView } from '@devexpress/dx-react-scheduler-material-ui';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Fab from '@material-ui/core/Fab';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import AddIcon from '@material-ui/icons/Add';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import Close from '@material-ui/icons/Close';
 import Create from '@material-ui/icons/Create';
@@ -43,7 +22,6 @@ import Notes from '@material-ui/icons/Notes';
 import { KeyboardDateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import * as React from 'react';
 
-//import { syncGoogleCalendar } from './apiHandlerGoogleCalendar';
 import { syncGoogleCalendar } from './apiHandlerGoogleCalendar';
 
 let appointments = [];
@@ -552,8 +530,8 @@ class Demo extends React.PureComponent {
             </DialogActions>
           </Dialog>
           <Button
-            variant="contained"
-            color="primary"
+            variant='contained'
+            color='primary'
             className={classes.addButton}
             onClick={() => {
               this.setState({ editingFormVisible: true });
@@ -562,8 +540,7 @@ class Demo extends React.PureComponent {
                 startDate: new Date(currentDate).setHours(startDayHour),
                 endDate: new Date(currentDate).setHours(startDayHour + 1),
               });
-            }}
-          >
+            }}>
             Vorlesung im Kalender eintragen
           </Button>
         </Paper>

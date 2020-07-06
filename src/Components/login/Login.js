@@ -87,8 +87,6 @@ class Login extends Component {
       });
   };
 
-    handleEmail = (event) => {
-        this.setState({ email: event.target.value });
   handleEmail = (event) => {
     this.setState({ email: event.target.value });
   };

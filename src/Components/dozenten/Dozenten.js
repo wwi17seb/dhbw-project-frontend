@@ -6,8 +6,6 @@ import Nav from '../nav/Nav';
 import DozentenDetails from './dozentendetails/dozentendetails';
 import LecturerList from './lecturerlist';
 
-import './dozenten.css';
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
