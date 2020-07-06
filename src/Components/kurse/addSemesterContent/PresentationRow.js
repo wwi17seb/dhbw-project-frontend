@@ -7,7 +7,9 @@ import { APICall } from '../../../helper/Api';
 import { getNameOfLecturer } from './helper';
 import ModifyPresentation from './ModifyPresentation';
 
-const PresentationRow = ({ presentation, course_id, semester_id, reloadData, showSnackbar, loadData }) => {
+// import { SEVERITY } from '../../Snackbar/SnackbarSeverity';
+
+const PresentationRow = ({ presentation, course_id, semester_id, showSnackbar, loadData }) => {
   const [editPresentation, setEditPresentation] = useState(false);
 
   const { status, Lecturer, AcademicRecord, Lecture } = presentation;
@@ -26,6 +28,7 @@ const PresentationRow = ({ presentation, course_id, semester_id, reloadData, sho
         academicRecord={AcademicRecord}
         academicRecords={AcademicRecords}
         majorSubjectId={presentation.Lecture.Module.moduleGroup_id}
+        loadData={loadData}
       />
     );
   }
@@ -34,10 +37,11 @@ const PresentationRow = ({ presentation, course_id, semester_id, reloadData, sho
     APICall('DELETE', `presentations?presentationId=${presentation_id}`).then((res) => {
       const { status, data } = res;
       if (status === 200 && data) {
-        // TODO: Implement Snackbar
         loadData();
+        alert('Präsentation erfolgreich gelöscht!'); // TODO: replace with showSnackbar('Präsentation erfolgreich gelöscht!', SEVERITY.SUCCESS);
       } else {
         // TODO: Implement handling of possible failure
+        alert('Präsentation konnte nicht gelöscht werden!'); // TODO: replace with showSnackbar('Präsentation konnte nicht gelöscht werden!', SEVERITY.ERROR);
       }
     });
   };
@@ -82,7 +86,6 @@ const PresentationRow = ({ presentation, course_id, semester_id, reloadData, sho
                 />
               </Tooltip>
             ) : null}
-            {/* @ErikJanskii, please request changes or remove this line */}
           </Grid>
         </Grid>
         <Divider style={{ marginBottom: 10 }} />

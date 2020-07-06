@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+
 import { APICall } from '../../../helper/Api';
 import AcademicRecordDialog from './AcademicRecordDialog';
 import { getNameOfLecturer } from './helper';
@@ -23,6 +24,7 @@ const ModifyPresentation = ({
   academicRecords,
   presentation,
   majorSubjectId,
+  loadData,
 }) => {
   // TODO: rename to ModifyPresentationDialog
   const [lecturers, setLecturers] = useState([]);
@@ -80,11 +82,14 @@ const ModifyPresentation = ({
     ).then((res) => {
       if (res.data && res.status === 201) {
         alert('Die Vorlesung wurde erstellt.'); // TODO: exchange with snackbar
+        loadData();
       } else if (res.data && res.status === 200) {
         alert('Die Vorlesung wurde aktualisiert.'); // TODO: exchange with snackbar
+        loadData();
       } else {
         alert('Es ist ein Problem aufgetreten. Die Vorlesung wurde nicht geändert.'); // TODO: exchange with snackbar
       }
+      handleClose();
     });
   };
 
