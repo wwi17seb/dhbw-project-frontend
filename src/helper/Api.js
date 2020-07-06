@@ -13,13 +13,9 @@ export const APICall = async (method, url, data) => {
       url: `/api/${url}`,
       params,
     })
-    .then((res) => {
-      return res;
-    })
-    .catch((err) => {
-      return err;
-    });
-};
+    .then(res => { return res })
+    .catch(err => { return err.response })
+}
 
 function ApiHandler(props) {
   //THIS COMPONENT TAKES PROPS:
