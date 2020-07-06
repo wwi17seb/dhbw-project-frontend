@@ -18,11 +18,12 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Alert from '@material-ui/lab/Alert';
 import axios from 'axios';
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+
 import Background from '../../images/dhbw_campus2.jpg';
 import Logo from '../../images/ExoPlanLogo_transparent.png';
 import { NAV_ITEMS } from '../../shared/navConstants';
 import loginStyles from './LoginJSS.js';
-import { Link } from 'react-router-dom';
 
 class Login extends Component {
   state = {
