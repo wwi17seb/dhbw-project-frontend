@@ -1,13 +1,9 @@
-import { Grid } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from '@material-ui/core';
 import React, { useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+
 import { APICall } from '../../helper/Api';
 import { SEVERITY } from '../Snackbar/SnackbarSeverity';
 
@@ -38,15 +34,13 @@ const SettingsChangeEmail = ({ openMail, classes, handleClose, showSnackbar }) =
         <DialogTitle id='form-dialog-title'>Benutzername/E-Mail ändern</DialogTitle>
         <DialogContent>
           <Form onSubmit={handleChangeMail}>
-            <Form.Group as={Row} controlId='Nutzer'>
-              <Col>
-                <Form.Control
-                  type='name'
-                  placeholder='E-Mail eingeben'
-                  onChange={({ target: { value } }) => setUsername(value)}
-                />
-              </Col>
-            </Form.Group>
+            <TextField
+              label='E-Mail'
+              margin='dense'
+              variant='outlined'
+              fullWidth
+              onChange={({ target: { value } }) => setUsername(value)}
+            />
             <DialogActions>
               <Form.Group as={Row}>
                 <Col sm={{ span: 8, offset: 0 }}>

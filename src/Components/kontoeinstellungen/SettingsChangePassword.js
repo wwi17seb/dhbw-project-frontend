@@ -1,13 +1,9 @@
-import { Grid } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from '@material-ui/core';
 import React, { useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+
 import { APICall } from '../../helper/Api';
 import { SEVERITY } from '../Snackbar/SnackbarSeverity';
 
@@ -51,33 +47,33 @@ const SettingsChangePassword = ({ openPassword, classes, handleClose, showSnackb
         <DialogTitle id='form-dialog-title'>Passwort ändern</DialogTitle>
         <DialogContent>
           <Form onSubmit={handleChangePassword}>
-            <Form.Group as={Row} controlId='OldPW'>
-              <Col>
-                <Form.Control
-                  type='password'
-                  placeholder='Altes Passwort eingeben'
-                  onChange={({ target: { value } }) => setOldPassword(value)}
-                />
-              </Col>
-            </Form.Group>
-            <Form.Group as={Row} controlId='Passwort'>
-              <Col>
-                <Form.Control
-                  type='password'
-                  placeholder='Neues Passwort eingeben'
-                  onChange={({ target: { value } }) => setNewPassword(value)}
-                />
-              </Col>
-            </Form.Group>
-            <Form.Group as={Row} controlId='Passwort2'>
-              <Col>
-                <Form.Control
-                  type='password'
-                  placeholder='Neues Passwort wiederholen'
-                  onChange={({ target: { value } }) => setPasswordRepeat(value)}
-                />
-              </Col>
-            </Form.Group>
+            <TextField
+              type='password'
+              label='Altes Passwort'
+              margin='dense'
+              variant='outlined'
+              fullWidth
+              onChange={({ target: { value } }) => setOldPassword(value)}
+            />
+
+            <TextField
+              type='password'
+              label='Neues Passwort'
+              margin='dense'
+              variant='outlined'
+              fullWidth
+              onChange={({ target: { value } }) => setNewPassword(value)}
+            />
+
+            <TextField
+              type='password'
+              label='Neues Passwort (Wiederholung)'
+              margin='dense'
+              variant='outlined'
+              fullWidth
+              onChange={({ target: { value } }) => setPasswordRepeat(value)}
+            />
+
             <DialogActions>
               <Form.Group as={Row}>
                 <Col sm={{ span: 8, offset: 0 }}>
