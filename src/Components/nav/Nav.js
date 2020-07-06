@@ -23,7 +23,6 @@ import Menu from '@material-ui/core/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 
 import Logo from '../../images/ExoPlanLogo_transparent.png';
-import "./nav.css";
 
 const drawerWidth = 240;
 
@@ -33,6 +32,7 @@ const useStyles = makeStyles(theme => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
+    backgroundColor: theme.palette.secondary.dark
   },
   toolbarButtons: {
     marginLeft: 'auto',
@@ -45,6 +45,10 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
   },
   toolbar: theme.mixins.toolbar,
+  navBarLogo: {
+    width: "8rem", 
+    height: 'auto',
+  }
 }));
 
 export default function PermanentDrawerLeft() {
@@ -67,12 +71,17 @@ export default function PermanentDrawerLeft() {
     setAnchorEl(null);
   };
 
+  const handleLogout = () => {
+    setAnchorEl(null);
+    localStorage.removeItem('ExoplanSessionToken');
+  };
+  
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar style={{ background: '#323e46' }} position="fixed" className={classes.appBar}>
+      <AppBar position="fixed" className={classes.appBar}> 
         <Toolbar>
-          <img src={Logo} alt="ExoPlan Logo" className="NavBarLogo"></img>
+          <img src={Logo} alt="ExoPlan Logo" className={classes.navBarLogo}></img>
           <div className={classes.toolbarButtons}>
             <IconButton
               aria-label="account of current user"
@@ -98,10 +107,8 @@ export default function PermanentDrawerLeft() {
               open={open}
               onClose={handleClose}
             >
-
-              <MenuItem onClick={handleClose} component={Link} to='/kontoeinstellungen'>Einstellungen</MenuItem>
-              <MenuItem onClick={handleClose}>Abmelden</MenuItem>
-            </Menu>
+                <MenuItem onClick={handleClose} component={Link} to='/kontoeinstellungen'>Einstellungen</MenuItem>
+                <MenuItem onClick={handleLogout} component={Link} to='/'>Abmelden</MenuItem>            </Menu>
           </div>
         </Toolbar>
       </AppBar>
