@@ -96,7 +96,7 @@ export default function LecturerRow(props) {
 
     for (var j = 0; j < mainFocus.length; j++) {
         temp2.push(
-            <Typography variant="h6">{mainFocus[j]["name"]}</Typography>
+            <Typography key={"mainfocus-" + mainFocus[j]["mainFocus_id"]} variant="h6">{mainFocus[j]["name"]}</Typography>
         )
     }
 
