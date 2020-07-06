@@ -41,7 +41,8 @@ function createDataRow(data) {
     var sws = ""
     var shared = ""
 
-    module = data.Lecture.Module.name
+    module = data.Lecture.name
+    course = data.Course.name
     sws = data.Lecture.workload_dhbw
     period = printPeriod(data.Semester.start_date, data.Semester.end_date)
 
@@ -49,12 +50,10 @@ function createDataRow(data) {
         shared += data.CoLecturers[i].academic_title + " " + data.CoLecturers[i].firstname + " " + data.CoLecturers[i].lastname + "; "
     }
 
-
-
     return { module, course, period, sws, shared };
 }
 
-export default function Lehre(props) {
+export default function Lehre() {
     const classes = useStyles();
     const [rows, setRows] = React.useState([]);
 

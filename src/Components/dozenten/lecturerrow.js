@@ -104,7 +104,7 @@ export default function LecturerRow(props) {
         <Grid item xs={12}>
             <Grid container spacing={2}>
                 <Grid item xs={4}>
-                    <Link1 to={{ pathname: "/dozenten/" + id, state: { editDisabled: disabled } }} component={Link}>
+                    <Link1 to={{ pathname: "/dozenten/" + id }} component={Link}>
                         <Typography variant="h6">{title + " " + name + " (" + printIntExt(intext) + ")"}</Typography>
                     </Link1>
                     <Typography variant="subtitle1">{"Tel.: " + tel}</Typography>

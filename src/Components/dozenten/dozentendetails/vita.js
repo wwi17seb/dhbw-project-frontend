@@ -52,6 +52,12 @@ export default function Vita(props) {
         }
     }, [props.data])
 
+    useEffect(() => {
+        if (disabled !== props.editDisabled) {
+            setDisabled(props.editDisabled)
+        }
+    }, [props.editDisabled])
+
     var url = ""
     if (data !== null) {
         url = "/api/lecturerCV?lecturerId=" + props.data["lecturer_id"] + "&token=" + localStorage.getItem("ExoplanSessionToken")
@@ -132,7 +138,7 @@ export default function Vita(props) {
 
     if (cvName === "" || cvName === null) {
         output.push(
-            <Grid item>
+            <Grid key="add-cv-button" item>
                 <Button disabled={disabled} onClick={handleAdd} variant="contained" color="primary">
                     Lebenslauf hinzufügen
                 </Button>
@@ -140,7 +146,7 @@ export default function Vita(props) {
         )
     } else {
         output.push(
-            <React.Fragment>
+            <React.Fragment key="change-cv">
                 <Grid item>
                     <Typography variant="h6">{cvName}</Typography>
                 </Grid>

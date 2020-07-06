@@ -59,11 +59,35 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function DozentenDetails(props) {
+export default function DozentenDetails() {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
     const [data, setData] = React.useState(null);
     const [name, setName] = React.useState("Loading...");
+    const [disabled, setDisabled] = React.useState(true)
+    const [currentDirector, setCurrentDirector] = React.useState("")
+
+
+    const loadDirector = () => {
+        APICall('GET', 'directorOfStudies').then(res => {
+            setCurrentDirector(res.data.payload["DirectorOfStudies"]["username"])
+        })
+    }
+
+
+    useEffect(() => {
+        if (data !== null) {
+            if (!data["allow_manipulation"]) {
+                if (data["DirectorOfStudies"]["username"] === currentDirector) {
+                    setDisabled(false)
+                } else {
+                    setDisabled(true)
+                }
+            } else {
+                setDisabled(false)
+            }
+        }
+    }, [currentDirector, data])
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -95,8 +119,10 @@ export default function DozentenDetails(props) {
             for (var i = 0; i < res.data.payload.Lecturers.length; i++) {
                 if (res.data.payload.Lecturers[i]["lecturer_id"] == id) {
                     setData(res.data.payload.Lecturers[i])
+                    break;
                 }
             }
+            loadDirector()
         });
     }
 
@@ -114,7 +140,7 @@ export default function DozentenDetails(props) {
         }
     }, [data])
 
-    const finalPanelContent = [<Profile data={data}></Profile>, <Lehre data={data}></Lehre>, <Vita data={data} editDisabled={props["location"]["state"]["editDisabled"]} ></ Vita>, <Notizen data={data} editDisabled={props["location"]["state"]["editDisabled"]}></Notizen>];
+    const finalPanelContent = [<Profile data={data}></Profile>, <Lehre></Lehre>, <Vita data={data} editDisabled={disabled} ></ Vita>, <Notizen data={data} editDisabled={disabled}></Notizen>];
     let tabIndex = 0;
 
     for (let tabLabel of tabLabels) {
