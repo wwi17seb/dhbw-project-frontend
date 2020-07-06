@@ -14,11 +14,15 @@ import Button from '@material-ui/core/Button';
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-  }, toolbar: theme.mixins.toolbar,
+  }, 
+  toolbar: theme.mixins.toolbar,
   paper: {
     flexGrow: 1,
     padding: theme.spacing(3),
     marginTop: 10
+  },
+  btn_align: {
+    textAlign: 'right',
   }
 }));
 export default function LecturerList() {
@@ -101,8 +105,8 @@ export default function LecturerList() {
             <TextField fullWidth={true} label="Suchen Sie nach dem Nachnamen oder Schwerpunkt" value={searchTerm} onChange={handleSearch} id="searchLecturer" variant="filled" />
           </Grid>
           <Grid item sm={4}>
-            <div className="btn_align">
-              <Button variant="contained" color="primary" onClick={ClickSubmit.bind(this)}>Dozenten hinzufügen</Button>
+            <div className={classes.btn_align}> 
+              <Button variant="contained" color="primary" onClick={ClickSubmit.bind(this)}>Dozent hinzufügen</Button>
             </div>
           </Grid>
         </Grid>
