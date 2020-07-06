@@ -32,16 +32,14 @@ import Notes from '@material-ui/icons/Notes';
 import Close from '@material-ui/icons/Close';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import Create from '@material-ui/icons/Create';
-//import {handleAppointmentDelete, handleAppointmentInsert, handleAppointmentChange} from './apiHandlerGoogleCalendar';
-import { syncGoogleCalendar } from './apiHandlerGoogleCalendar';
+import {syncGoogleCalendar, handleAppointmentsLoad} from './apiHandlerGoogleCalendar';
 
-let appointments = [];
+ let appointments = [];
 
 function formatData(calendarData) {
   appointments = [];
 
   for (let i = 0; i < calendarData.length; i++) {
-    //let test = new Appointment("No title given", undefined, undefined, undefined, "No location given");
     let test = {
       title: 'No title given',
       startDate: undefined,
@@ -72,7 +70,7 @@ function formatData(calendarData) {
 
     appointments.push(test);
   }
-
+  console.log(appointments);
   return appointments;
 }
 
@@ -292,6 +290,7 @@ const styles = (theme) => ({
   },
 });
 
+
 var today = new Date();
 var dd = String(today.getDate()).padStart(2, '0');
 var mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -299,8 +298,21 @@ var yyyy = today.getFullYear();
 
 today = mm + '-' + dd + '-' + yyyy;
 
+const Appointment = ({ children, style, ...restProps }) => (
+  <Appointments.Appointment
+    {...restProps}
+    style={{
+      ...style,
+      backgroundColor: "#5c6971",
+      borderRadius: "8px"
+    }}
+  >
+    {children}
+  </Appointments.Appointment>
+);
+
 /* eslint-disable-next-line react/no-multi-comp */
-class Demo extends React.PureComponent {
+class GoogleCalendar extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -316,6 +328,7 @@ class Demo extends React.PureComponent {
       endDayHour: 19,
       isNewAppointment: false,
       dataReady: false,
+      googleCalender: props.calendar
     };
 
     this.loadData = this.loadData.bind(this);
@@ -362,51 +375,19 @@ class Demo extends React.PureComponent {
       };
     });
   }
+  componentDidMount(){
+    this.loadData(); 
+  }
 
-  /* componentDidMount() {
-    const PUBLIC_KEY = 'AIzaSyCJrp1GqmuLYSGdv_z-ZVSe2Sl2tLvY8LA',
-      CALENDAR_ID = 'iq90i34lq6v196rqs4986dp370@group.calendar.google.com';
-    const dataUrl = ['https://www.googleapis.com/calendar/v3/calendars/',
-      CALENDAR_ID, '/events?key=', PUBLIC_KEY].join('');
-
-    fetch(dataUrl).then(
-      (response) => response.json()
-    ).then((appointments) => {
-      let {data} = this.state;
-      debugger; 
-      data.splice(0, data.length); 
-      data.push.apply(data, formatData(appointments.items));
-      this.setState({ dataReady: true}) //, data: formatData(appointments.items)
-      console.log(formatData(appointments.items));
-    });
-  } */
-
-  componentDidMount() {
-    this.loadData();
+  handleResponse = (response) => {
+    this.setState({
+      data : formatData(response),
+      dataReady: true
+    })
   }
 
   loadData() {
-    const PUBLIC_KEY = 'AIzaSyA5OGAMBup2tHpeQvt7EA0w2zR-3ZCQ6-0', //'AIzaSyDW9fNZ9R0VhCkBf8KtOqpsTdPAtp6sbD4',
-      CALENDAR_ID = 'iq90i34lq6v196rqs4986dp370@group.calendar.google.com';
-    const dataUrl = ['https://www.googleapis.com/calendar/v3/calendars/', CALENDAR_ID, '/events?key=', PUBLIC_KEY].join(
-      ''
-    );
-
-    fetch(dataUrl)
-      .then((response) => response.json())
-      .then((appointments) => {
-        setTimeout(() => {
-          if (appointments.items) {
-            this.setState({
-              data: formatData(appointments.items),
-              dataReady: true,
-            });
-          }
-        }, 600);
-        console.log(this.state.data);
-        console.log(appointments.items);
-      })
-      .catch(() => this.setState({ dataReady: true }));
+    syncGoogleCalendar("load", " ", this.handleResponse); 
   }
 
   componentDidUpdate() {
@@ -501,19 +482,33 @@ class Demo extends React.PureComponent {
     } else {
       return (
         <Paper>
-          <Scheduler data={data} height={700}>
-            <ViewState currentDate={currentDate} onCurrentDateChange={this.currentDateChange} />
+          <Scheduler
+            data={data}
+            height={700}
+            firstDayOfWeek={1}
+          >
+            <ViewState
+              currentDate={currentDate}
+              onCurrentDateChange={this.currentDateChange}
+            />
             <EditingState
               onCommitChanges={this.commitChanges}
               onEditingAppointmentChange={this.onEditingAppointmentChange}
               onAddedAppointmentChange={this.onAddedAppointmentChange}
             />
-            <WeekView startDayHour={startDayHour} endDayHour={endDayHour} />
+            <WeekView
+              startDayHour={startDayHour}
+              endDayHour={endDayHour}
+            />
             <MonthView />
             <AllDayPanel />
             <EditRecurrenceMenu />
-            <Appointments />
-            <AppointmentTooltip showOpenButton showCloseButton showDeleteButton />
+            <Appointments appointmentComponent={Appointment} />
+            <AppointmentTooltip
+              showOpenButton
+              showCloseButton
+              showDeleteButton
+            />
             <Toolbar />
             <DateNavigator />
             <ViewSwitcher />
@@ -561,4 +556,4 @@ class Demo extends React.PureComponent {
   }
 }
 
-export default withStyles(styles, { name: 'EditingDemo' })(Demo);
+export default withStyles(styles, { name: 'EditingDemo' })(GoogleCalendar);
