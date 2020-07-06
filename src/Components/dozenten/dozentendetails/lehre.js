@@ -70,9 +70,7 @@ export default function Lehre(props) {
         const url = 'presentations?getCoLecturers=true&lecturerId=' + id
         var temp = []
 
-
         APICall('GET', url).then((res) => {
-            console.log(res.data)
             for (var i = 0; i < res.data.payload.Presentations.length; i++) {
                 temp.push(createDataRow(res.data.payload.Presentations[i]))
             }
@@ -98,7 +96,7 @@ export default function Lehre(props) {
                 </TableHead>
                 <TableBody>
                     {rows.map((row) => (
-                        <TableRow key={row.name}>
+                        <TableRow key={"tablerow-" + row.module + "-" + row.period}>
                             <TableCell component="th" scope="row">
                                 {row.module}
                             </TableCell>

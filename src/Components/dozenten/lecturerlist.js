@@ -116,7 +116,7 @@ export default function LecturerList() {
                 <Typography variant="h5">Name</Typography>
               </Grid>
               <Grid item xs={3}>
-                <Typography variant="h5">Vorlesungen</Typography>
+                <Typography variant="h5">Schwerpunkte</Typography>
               </Grid>
               <Grid item xs={3}>
                 <Typography variant="h5">Studiengangsleiter</Typography>
