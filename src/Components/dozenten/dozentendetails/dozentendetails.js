@@ -63,7 +63,6 @@ export default function DozentenDetails(props) {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
     const [data, setData] = React.useState(null);
-    const [title, setTitle] = React.useState("");
     const [name, setName] = React.useState("Loading...");
 
     const handleChange = (event, newValue) => {
@@ -98,9 +97,6 @@ export default function DozentenDetails(props) {
                     setData(res.data.payload.Lecturers[i])
                 }
             }
-
-
-
         });
     }
 
@@ -110,15 +106,13 @@ export default function DozentenDetails(props) {
 
     useEffect(() => {
         if (data !== null) {
-            setTitle(data["academic_title"])
+            var title = data["academic_title"]
+            if (title === null) {
+                title = ""
+            }
             setName(title + " " + data["firstname"] + " " + data["lastname"] + " (" + printIntExt(data["is_extern"]) + ")")
         }
     }, [data])
-
-
-    if (title === null) {
-        setTitle("")
-    }
 
     const finalPanelContent = [<Profile data={data}></Profile>, <Lehre data={data}></Lehre>, <Vita data={data} editDisabled={props["location"]["state"]["editDisabled"]} ></ Vita>, <Notizen data={data} editDisabled={props["location"]["state"]["editDisabled"]}></Notizen>];
     let tabIndex = 0;
