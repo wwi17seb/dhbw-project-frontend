@@ -10,7 +10,7 @@ const KontoeinstellungenCard = ({ icon, cardBody, btnDescription, func, classes 
     <Card className={classes.card}>
       {icon}
       <CardContent>
-        <Typography variant='body2' color='textSecondary' component='p'>
+        <Typography variant='body2' color='textSecondary' component='p' style={{ height: '4em', display: 'flex', flexDirection: "column", justifyContent: 'center' }}>
           {cardBody}
         </Typography>
       </CardContent>
