@@ -4,7 +4,7 @@ import { useHistory } from 'react-router';
 
 import { APICall } from '../../helper/Api';
 import Background from '../../images/dhbw_campus2.jpg';
-import Logo from '../../images/dhbw_logo.png';
+import Logo from '../../images/ExoPlanLogo_transparent.png';
 import { NAV_ITEMS } from '../../shared/navConstants';
 import SnackBar from '../Snackbar/Snackbar';
 import { SEVERITY } from '../Snackbar/SnackbarSeverity';
@@ -65,7 +65,7 @@ const PasswordResetForced = (props) => {
         <CssBaseline />
         <Paper className={classes.paper}>
           <div>
-            <img className={classes.loginHeadingLogo} src={Logo} alt='DHBW Logo' />
+            <img className={classes.loginHeadingLogo} src={Logo} alt='ExoPlan-Logo' />
           </div>
 
           <form className={classes.form} onSubmit={handlePasswordChange}>
