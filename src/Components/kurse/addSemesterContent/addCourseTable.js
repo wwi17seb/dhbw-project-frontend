@@ -45,7 +45,7 @@ export default function CourseTableList() {
                 var lecturer_name = courseTable["default"]["payload"]["Presentations"][i]["lecturers"]["firstname"] + " " + courseTable["default"]["payload"]["Presentations"][i]["lecturers"]["lastname"]
                 var status = courseTable["default"]["payload"]["Presentations"][i]["status"]
                 temp.push(
-                    <Grid item xs={12}>
+                    <Grid item xs={12} key={i}>
                         <Grid container spacing={1}>
                             <Grid item xs={3}>
                                 <Typography variant="h6">{lecture}</Typography>

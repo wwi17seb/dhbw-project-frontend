@@ -1,225 +1,227 @@
-import React, { Component } from 'react'
-import loginStyles from "./LoginJSS.js";
-import Button from "@material-ui/core/Button";
-import { Typography } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
-import { withStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import Collapse from '@material-ui/core/Collapse';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Link from '@material-ui/core/Link';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import CloseIcon from '@material-ui/icons/Close';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-
 import Alert from '@material-ui/lab/Alert';
-import Collapse from '@material-ui/core/Collapse';
-import CloseIcon from '@material-ui/icons/Close';
-
-import Background from '../../images/dhbw_campus2.jpg'
-import Logo from '../../images/ExoPlanLogo_transparent.png';
 import axios from 'axios';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
+import Background from '../../images/dhbw_campus2.jpg';
+import Logo from '../../images/ExoPlanLogo_transparent.png';
+import { NAV_ITEMS } from '../../shared/navConstants';
+import loginStyles from './LoginJSS.js';
 
 class Login extends Component {
+  state = {
+    email: '',
+    password: '',
+    message: '',
+    error: '',
+    openResetPasswordDialog: false,
+  };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: "",
-            password: "",
-            message: "",
-            error: "",
-            open: true
-        };
-        this.handleClickShowPassword = this.handleClickShowPassword.bind(this);
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+      message: '',
+      error: '',
+      open: true,
+    };
+    this.handleClickShowPassword = this.handleClickShowPassword.bind(this);
+  }
 
-    handleClickShowPassword () {
-        this.setState(state => ({ showPassword: !state.showPassword }));
+  handleClickShowPassword() {
+    this.setState((state) => ({ showPassword: !state.showPassword }));
+  }
+
+  handleResetPasswordDialogClose = () => {
+    this.setState({ openResetPasswordDialog: false });
+  };
+
+  handleLogin = (event) => {
+    event.preventDefault();
+    let data = {
+      username: this.state.email,
+      password: this.state.password,
     };
 
-    render() {
-        const { classes } = this.props;
-       
-        return (
-            <div className={classes.backgroundImage} style={{ backgroundImage: `url(${Background})` }}>
-            <main className={classes.main} >
-                <CssBaseline />
-                <Paper className={classes.paper}>
-                    <div>
-                        <img className={classes.loginHeadingLogo} src={Logo} alt='DHBW Logo'/>                      
-                    </div>
+    axios
+      .post('/api/login', data)
+      .then((res) => {
+        const { payload } = res.data;
+        this.setState({ message: res.data.message });
+        localStorage.setItem('backend-login-response', JSON.stringify(payload));
+        if (payload.password_change_required) {
+          localStorage.setItem('ExoplanSessionToken', '');
+          this.props.history.push({
+            pathname: NAV_ITEMS.PASSWORD_RESET_FORCED.link,
+            state: { password: this.state.password },
+          });
+          return;
+        }
+        const token = payload.token;
+        localStorage.setItem('ExoplanSessionToken', token);
+        this.props.history.push({
+          pathname: NAV_ITEMS.COURSES.link, //oder zu der Seite auf der man zuvor war? (bei session timout)
+        });
+      })
+      .catch((err) => {
+        this.setState({ open: true });
+        this.setState({ error: 'Ungültige Anmeldedaten. Versuchen Sie es noch einmal!' });
+      });
+  };
 
-                    {/* Alert error message */}
-                    {this.state.error !== "" ? 
-                        <div className={classes.root}>
-                            <Collapse in={this.state.open}>
-                                <Alert severity="error" action={
-                                    <IconButton
-                                        aria-label="close"
-                                        color="inherit"
-                                        size="small"
-                                        onClick={() => this.setState({ open: false })}
-                                    >
-                                        <CloseIcon fontSize="inherit" />
-                                    </IconButton>
-                                }>
-                                {this.state.error}
-                                </Alert>
-                            </Collapse>
-                        </div> : null}
+  handleEmail = (event) => {
+    this.setState({ email: event.target.value });
+  };
 
-                    {/* Alert success message */}
-                    {this.state.message !== "" ? 
-                        <div className={classes.root}>
-                            <Collapse in={this.state.open}>
-                                <Alert action={
-                                    <IconButton
-                                        aria-label="close"
-                                        color="inherit"
-                                        size="small"
-                                        onClick={() => this.setState({ open: false })}
-                                    >
-                                        <CloseIcon fontSize="inherit" />
-                                    </IconButton>
-                                }>
-                                {this.state.message}
-                                </Alert>
-                            </Collapse>
-                        </div> : null}
+  handlePassword = (event) => {
+    this.setState({ password: event.target.value });
+  };
 
-                        {/* Login Form */}
-                        <form className={classes.form}>
-                            <TextField
-                            required
-                            id="InputUsername"
-                            label="Nutzername"
-                            margin="dense"
-                            variant="outlined"
-                            fullWidth
-                            value={this.state.username}
-                            onChange={this.handleEmail}
-                            />
+  displayAlertErrorMessage = (message, classes) => {
+    if (message !== '') {
+      return (
+        <div className={classes.root}>
+          <Collapse in={this.state.open}>
+            <Alert
+              severity='error'
+              action={
+                <IconButton
+                  aria-label='close'
+                  color='inherit'
+                  size='small'
+                  onClick={() => this.setState({ open: false })}>
+                  <CloseIcon fontSize='inherit' />
+                </IconButton>
+              }>
+              {this.state.error}
+            </Alert>
+          </Collapse>
+        </div>
+      );
+    }
+  };
 
-                            <TextField
-                            required
-                            id="InputPassword"
-                            label="Passwort"
-                            type={this.state.showPassword ? 'text' : 'password'}
-                            margin="dense"
-                            variant="outlined"
-                            fullWidth
-                            value={this.state.password}
-                            onChange={this.handlePassword}
+  displaySuccessMessage = (message, classes) => {
+    if (message !== '') {
+      return (
+        <div className={classes.root}>
+          <Collapse in={this.state.open}>
+            <Alert
+              action={
+                <IconButton
+                  aria-label='close'
+                  color='inherit'
+                  size='small'
+                  onClick={() => this.setState({ open: false })}>
+                  <CloseIcon fontSize='inherit' />
+                </IconButton>
+              }>
+              {this.state.message}
+            </Alert>
+          </Collapse>
+        </div>
+      );
+    }
+  };
 
-                            InputProps={{
-                                endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton
-                                    aria-label="Toggle password visibility"
-                                    onClick={this.handleClickShowPassword}
-                                    >
-                                    {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                                ),
-                            }}
-                            />
+  render() {
+    const { classes } = this.props;
 
-                            <Grid container justify="flex-start">
-                                <Grid item>
-                                <Link href="/reset" variant="body2">
-                                    Passwort vergessen?
-                                </Link>
-                                </Grid>
-                            </Grid>
-                        
-                            <Button
-                            variant="contained"
-                            color="primary"
-                            fullWidth
-                            onClick={this.handleLogin}
-                            className={classes.submit}
-                            >
-                            Anmelden
-                            </Button>
-
-                            <Button
-                            variant="contained"
-                            color="primary"
-                            fullWidth
-                            onClick={this.handleSignUp}
-                            className={classes.submit}
-                            >
-                            Registrieren
-                            </Button>
-                        </form>
-                </Paper>
-            </main>
+    return (
+      <div className={classes.backgroundImage} style={{ backgroundImage: `url(${Background})` }}>
+        <main className={classes.main}>
+          <CssBaseline />
+          <Paper className={classes.paper}>
+            <div>
+              <img className={classes.loginHeadingLogo} src={Logo} alt='ExoPlan-Logo' />
             </div>
-        )
-    }
 
-    handleSignUp = (event) => {
-        event.preventDefault();
-        let data = {
-            username: this.state.email,
-            password: this.state.password
-        };
+            {this.displayAlertErrorMessage(this.state.error, classes)}
 
-        axios.post('/api/signup', data)
-            .then(res => {
-                this.setState({ open: false })
-                this.setState({ error: "" })
-                this.setState({ message: res.data.message })
-                const token = res.data.payload.token;
-                localStorage.setItem('ExoplanSessionToken', token);
-                this.setState({ open: true })
-                this.setState({ message: "Registrierung erfolgreich! Sie werden in wenigen Sekunden automatisch eingeloggt." });
-                setTimeout(() => {
-                    this.props.history.push({
-                        pathname: "/kurse",
-                    }) 
-                },3000);
-            })
-            .catch(err => {
-                this.setState({ open: true })
-                this.setState({ error: err.response.data.message })
-            });
-    }
+            {this.displaySuccessMessage(this.state.message, classes)}
 
-    handleLogin = (event) => {
-        event.preventDefault();
-        let data = {
-            username: this.state.email,
-            password: this.state.password
-        };
+            {/* Login Form */}
+            <form className={classes.form} onSubmit={this.handleLogin}>
+              <TextField
+                id='InputUsername'
+                label='Nutzername'
+                margin='dense'
+                variant='outlined'
+                fullWidth
+                value={this.state.username}
+                onChange={this.handleEmail}
+              />
 
-        axios.post('/api/login', data)
-            .then(res => {
-                this.setState({ message: res.data.message })
-                const token = res.data.payload.token;
-                localStorage.setItem('ExoplanSessionToken', token);
-                this.props.history.push({
-                    pathname: "/kurse", //oder zu der Seite auf der man zuvor war? (bei session timout)
-                })
-            })
-            .catch(err => {
-                this.setState({ open: true })
-                this.setState({ error: "Ungültige Anmeldedaten. Versuchen Sie es noch einmal!" })
-            });
-    }
+              <TextField
+                id='InputPassword'
+                label='Passwort'
+                type={this.state.showPassword ? 'text' : 'password'}
+                margin='dense'
+                variant='outlined'
+                fullWidth
+                value={this.state.password}
+                onChange={this.handlePassword}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position='end'>
+                      <IconButton aria-label='Toggle password visibility' onClick={this.handleClickShowPassword}>
+                        {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
 
-    handleEmail = (event) => {
-        this.setState({ email: event.target.value });
-    }
+              <Grid container justify='flex-start'>
+                <Grid item>
+                  <Link onClick={() => this.setState({ openResetPasswordDialog: true })}>Passwort vergessen?</Link>
+                </Grid>
+              </Grid>
 
-    handlePassword = (event) => {
-        this.setState({ password: event.target.value });
-    }
+              <Button type='submit' variant='contained' color='primary' fullWidth className={classes.submit}>
+                Anmelden
+              </Button>
 
+              <Button variant='contained' color='primary' fullWidth className={classes.submit}>
+                Registrieren
+              </Button>
+            </form>
+          </Paper>
+        </main>
+        <Dialog open={this.state.openResetPasswordDialog} onClose={this.handleResetPasswordDialogClose}>
+          <DialogTitle>Passwort zurücksetzen</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Kontaktiere bitte einen Administator, um dein Passwort zurücksetzen zu lassen.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleResetPasswordDialogClose} color='primary' autoFocus>
+              Schließen
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
+  }
 }
 
 export default withStyles(loginStyles)(Login);
