@@ -44,7 +44,19 @@ export default function Vita(props) {
     const [cv, setCv] = React.useState(null);
     const [anchorEl, setAnchorEl] = React.useState(null);
 
-    const url = "/api/lecturerCV?lecturerId=" + props.data["lecturer_id"] + "&token=" + localStorage.getItem("ExoplanSessionToken")
+    const [data, setData] = React.useState(props.data);
+
+    useEffect(() => {
+        if (data !== props.data) {
+            setData(props.data)
+        }
+    }, [props.data])
+
+    var url = ""
+    if (data !== null) {
+        url = "/api/lecturerCV?lecturerId=" + props.data["lecturer_id"] + "&token=" + localStorage.getItem("ExoplanSessionToken")
+    }
+
     const output = []
 
     const handleAdd = (event) => {
@@ -67,7 +79,7 @@ export default function Vita(props) {
 
     const deleteCV = () => {
         axios.delete(url).then(res => {
-            window.location.assign("/dozenten")
+            window.location.reload()
         })
     }
 
@@ -87,7 +99,7 @@ export default function Vita(props) {
             setSubmitText(res.statusText)
             setTimeout(() => { setSubmitState(null) }, 2000)
             setOpen(false);
-            window.location.assign("/dozenten")
+            window.location.reload()
         }
         ).catch(err => {
             console.log(err.response)
@@ -106,8 +118,6 @@ export default function Vita(props) {
     const handleDownload = event => {
         axios.get(url, { responseType: 'blob' }).then(res => {
             const content = res.headers['content-type'];
-            console.log(content)
-            console.log(res)
             download(res.data, cvName, content)
         })
     }

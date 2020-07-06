@@ -13,6 +13,7 @@ import Notizen from './notizen';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link1 from '@material-ui/core/Link';
 import { Link } from "react-router-dom";
+import { APICall } from '../../../helper/Api';
 
 
 
@@ -61,6 +62,9 @@ const useStyles = makeStyles(theme => ({
 export default function DozentenDetails(props) {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
+    const [data, setData] = React.useState(null);
+    const [title, setTitle] = React.useState("");
+    const [name, setName] = React.useState("Loading...");
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -74,15 +78,48 @@ export default function DozentenDetails(props) {
         }
     }
 
-    const data = props["location"]["state"]["data"]
-    var title = data["academic_title"]
-    if (title === null) {
-        title = ""
+    const getCurrentIdFromURL = () => {
+        const currentURL = window.location.href
+        const splittedURL = currentURL.split("/")
+
+        return (splittedURL[4])
     }
-    const name = title + " " + data["firstname"] + " " + data["lastname"] + " (" + printIntExt(data["is_extern"]) + ")"
-    const tabLabels = ["Profil", "Lehre", "Vita", "Notizen"];
+
     const finalTabLabels = [];
     const finalTabPanels = [];
+    const tabLabels = ["Profil", "Lehre", "Vita", "Notizen"];
+
+    const loadData = () => {
+        const id = getCurrentIdFromURL()
+
+        APICall('GET', 'lecturers').then((res) => {
+            for (var i = 0; i < res.data.payload.Lecturers.length; i++) {
+                if (res.data.payload.Lecturers[i]["lecturer_id"] == id) {
+                    setData(res.data.payload.Lecturers[i])
+                }
+            }
+
+
+
+        });
+    }
+
+    if (data === null) {
+        loadData()
+    }
+
+    useEffect(() => {
+        if (data !== null) {
+            setTitle(data["academic_title"])
+            setName(title + " " + data["firstname"] + " " + data["lastname"] + " (" + printIntExt(data["is_extern"]) + ")")
+        }
+    }, [data])
+
+
+    if (title === null) {
+        setTitle("")
+    }
+
     const finalPanelContent = [<Profile data={data}></Profile>, <Lehre data={data}></Lehre>, <Vita data={data} editDisabled={props["location"]["state"]["editDisabled"]} ></ Vita>, <Notizen data={data} editDisabled={props["location"]["state"]["editDisabled"]}></Notizen>];
     let tabIndex = 0;
 

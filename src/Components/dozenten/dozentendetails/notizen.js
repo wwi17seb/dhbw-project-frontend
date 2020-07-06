@@ -32,6 +32,13 @@ export default function Notizen(props) {
     const [state, setState] = React.useState(null)
     const [comment, setComment] = React.useState(null)
     const [disabled, setDisabled] = React.useState(true)
+    const [data, setData] = React.useState(props.data);
+
+    useEffect(() => {
+        if (data !== props.data) {
+            setData(props.data)
+        }
+    }, [props.data])
 
     const handleComment = (event) => {
         setComment(event.target.value)
@@ -39,7 +46,7 @@ export default function Notizen(props) {
 
     useEffect(() => {
 
-        if (comment !== props.data["comment"] && !props.editDisabled) {
+        if (comment !== data["comment"] && !props.editDisabled) {
             setDisabled(false)
         } else {
             setDisabled(true)
@@ -53,7 +60,7 @@ export default function Notizen(props) {
         delete data["lecturer_id"]
         data["comment"] = comment
         axios.put(url, data).then(res => {
-            window.location.assign("/dozenten")
+            window.location.reload()
         })
     }
 
@@ -61,8 +68,8 @@ export default function Notizen(props) {
         updateComment()
     }
 
-    if (comment === null) {
-        setComment(props.data["comment"])
+    if (comment === null && data !== null) {
+        setComment(data["comment"])
     }
 
     return (

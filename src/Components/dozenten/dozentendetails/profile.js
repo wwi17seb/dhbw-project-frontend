@@ -21,12 +21,33 @@ const useStyles = makeStyles(theme => ({
 
 export default function Profile(props) {
     const classes = useStyles();
+    const [data, setData] = React.useState(props.data);
+
+    useEffect(() => {
+        if (data !== props.data) {
+            setData(props.data)
+        }
+    }, [props.data])
+
     var temp = []
-    for (var i = 0; i < props.data["MainFocuses"].length; i++) {
-        temp.push(
-            <Typography variant="subtitle1"> {"- " + props.data["MainFocuses"][i]["name"]}</Typography>
-        )
+    var phone = ""
+    var email = ""
+    var director = ""
+
+    if (data !== null) {
+        for (var i = 0; i < data["MainFocuses"].length; i++) {
+            temp.push(
+                <Typography variant="subtitle1"> {"- " + data["MainFocuses"][i]["name"]}</Typography>
+            )
+        }
+
+        phone = data["phonenumber"]
+        email = data["email"]
+        director = data["DirectorOfStudies"]["username"]
+
     }
+
+
     return (
         <Paper className={classes.paper}>
             <Grid container spacing={2}>
@@ -34,19 +55,19 @@ export default function Profile(props) {
                     <Typography className={classes.title} variant="h6">Tel.: </Typography>
                 </Grid>
                 <Grid item xs={10}>
-                    {props.data["phonenumber"]}
+                    {phone}
                 </Grid>
                 <Grid item xs={2}>
                     <Typography className={classes.title} variant="h6">Email: </Typography>
                 </Grid>
                 <Grid item xs={10}>
-                    {props.data["email"]}
+                    {email}
                 </Grid>
                 <Grid item xs={2}>
                     <Typography className={classes.title} variant="h6">Studiengangsleiter: </Typography>
                 </Grid>
                 <Grid item xs={10}>
-                    {props.data["DirectorOfStudies"]["username"]}
+                    {director}
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant="h6">Schwerpunkte: </Typography>
