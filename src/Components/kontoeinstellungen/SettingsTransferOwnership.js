@@ -64,7 +64,9 @@ const SettingsTransferOwnership = ({ openTransferOwnership, classes, handleClose
               onInputChange={(event, newInputValue) => {
                 setInputSelectedDoS(newInputValue);
               }}
-              renderInput={(params) => <TextField {...params} label='Studiengangsleiter' variant='outlined' />}
+              renderInput={(params) => (
+                <TextField {...params} label='Studiengangsleiter' variant='outlined' fullWidth />
+              )}
             />
 
             <DialogActions>

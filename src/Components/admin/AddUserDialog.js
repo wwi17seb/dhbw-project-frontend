@@ -45,6 +45,7 @@ const AddUserDialog = ({ openAddUserDialog, handleClose, showSnackbar, reloadDat
                 value={username}
                 onChange={({ target: { value } }) => setUsername(value)}
                 variant='outlined'
+                fullWidth
               />
             </Col>
           </Form.Group>
@@ -56,6 +57,7 @@ const AddUserDialog = ({ openAddUserDialog, handleClose, showSnackbar, reloadDat
                 onChange={({ target: { value } }) => setPassword(value)}
                 variant='outlined'
                 type='password'
+                fullWidth
               />
             </Col>
           </Form.Group>

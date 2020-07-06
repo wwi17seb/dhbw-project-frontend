@@ -84,6 +84,7 @@ const AddEntityDialog = ({
                   value={getAttribute(attr.db)}
                   onChange={({ target: { value } }) => setAttribute(attr.db, value)}
                   variant="outlined"
+                  fullWidth
                 />
               </Col>
             </Form.Group>

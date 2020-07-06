@@ -63,21 +63,22 @@ const GoogleCalendar = () => {
 
   return (
     <Fragment>
-      <Grid item xs={6} style={{ margin: '0.5em 0' }}>
+      <Grid item xs={12} style={{ margin: '0.5em 0' }}>
         {attributes.map((attr, index) => (
           <div key={index}>
             <TextField
+              style={{ marginTop: index === 0 ? '0' : '1.5em' }}
               label={attr.name}
               value={getAttribute(attr.db) || ''}
               onChange={({ target: { value } }) => setAttribute(attr.db, value)}
               variant='outlined'
-              style={{ marginTop: index === 0 ? '0' : '1.5em' }}
+              fullWidth
             />
           </div>
         ))}
       </Grid>
       <Button
-        style={{ color: '#ffffff', backgroundColor: '#e30613' }}
+        style={{ color: '#ffffff', backgroundColor: '#e30613', marginTop: '1em' }}
         variant='outlined'
         color='primary'
         onClick={handleUpdate}>

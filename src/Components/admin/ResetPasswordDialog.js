@@ -46,6 +46,7 @@ const ResetPasswordDialog = ({ openDialog, handleClose, showSnackbar, directorOf
                 variant='outlined'
                 required
                 minLength='1'
+                fullWidth
               />
             </Col>
           </Form.Group>

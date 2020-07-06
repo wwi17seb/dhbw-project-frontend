@@ -64,23 +64,24 @@ const RegisterContent = () => {
   return (
     <Fragment>
       {isRegisterKeyDisabled ? 'Aktuell ist die Registrierung mit einem Registrierungsschlüssel deaktiviert' : null}
-      <Grid item xs={6} style={{ margin: '0.5em 0' }}>
+      <Grid item xs={12} style={{ margin: '0.5em 0' }}>
         <TextField
           value={registerKey}
           onChange={handleRegisterKey}
           label='Registrierungsschlüssel'
           variant='outlined'
+          fullWidth
         />
       </Grid>
       <Button
-        style={{ color: '#ffffff', backgroundColor: '#e30613', marginRight: '0.5em' }}
+        style={{ color: '#ffffff', backgroundColor: '#e30613', marginRight: '0.5em', marginTop: '1em' }}
         variant='outlined'
         color='primary'
         onClick={handleUpdate}>
         Speichern
       </Button>
       <Button
-        style={{ marginLeft: '0.5rem', color: '#ffffff', backgroundColor: '#e30613' }}
+        style={{ marginLeft: '0.5rem', color: '#ffffff', backgroundColor: '#e30613', marginTop: '1em' }}
         variant='outlined'
         color='primary'
         onClick={handleDisable}>
