@@ -1,11 +1,16 @@
 import { Button, Grid, TextField } from '@material-ui/core';
 import React, { Fragment, useEffect, useState } from 'react';
+
 import { APICall } from '../../helper/Api';
 import SnackBar from '../Snackbar/Snackbar';
 import { SEVERITY } from '../Snackbar/SnackbarSeverity';
 
 const GoogleCalendar = () => {
-  const attributes = [{ db: 'apiKey', name: 'API-Key' }];
+  const attributes = [
+    { db: 'clientId', name: 'Client-ID' },
+    { db: 'apiKey', name: 'API-Key' },
+    { db: 'secret', name: 'Client-Schlüssel' },
+  ];
   const [attributeState, setAttributeState] = useState({});
 
   const [message, setMessage] = useState('');
@@ -66,7 +71,7 @@ const GoogleCalendar = () => {
               value={getAttribute(attr.db) || ''}
               onChange={({ target: { value } }) => setAttribute(attr.db, value)}
               variant='outlined'
-              style={{marginTop: index === 0 ? '0' : '1.5em'}}
+              style={{ marginTop: index === 0 ? '0' : '1.5em' }}
             />
           </div>
         ))}
@@ -83,26 +88,6 @@ const GoogleCalendar = () => {
   );
 };
 
-/*
-Kuhgle Kuhlender
-                                      /;    ;\
-                                  __  \\____//
-                                 /{_\_/   `'\____
-                                 \___   (o)  (o  }
-      _____________________________/          :--'
-  ,-,'`@@@@@@@@@       @@@@@@         \_    `__\
- ;:(  @@@@@@@@@        @@@             \___(o'o)
- :: )  @@@@          @@@@@@        ,'@@(  `===='
- :: : @@@@@:          @@@@         `@@@:
- :: \  @@@@@:       @@@@@@@)    (  '@@@'
- ;; /\      /`,    @@@@@@@@@\   :@@@@@)
- ::/  )    {_----------------:  :~`,~~;
-;;'`; :   )                  :  / `; ;
-;;;; : :   ;                  :  ;  ; :
-`'`' / :  :                   :  :  : :
-   )_ \__;      ";"          :_ ;  \_\       `,','
-   :__\  \    * `,'*         \  \  :  \   *  8`;'*
-       `^'     \ :/           `^'  `-^-'   \v/ :
-*/
+// 🐄
 
 export default GoogleCalendar;

@@ -1,9 +1,10 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import { Divider, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
+import React, { Fragment, useEffect, useState } from 'react';
+
 import { APICall } from '../../helper/Api';
-import UserRow from './UserRow';
-import AddUserDialog from './AddUserDialog';
 import SnackBar from '../Snackbar/Snackbar';
-import { Grid, Paper, Typography, Divider, makeStyles } from '@material-ui/core';
+import AddUserDialog from './AddUserDialog';
+import UserRow from './UserRow';
 
 const useStyles = makeStyles((theme) => ({
   root: {

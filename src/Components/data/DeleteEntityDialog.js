@@ -1,9 +1,9 @@
-import React from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
@@ -11,9 +11,9 @@ import Row from 'react-bootstrap/Row';
 const DeleteEntityDialog = ({ deleteDialog, handleClose, labelSingular, onDelete }) => {
   return (
     <Dialog open={deleteDialog} onClose={handleClose} aria-labelledby='form-dialog-title'>
-      <DialogTitle id='form-dialog-title'>{`${labelSingular} löschen?`} </DialogTitle>
+      <DialogTitle id='form-dialog-title'>{`${labelSingular} löschen?`}</DialogTitle>
       <DialogContent>
-        Halt ein! Böse Dinge können geschehen! Größte Achtsamkeit ist verlangt!
+        Achtung! Beim Löschen können weitere, davon abhängende Daten gelöscht werden.
         <Form onSubmit={onDelete}>
           <DialogActions>
             <Form.Group as={Row}>

@@ -1,3 +1,4 @@
+import { TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -7,6 +8,7 @@ import React, { useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+
 import { APICall } from '../../helper/Api';
 
 const ResetPasswordDialog = ({ openDialog, handleClose, showSnackbar, directorOfStudies_id, reloadData }) => {
@@ -35,13 +37,14 @@ const ResetPasswordDialog = ({ openDialog, handleClose, showSnackbar, directorOf
         <Form onSubmit={handleChangePassword}>
           <Form.Group as={Row} controlId='newPassword'>
             <Col>
-              <Form.Control
-                type='password'
-                placeholder='Neues Passwort eingeben'
+              <TextField
+                label='Passwort'
                 value={password}
+                placeholder='Neues Passwort eingeben'
+                onChange={({ target: { value } }) => setPassword(value)}
+                variant='outlined'
                 required
                 minLength='1'
-                onChange={({ target: { value } }) => setPassword(value)}
               />
             </Col>
           </Form.Group>

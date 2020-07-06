@@ -1,8 +1,9 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import { Button, Grid, TextField } from '@material-ui/core';
+import React, { Fragment, useEffect, useState } from 'react';
+
 import { APICall } from '../../helper/Api';
-import { Grid, TextField, Button } from '@material-ui/core';
-import { SEVERITY } from '../Snackbar/SnackbarSeverity';
 import SnackBar from '../Snackbar/Snackbar';
+import { SEVERITY } from '../Snackbar/SnackbarSeverity';
 
 const RegisterContent = () => {
   const [registerKey, setRegisterKey] = useState('');
@@ -63,7 +64,7 @@ const RegisterContent = () => {
   return (
     <Fragment>
       {isRegisterKeyDisabled ? 'Aktuell ist die Registrierung mit einem Registrierungsschlüssel deaktiviert' : null}
-      <Grid item xs={6} style={{margin: '0.5em 0' }}>
+      <Grid item xs={6} style={{ margin: '0.5em 0' }}>
         <TextField
           value={registerKey}
           onChange={handleRegisterKey}
@@ -79,7 +80,7 @@ const RegisterContent = () => {
         Speichern
       </Button>
       <Button
-        style={{ marginLeft: '0.5rem', color: '#ffffff', backgroundColor: '#e30613'}}
+        style={{ marginLeft: '0.5rem', color: '#ffffff', backgroundColor: '#e30613' }}
         variant='outlined'
         color='primary'
         onClick={handleDisable}>
