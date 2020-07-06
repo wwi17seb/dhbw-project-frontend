@@ -1,15 +1,16 @@
+import { Tabs } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import React from 'react';
-import ApiHandler from '../../helper/Api';
+import React, { useState } from 'react';
+
 import Nav from '../nav/Nav';
-import AddKurs from './addkurs/addkurs';
-import AddTabContent from './addTabContent/addTabContent';
+import GoogleCalendar from './GCContent';
+import RegisterContent from './RegisterContent';
+import UserContent from './UserContent';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -54,40 +55,33 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ScrollableTabsButtonAuto(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const tabLabels = ['ABC17DEF', 'Kurs Hinzufügen'];
+  const tabLabels = ['Benutzer', 'Registrierungsschlüssel', 'Google Calendar'];
   const finalTabLabels = [];
   const finalTabPanels = [];
-  const finalPanelContent = [<AddTabContent></AddTabContent>, <AddKurs></AddKurs>];
+  const finalPanelContent = [<UserContent />, <RegisterContent />, <GoogleCalendar />];
   let tabIndex = 0;
 
   for (let tabLabel of tabLabels) {
     finalTabLabels.push(<Tab key={tabIndex} label={tabLabel} {...a11yProps({ tabIndex })} />);
     finalTabPanels.push(
       <TabPanel key={tabIndex} value={value} index={tabIndex}>
-        {' '}
-        {finalPanelContent[tabIndex]}{' '}
+        {finalPanelContent[tabIndex]}
       </TabPanel>
     );
     tabIndex++;
   }
 
-  const handleAPIresponse = (response) => {
-    console.log('parent comp');
-    console.log(response);
-  };
   return (
     <div className={classes.root}>
-      <Nav></Nav>
-      <ApiHandler url='/api/courses' handleAPIresponse={handleAPIresponse}></ApiHandler>
+      <Nav />
       <main className={classes.content}>
         <div className={classes.toolbar} />
-
         <Paper>
           <Tabs
             value={value}

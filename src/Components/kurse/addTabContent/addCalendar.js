@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Paper from '@material-ui/core/Paper';
-import {TodayButton, DateNavigator} from '@devexpress/dx-react-scheduler-material-ui';
-import {ViewState, EditingState } from '@devexpress/dx-react-scheduler';
+import { TodayButton, DateNavigator } from '@devexpress/dx-react-scheduler-material-ui';
+import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
 import {
   Scheduler,
   Toolbar,
@@ -37,19 +37,17 @@ import {syncGoogleCalendar, handleAppointmentsLoad} from './apiHandlerGoogleCale
  let appointments = [];
 
 function formatData(calendarData) {
-
   appointments = [];
 
   for (let i = 0; i < calendarData.length; i++) {
-
     let test = {
       title: 'No title given',
       startDate: undefined,
-      endDate: undefined, 
+      endDate: undefined,
       location: 'No location given',
-      id: i, 
-      gcId: "test",
-    }
+      id: i,
+      gcId: 'test',
+    };
 
     if (calendarData[i].location) {
       test.location = calendarData[i].location;
@@ -76,7 +74,7 @@ function formatData(calendarData) {
   return appointments;
 }
 
-const containerStyles = theme => ({
+const containerStyles = (theme) => ({
   container: {
     width: theme.spacing(68),
     padding: 0,
@@ -172,15 +170,7 @@ class AppointmentFormContainerBasic extends React.PureComponent {
   }
 
   render() {
-    const {
-      classes,
-      visible,
-      visibleChange,
-      appointmentData,
-      cancelAppointment,
-      target,
-      onHide,
-    } = this.props;
+    const { classes, visible, visibleChange, appointmentData, cancelAppointment, target, onHide } = this.props;
     const { appointmentChanges } = this.state;
 
     const displayAppointmentData = {
@@ -195,24 +185,28 @@ class AppointmentFormContainerBasic extends React.PureComponent {
       ? () => this.commitAppointment('added')
       : () => this.commitAppointment('changed');
 
-    const textEditorProps = field => ({
+    const textEditorProps = (field) => ({
       variant: 'outlined',
-      onChange: ({ target: change }) => this.changeAppointment({
-        field: [field], changes: change.value,
-      }),
+      onChange: ({ target: change }) =>
+        this.changeAppointment({
+          field: [field],
+          changes: change.value,
+        }),
       value: displayAppointmentData[field] || '',
       label: field[0].toUpperCase() + field.slice(1),
       className: classes.textField,
     });
 
-    const pickerEditorProps = field => ({
+    const pickerEditorProps = (field) => ({
       className: classes.picker,
       // keyboard: true,
       ampm: false,
       value: displayAppointmentData[field],
-      onChange: date => this.changeAppointment({
-        field: [field], changes: date ? date.toDate() : new Date(displayAppointmentData[field]),
-      }),
+      onChange: (date) =>
+        this.changeAppointment({
+          field: [field],
+          changes: date ? date.toDate() : new Date(displayAppointmentData[field]),
+        }),
       inputVariant: 'outlined',
       format: 'DD/MM/YYYY HH:mm',
       onError: () => null,
@@ -227,79 +221,55 @@ class AppointmentFormContainerBasic extends React.PureComponent {
     };
 
     return (
-      <AppointmentForm.Overlay
-        visible={visible}
-        target={target}
-        fullSize
-        onHide={onHide}
-      >
+      <AppointmentForm.Overlay visible={visible} target={target} fullSize onHide={onHide}>
         <div>
           <div className={classes.header}>
-            <IconButton
-              className={classes.closeButton}
-              onClick={cancelChanges}
-            >
-              <Close color="action" />
+            <IconButton className={classes.closeButton} onClick={cancelChanges}>
+              <Close color='action' />
             </IconButton>
           </div>
           <div className={classes.content}>
             <div className={classes.wrapper}>
-              <Create className={classes.icon} color="action" />
-              <TextField
-                {...textEditorProps('title')}
-              />
+              <Create className={classes.icon} color='action' />
+              <TextField {...textEditorProps('title')} />
             </div>
             <div className={classes.wrapper}>
-              <CalendarToday className={classes.icon} color="action" />
+              <CalendarToday className={classes.icon} color='action' />
               <MuiPickersUtilsProvider utils={MomentUtils}>
-                <KeyboardDateTimePicker
-                  label="Start Date"
-                  {...pickerEditorProps('startDate')}
-                />
-                <KeyboardDateTimePicker
-                  label="End Date"
-                  {...pickerEditorProps('endDate')}
-                />
+                <KeyboardDateTimePicker label='Start Date' {...pickerEditorProps('startDate')} />
+                <KeyboardDateTimePicker label='End Date' {...pickerEditorProps('endDate')} />
               </MuiPickersUtilsProvider>
             </div>
             <div className={classes.wrapper}>
-              <LocationOn className={classes.icon} color="action" />
-              <TextField
-                {...textEditorProps('location')}
-              />
+              <LocationOn className={classes.icon} color='action' />
+              <TextField {...textEditorProps('location')} />
             </div>
             <div className={classes.wrapper}>
-              <Notes className={classes.icon} color="action" />
-              <TextField
-                {...textEditorProps('notes')}
-                multiline
-                rows="6"
-              />
+              <Notes className={classes.icon} color='action' />
+              <TextField {...textEditorProps('notes')} multiline rows='6' />
             </div>
           </div>
           <div className={classes.buttonGroup}>
             {!isNewAppointment && (
               <Button
-                variant="outlined"
-                color="secondary"
+                variant='outlined'
+                color='secondary'
                 className={classes.button}
                 onClick={() => {
                   visibleChange();
                   this.commitAppointment('deleted');
-                }}
-              >
+                }}>
                 Delete
               </Button>
             )}
             <Button
-              variant="outlined"
-              color="primary"
+              variant='outlined'
+              color='primary'
               className={classes.button}
               onClick={() => {
                 visibleChange();
                 applyChanges();
-              }}
-            >
+              }}>
               {isNewAppointment ? 'Create' : 'Save'}
             </Button>
           </div>
@@ -309,12 +279,14 @@ class AppointmentFormContainerBasic extends React.PureComponent {
   }
 }
 
-const AppointmentFormContainer = withStyles(containerStyles, { name: 'AppointmentFormContainer' })(AppointmentFormContainerBasic);
+const AppointmentFormContainer = withStyles(containerStyles, { name: 'AppointmentFormContainer' })(
+  AppointmentFormContainerBasic
+);
 
-const styles = theme => ({
+const styles = (theme) => ({
   addButton: {
     float: 'right',
-    marginTop:  '1vh'
+    marginTop: '1vh',
   },
 });
 
@@ -368,7 +340,6 @@ class GoogleCalendar extends React.PureComponent {
     this.onEditingAppointmentChange = this.onEditingAppointmentChange.bind(this);
     this.onAddedAppointmentChange = this.onAddedAppointmentChange.bind(this);
     this.appointmentForm = connectProps(AppointmentFormContainer, () => {
-
       const {
         editingFormVisible,
         editingAppointment,
@@ -378,11 +349,13 @@ class GoogleCalendar extends React.PureComponent {
         previousAppointment,
       } = this.state;
 
-      this.currentDateChange = (currentDate) => { this.setState({ currentDate }); };
-      
-      const currentAppointment = data
-        .filter(appointment => editingAppointment && appointment.id === editingAppointment.id)[0]
-        || addedAppointment;
+      this.currentDateChange = (currentDate) => {
+        this.setState({ currentDate });
+      };
+
+      const currentAppointment =
+        data.filter((appointment) => editingAppointment && appointment.id === editingAppointment.id)[0] ||
+        addedAppointment;
       const cancelAppointment = () => {
         if (isNewAppointment) {
           this.setState({
@@ -402,7 +375,6 @@ class GoogleCalendar extends React.PureComponent {
       };
     });
   }
-
   componentDidMount(){
     this.loadData(); 
   }
@@ -456,9 +428,9 @@ class GoogleCalendar extends React.PureComponent {
   commitDeletedAppointment() {
     this.setState((state) => {
       const { data, deletedAppointmentId } = state;
-      const nextData = data.filter(appointment => appointment.id !== deletedAppointmentId);
+      const nextData = data.filter((appointment) => appointment.id !== deletedAppointmentId);
       /** Google Calendar Delete */
-      syncGoogleCalendar("delete", data[deletedAppointmentId].gcId);
+      syncGoogleCalendar('delete', data[deletedAppointmentId].gcId);
       return { data: nextData, deletedAppointmentId: null };
     });
     this.toggleConfirmationVisible();
@@ -470,20 +442,20 @@ class GoogleCalendar extends React.PureComponent {
       if (added) {
         const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0;
         data = [...data, { id: startingAddedId, ...added }];
-        syncGoogleCalendar("insert", added)
+        syncGoogleCalendar('insert', added);
       }
       if (changed) {
-        data = data.map(appointment => (
+        data = data.map((appointment) =>
           changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment
-        ));
+        );
 
-        if(changed[state.editingAppointment.id].title === undefined){
-          data[state.editingAppointment.id].startDate = changed[state.editingAppointment.id].startDate; 
+        if (changed[state.editingAppointment.id].title === undefined) {
+          data[state.editingAppointment.id].startDate = changed[state.editingAppointment.id].startDate;
           data[state.editingAppointment.id].endDate = changed[state.editingAppointment.id].endDate;
-          syncGoogleCalendar("change", data[state.editingAppointment.id]);
-        }else{
-          syncGoogleCalendar("change", changed[state.editingAppointment.id]);
-        };
+          syncGoogleCalendar('change', data[state.editingAppointment.id]);
+        } else {
+          syncGoogleCalendar('change', changed[state.editingAppointment.id]);
+        }
       }
       if (deleted !== undefined) {
         this.setDeletedAppointmentId(deleted);
@@ -506,9 +478,7 @@ class GoogleCalendar extends React.PureComponent {
     const { classes } = this.props;
 
     if (!dataReady) {
-      return (
-        <p>Loading...</p>
-      );
+      return <p>Loading...</p>;
     } else {
       return (
         <Paper>
@@ -529,7 +499,6 @@ class GoogleCalendar extends React.PureComponent {
             <WeekView
               startDayHour={startDayHour}
               endDayHour={endDayHour}
-
             />
             <MonthView />
             <AllDayPanel />
@@ -541,9 +510,9 @@ class GoogleCalendar extends React.PureComponent {
               showDeleteButton
             />
             <Toolbar />
-            <DateNavigator/>
+            <DateNavigator />
             <ViewSwitcher />
-            <TodayButton/>
+            <TodayButton />
             <AppointmentForm
               overlayComponent={this.appointmentForm}
               visible={editingFormVisible}
@@ -552,25 +521,18 @@ class GoogleCalendar extends React.PureComponent {
             <DragDropProvider />
           </Scheduler>
 
-          <Dialog
-            open={confirmationVisible}
-            onClose={this.cancelDelete}
-          >
-            <DialogTitle>
-              Delete Appointment
-          </DialogTitle>
+          <Dialog open={confirmationVisible} onClose={this.cancelDelete}>
+            <DialogTitle>Delete Appointment</DialogTitle>
             <DialogContent>
-              <DialogContentText>
-                Are you sure you want to delete this appointment?
-            </DialogContentText>
+              <DialogContentText>Are you sure you want to delete this appointment?</DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.toggleConfirmationVisible} color="primary" variant="outlined">
+              <Button onClick={this.toggleConfirmationVisible} color='primary' variant='outlined'>
                 Cancel
-            </Button>
-              <Button onClick={this.commitDeletedAppointment} color="secondary" variant="outlined">
+              </Button>
+              <Button onClick={this.commitDeletedAppointment} color='secondary' variant='outlined'>
                 Delete
-            </Button>
+              </Button>
             </DialogActions>
           </Dialog>
           <Button
