@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import AddCalendar from './addCalendar';
 import AddSemester from './addSemester';
 
 const AddTabContent = (props) => {
   return (
-    <div style={{ padding: 0 }}>
+    <Fragment>
       <AddSemester {...props} />
       <AddCalendar />
-    </div>
+    </Fragment>
   );
 };
 

@@ -22,7 +22,7 @@ export default function DozentenTable() {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Nav></Nav>
+      <Nav />
       <main className={classes.content}>
         <div className={classes.toolbar} />
         {/* @erik, do you really check all the code? */}

@@ -8,12 +8,12 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 
-const DeleteEntityDialog = ({ deleteDialog, handleClose, labelSingular, onDelete }) => {
+const DeleteEntityDialog = ({ deleteDialog, handleClose, labelSingular, onDelete, warningMessage }) => {
   return (
     <Dialog open={deleteDialog} onClose={handleClose} aria-labelledby='form-dialog-title'>
       <DialogTitle id='form-dialog-title'>{`${labelSingular} löschen?`}</DialogTitle>
       <DialogContent>
-        Achtung! Beim Löschen können weitere, davon abhängende Daten gelöscht werden.
+        { warningMessage || "Achtung! Beim Löschen können weitere, davon abhängende Daten gelöscht werden." }
         <Form onSubmit={onDelete}>
           <DialogActions>
             <Form.Group as={Row}>

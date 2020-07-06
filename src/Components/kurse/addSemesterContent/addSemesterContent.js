@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import { APICall } from '../../../helper/Api';
 import MyTable from './myTable';
 
@@ -32,6 +33,7 @@ const AddSemesterContent = (props) => {
       loadData={loadData}
       course_id={props.selectedCourse.course_id}
       semester_id={props.semester.semester_id}
+      showSnackbar={props.showSnackbar}
     />
   );
 };

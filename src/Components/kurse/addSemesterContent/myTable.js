@@ -1,6 +1,7 @@
 import { Divider, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
 import React, { Fragment } from 'react';
 
+import { SEVERITY } from '../../Snackbar/SnackbarSeverity';
 import PresentationRow from './PresentationRow';
 
 const useStyles = makeStyles((theme) => ({
@@ -41,10 +42,26 @@ const header = () => (
 );
 
 // receives given data
-const MyTable = ({ presentations, loadData, course_id, semester_id }) => {
+const MyTable = ({ presentations, loadData, course_id, semester_id, showSnackbar }) => {
   const classes = useStyles();
+
+  const createNewPresentation = () => {
+    // TODO: creating a new presentation
+    showSnackbar('Presentation could not be created!', SEVERITY.ERROR);
+  };
+
   return (
     <Fragment>
+      <div style={{ textAlign: 'right' }}>
+        <button
+          style={{ color: '#ffffff', backgroundColor: '#e30613', marginBottom: '1rem' }}
+          className='btn'
+          onClick={() => {
+            createNewPresentation();
+          }}>
+          Vorlesung planen
+        </button>
+      </div>
       <Grid container spacing={2}>
         <Paper className={classes.paper}>
           {header()}
@@ -55,21 +72,11 @@ const MyTable = ({ presentations, loadData, course_id, semester_id }) => {
               loadData={loadData}
               course_id={course_id}
               semester_id={semester_id}
+              showSnackbar={showSnackbar}
             />
           ))}
         </Paper>
       </Grid>
-      <div style={{ textAlign: 'right' }}>
-        <button
-          style={{ color: '#ffffff', backgroundColor: '#e30613', marginBottom: '1rem' }}
-          className='btn'
-          onClick={() => {
-            alert('TBD'); // TODO: exchange with snackbar
-          }}>
-          Vorlesung planen
-        </button>
-      </div>
-      {/* Snackbar?? */}
     </Fragment>
   );
 };

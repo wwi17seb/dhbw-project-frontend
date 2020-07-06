@@ -5,11 +5,12 @@ import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { APICall } from '../../helper/Api';
 import ApiHandler from '../../helper/Api';
 import Nav from '../nav/Nav';
+import SnackBar from '../Snackbar/Snackbar';
 import AddKurs from './addkurs/addkurs';
 import AddTabContent from './addTabContent/addTabContent';
 
@@ -56,8 +57,18 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ScrollableTabsButtonAuto(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
-  const [courses, setCourses] = React.useState([]);
+  const [value, setValue] = useState(0);
+  const [courses, setCourses] = useState([]);
+
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const showSnackbar = (message, severity) => {
+    setMessage(message);
+    setSeverity(severity);
+    setSnackbarOpen(true);
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -67,7 +78,9 @@ export default function ScrollableTabsButtonAuto(props) {
   const tabLabels = courseNames.concat(['Kurs Hinzufügen']);
   const finalTabLabels = [];
   const finalTabPanels = [];
-  const finalPanelContent = courses.map((course) => <AddTabContent selectedCourse={course} />).concat([<AddKurs />]);
+  const finalPanelContent = courses
+    .map((course) => <AddTabContent selectedCourse={course} showSnackbar={showSnackbar} />)
+    .concat([<AddKurs />]);
   let tabIndex = 0;
 
   for (let tabLabel of tabLabels) {
@@ -93,8 +106,6 @@ export default function ScrollableTabsButtonAuto(props) {
 
   const handleAPIresponse = async (response) => {
     const { Courses } = response.data.payload;
-    console.log('Courses', Courses);
-    // Just for testing
     setCourses(Courses);
   };
 
@@ -132,6 +143,7 @@ export default function ScrollableTabsButtonAuto(props) {
           </Tabs>
         </Paper>
         {finalTabPanels}
+        <SnackBar isOpen={snackbarOpen} message={message} severity={severity} />
       </main>
     </div>
   );

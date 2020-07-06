@@ -4,19 +4,20 @@ import { Delete, Edit, Email } from '@material-ui/icons';
 import React, { Fragment, useState } from 'react';
 
 import { APICall } from '../../../helper/Api';
+import DeleteEntityDialog from '../../data/DeleteEntityDialog';
+import { SEVERITY } from '../../Snackbar/SnackbarSeverity';
 import { getNameOfLecturer } from './helper';
 import ModifyPresentation from './ModifyPresentation';
 
-// import { SEVERITY } from '../../Snackbar/SnackbarSeverity';
-
 const PresentationRow = ({ presentation, course_id, semester_id, showSnackbar, loadData }) => {
   const [editPresentation, setEditPresentation] = useState(false);
+  const [presentationIdToDelete, setPresentationIdToDelete] = useState(0);
 
   const { status, Lecturer, AcademicRecord, Lecture } = presentation;
   const { workload_dhbw, Module } = Lecture;
   const { AcademicRecords } = Module;
 
-  if (editPresentation) {
+  const modifyPresentation = () => {
     return (
       <ModifyPresentation
         open={true}
@@ -29,25 +30,42 @@ const PresentationRow = ({ presentation, course_id, semester_id, showSnackbar, l
         academicRecords={AcademicRecords}
         majorSubjectId={presentation.Lecture.Module.moduleGroup_id}
         loadData={loadData}
+        showSnackbar={showSnackbar}
       />
     );
-  }
+  };
 
-  const deletePresentation = (presentation_id) => {
+  const deletePresentationDialog = () => {
+    return (
+      <DeleteEntityDialog
+        handleClose={() => {
+          setPresentationIdToDelete(0);
+        }}
+        deleteDialog={true}
+        labelSingular={'Lehrveranstaltung'}
+        onDelete={(e) => deletePresentation(e, presentationIdToDelete)}
+        warningMessage={'Die Lehrveranstaltung kann nach dem Löschen nicht wiederhergestellt werden.'}
+      />
+    );
+  };
+
+  const deletePresentation = (e, presentation_id) => {
+    e.preventDefault();
     APICall('DELETE', `presentations?presentationId=${presentation_id}`).then((res) => {
-      const { status, data } = res;
-      if (status === 200 && data) {
+      if (res.status === 200) {
         loadData();
-        alert('Präsentation erfolgreich gelöscht!'); // TODO: replace with showSnackbar('Präsentation erfolgreich gelöscht!', SEVERITY.SUCCESS);
+        showSnackbar('Vorlesung erfolgreich gelöscht!', SEVERITY.SUCCESS);
       } else {
         // TODO: Implement handling of possible failure
-        alert('Präsentation konnte nicht gelöscht werden!'); // TODO: replace with showSnackbar('Präsentation konnte nicht gelöscht werden!', SEVERITY.ERROR);
+        showSnackbar('Vorlesung konnte nicht gelöscht werden!', SEVERITY.ERROR);
       }
     });
   };
 
   return (
     <Fragment>
+      {editPresentation ? modifyPresentation() : null}
+      {presentationIdToDelete ? deletePresentationDialog() : null}
       <Grid item xs={12}>
         <Grid container spacing={2}>
           <Grid item xs={3}>
@@ -76,7 +94,10 @@ const PresentationRow = ({ presentation, course_id, semester_id, showSnackbar, l
               <Edit style={{ cursor: 'pointer' }} onClick={() => setEditPresentation(true)} />
             </Tooltip>
             <Tooltip title='Löschen der Vorlesung'>
-              <Delete style={{ cursor: 'pointer' }} onClick={() => deletePresentation(presentation.presentation_id)} />
+              <Delete
+                style={{ cursor: 'pointer' }}
+                onClick={() => setPresentationIdToDelete(presentation.presentation_id)}
+              />
             </Tooltip>
             {getNameOfLecturer(Lecturer) ? (
               <Tooltip title={`E-Mail an ${getNameOfLecturer(Lecturer)}`}>
