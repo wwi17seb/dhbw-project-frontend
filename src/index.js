@@ -1,11 +1,10 @@
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom';
-import '../node_modules/bootstrap/dist/css/bootstrap.css';
-import '../node_modules/bootstrap/dist/js/bootstrap.js';
-import Admin from './Components/admin/Admin';
-import Data from './Components/data/Data';
+import { Redirect, Route, BrowserRouter as Router } from 'react-router-dom';
+
+import AdminTabs from './Components/admin/AdminTabs';
+import DataTabs from './Components/data/DataTabs';
 import Dozenten from './Components/dozenten/Dozenten';
 import Kontoeinstellungen from './Components/kontoeinstellungen/Kontoeinstellungen';
 import Kurse from './Components/kurse/Kurse';
@@ -14,8 +13,11 @@ import Login from './Components/login/Login';
 import PasswordResetForced from './Components/login/PasswordResetForced';
 import Modulkatalog from './Components/modulkatalog/Modulkatalog';
 import ModulkatalogDetail from './Components/modulkatalog/ModulkatalogDetail';
-import './index.css';
 import { NAV_ITEMS } from './shared/navConstants';
+
+import '../node_modules/bootstrap/dist/css/bootstrap.css';
+import '../node_modules/bootstrap/dist/js/bootstrap.js';
+import './index.css';
 
 // Color theme for whole app
 const theme = createMuiTheme({
@@ -53,8 +55,8 @@ const routing = (
       <Route exact path={NAV_ITEMS.LOGIN.link} component={Login} />
       <Route exact path={NAV_ITEMS.RESET.link} component={ResetPassword} /> {/* DEPRECATED */}
       <Route exact path={NAV_ITEMS.PASSWORD_RESET_FORCED.link} component={PasswordResetForced} />
-      <PrivateRoute exact path={NAV_ITEMS.ADMIN.link} component={Admin} />
-      <PrivateRoute exact path={NAV_ITEMS.DATA.link} component={Data} />
+      <PrivateRoute exact path={NAV_ITEMS.ADMIN.link} component={AdminTabs} />
+      <PrivateRoute exact path={NAV_ITEMS.DATA.link} component={DataTabs} />
     </Router>
   </MuiThemeProvider>
 );
