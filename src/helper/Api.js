@@ -1,33 +1,21 @@
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-
 import { getTokenFromStorage } from './tokenHelper';
 
 export const APICall = async (method, url, data) => {
-  //not in use
+  const token = getTokenFromStorage();
+  const params = token ? { token } : {};
   return axios
     .request({
       data,
       method,
-      url: `https://localhost/api/${url}`,
-      params: {
-        token: getTokenFromStorage(),
-      },
+      url: `/api/${url}`,
+      params,
     })
-    .then((res) => {
-      return res;
-    })
-    .catch((err) => {
-      return err;
-    });
-};
+    .then(res => { return res })
+    .catch(err => { return err.response })
+}
 
 function ApiHandler(props) {
   //THIS COMPONENT TAKES PROPS:
@@ -42,11 +30,11 @@ function ApiHandler(props) {
 
   const handleClose = () => {
     setOpen(false);
-    history.push({
-      pathname: '/',
-      //state: { message: "Successfully logged out!" }
+    history.replace({
+      pathname: '/', //state: { message: "Successfully logged out!" }
     });
   };
+
   useEffect(() => {
     if (initial) {
       const fetch = async () => {
@@ -91,26 +79,7 @@ function ApiHandler(props) {
     }
   });
 
-  return (
-    <div>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby='alert-dialog-title'
-        aria-describedby='alert-dialog-description'>
-        <DialogTitle id='alert-dialog-title'>{'You are logged out'}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id='alert-dialog-description'>
-            {errorMsg} Please redirect to Login and enter your credentials, e.g. User: jreichwald Password: pw
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color='primary' autoFocus>
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  );
+  return open ? handleClose() : null;
 }
+
 export default ApiHandler;

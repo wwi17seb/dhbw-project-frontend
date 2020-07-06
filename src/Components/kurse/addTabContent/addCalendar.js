@@ -1,3 +1,7 @@
+import * as React from 'react';
+import Paper from '@material-ui/core/Paper';
+import { TodayButton, DateNavigator } from '@devexpress/dx-react-scheduler-material-ui';
+import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
 import MomentUtils from '@date-io/moment';
 import { connectProps } from '@devexpress/dx-react-core';
 import { EditingState, ViewState } from '@devexpress/dx-react-scheduler';
@@ -22,6 +26,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import Fab from '@material-ui/core/Fab';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
@@ -31,6 +37,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import Close from '@material-ui/icons/Close';
 import Create from '@material-ui/icons/Create';
+//import {handleAppointmentDelete, handleAppointmentInsert, handleAppointmentChange} from './apiHandlerGoogleCalendar';
 import LocationOn from '@material-ui/icons/LocationOn';
 import Notes from '@material-ui/icons/Notes';
 import { KeyboardDateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -400,10 +407,12 @@ class Demo extends React.PureComponent {
       .then((response) => response.json())
       .then((appointments) => {
         setTimeout(() => {
-          this.setState({
-            data: formatData(appointments.items),
-            dataReady: true,
-          });
+          if (appointments.items) {
+            this.setState({
+              data: formatData(appointments.items),
+              dataReady: true,
+            });
+          }
         }, 600);
         console.log(this.state.data);
         console.log(appointments.items);
@@ -542,8 +551,9 @@ class Demo extends React.PureComponent {
               </Button>
             </DialogActions>
           </Dialog>
-          <Fab
-            color='primary'
+          <Button
+            variant="contained"
+            color="primary"
             className={classes.addButton}
             onClick={() => {
               this.setState({ editingFormVisible: true });
@@ -552,9 +562,10 @@ class Demo extends React.PureComponent {
                 startDate: new Date(currentDate).setHours(startDayHour),
                 endDate: new Date(currentDate).setHours(startDayHour + 1),
               });
-            }}>
-            <AddIcon />
-          </Fab>
+            }}
+          >
+            Vorlesung im Kalender eintragen
+          </Button>
         </Paper>
       );
     }

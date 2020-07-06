@@ -57,9 +57,14 @@ export default function ModulkatalogTable() {
   const history = useHistory();
   const [searchTerm, setSearchTerm] = React.useState("");
   const [searchResults, setSearchResults] = React.useState([]);
-  const [payload, setPayload] = React.useState([]);
   const [fieldsOfStudyList, setFieldsOfStudyList] = React.useState([]);
   const [raised, setRaised] = React.useState(false);
+  const [rendered, setRendered] = React.useState(0)
+  
+  const rerender = () => {
+    setRendered(rendered+1);
+  }
+  
   const handleSearch = event => {
     setSearchTerm(event.target.value);
   };
@@ -82,7 +87,6 @@ export default function ModulkatalogTable() {
   }
 
   const handleAPIresponse = (response) => {
-    setPayload(response.data.payload);
     console.log(response.data.payload);
     if (typeof response.data.payload["FieldsOfStudy"] !== "undefined"){
       let fieldsOfStudyWithMajorSubject = [];
@@ -92,7 +96,11 @@ export default function ModulkatalogTable() {
           if ( (majorSubjectIDs.find(i => i.id == majorSubject.majorSubject_id)) === undefined
             && (majorSubjectIDs.find(i => i.name.toString().includes(majorSubject.name))) === undefined //this second check is only needed until majorSubject_id is unambiguous (unique)
           ) {
-            fieldsOfStudyWithMajorSubject.push( fieldOfStudy.name + " " + majorSubject.name);
+            let year = ""
+            if (majorSubject.catalog_effective_from !== null) {
+              year = majorSubject.catalog_effective_from;
+            }
+            fieldsOfStudyWithMajorSubject.push( fieldOfStudy.name + " " + majorSubject.name + " " + year);
             majorSubjectIDs.push({name: fieldsOfStudyWithMajorSubject[fieldsOfStudyWithMajorSubject.length -1], id: majorSubject.majorSubject_id})
           }
         }
@@ -122,7 +130,7 @@ export default function ModulkatalogTable() {
               <TextField id="filled-basic" fullWidth={true} label="Suchen Sie nach Jahr, Studienrichtung oder Spezialisierung" value={searchTerm} onChange={handleSearch} id="inputStudiengang" variant="filled" />
             </Grid>
             <Grid item sm={4}>
-              <ModulkatalogAdd />
+              <ModulkatalogAdd/>
             </Grid>
             {/* <Grid item md={5} sm={12}>
               <label className="card-label" forhtml="inputSpezialisierung">Spezialisierung:</label>
