@@ -328,6 +328,18 @@ var yyyy = today.getFullYear();
 
 today = mm + '-' + dd + '-' + yyyy;
 
+const Appointment = ({ children, style, ...restProps }) => (
+  <Appointments.Appointment
+    {...restProps}
+    style={{
+      ...style,
+      backgroundColor: "#e30613",
+      borderRadius: "8px"
+    }}
+  >
+    {children}
+  </Appointments.Appointment>
+);
 
 /* eslint-disable-next-line react/no-multi-comp */
 class GoogleCalendar extends React.PureComponent {
@@ -524,7 +536,7 @@ class GoogleCalendar extends React.PureComponent {
             <MonthView />
             <AllDayPanel />
             <EditRecurrenceMenu />
-            <Appointments />
+            <Appointments appointmentComponent={Appointment} />
             <AppointmentTooltip
               showOpenButton
               showCloseButton

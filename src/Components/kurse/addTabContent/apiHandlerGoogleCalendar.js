@@ -4,7 +4,7 @@ const creds = {
   scope: "https://www.googleapis.com/auth/calendar",
   discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
   secret: "p0p2e1o0qTZg7TQq_plsDl4V",
-  calenderID: 'cefk6hvf4f82ltu9pnnr31rd1o@group.calendar.google.com' //" "iq90i34lq6v196rqs4986dp370@group.calendar.google.com" // '
+  calenderID: 'iq90i34lq6v196rqs4986dp370@group.calendar.google.com' //"cefk6hvf4f82ltu9pnnr31rd1o@group.calendar.google.com" // '
 }
 
 export async function syncGoogleCalendar(action, appointmentData, handleResponse) {
