@@ -151,7 +151,7 @@ class Login extends Component {
           <CssBaseline />
           <Paper className={classes.paper}>
             <div>
-              <img className={classes.loginHeadingLogo} src={Logo} alt='DHBW Logo' />
+              <img className={classes.loginHeadingLogo} src={Logo} alt='ExoPlan-Logo' />
             </div>
 
             {this.displayAlertErrorMessage(this.state.error, classes)}

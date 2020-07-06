@@ -38,6 +38,7 @@ const ResetPasswordDialog = ({ openDialog, handleClose, showSnackbar, directorOf
           <Form.Group as={Row} controlId='newPassword'>
             <Col>
               <TextField
+                type='password'
                 label='Passwort'
                 value={password}
                 placeholder='Neues Passwort eingeben'
