@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import StudiengangAuswahl from './studiengangauswahl'
-
+import { APICall } from '../../../helper/Api';
 import SemesterAuswahl from './semesterauswahl'
 import SubmitFeedback from './submitfeedback'
 import Dialog from '@material-ui/core/Dialog';
@@ -18,6 +18,8 @@ import { Typography } from '@material-ui/core';
 import axios from 'axios';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import * as testdata from "./fieldOfStudiesTestData.json"
+import SnackBar from '../../Snackbar/Snackbar';
+import { SEVERITY } from '../../Snackbar/SnackbarSeverity';
 
 //css klassen, welche hier genutzt werden
 const useStyles = makeStyles(theme => ({
@@ -32,15 +34,14 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-
-
 export default function AddKurs() {
     const classes = useStyles();
 
     const [open, setOpen] = React.useState(false);
     const [button, setButton] = React.useState(false);
     const [checked, setChecked] = React.useState(false);
-    const [nameValue, setNameValue] = React.useState("")
+    const [nameValue, setNameValue] = React.useState("");
+    const [gcId, setGCId] = React.useState("");
     const [nametext, setNameText] = React.useState("")
     const [nameerror, setNameError] = React.useState(false)
     const [state, setState] = React.useState({});
@@ -48,6 +49,10 @@ export default function AddKurs() {
     const [statusText, setStatusText] = React.useState(null);
     const [loading, setLoading] = React.useState(null);
     const [subjectData, setSubjectData] = React.useState(null);
+
+    const [message, setMessage] = React.useState('');
+    const [severity, setSeverity] = React.useState('');
+    const [snackbarOpen, setSnackbarOpen] = React.useState(false);
 
     const loadSubjects = () => {
         axios.get("/api/fieldOfStudies", { params: { withMajorSubjects: true } }).then(res => {
@@ -144,6 +149,13 @@ export default function AddKurs() {
         return output
     }
 
+    
+    const showSnackbar = (message, severity) => {
+        setMessage(message);
+        setSeverity(severity);
+        setSnackbarOpen(true);
+    };
+
     const handlePost = (event) => {
         event.preventDefault();
         if (loading === null) {
@@ -154,11 +166,28 @@ export default function AddKurs() {
 
         let data = {
             name: nameValue,
-            majorSubject: document.getElementById("studiengang-select").innerHTML,
-            fieldOfStudy: document.getElementById("studienrichtung-select").innerHTML,
+            google_calendar_id: gcId, 
+            majorSubject_id: document.getElementById("studiengang-select").innerHTML,
+            directorOfStudies_ids: "",
             semesters: semesterList
+            
         };
-        axios.post('/api/courses', data)
+
+
+        APICall("POST",'courses', data).then((res) =>
+        {
+            if (res.data && res.status === 200) {
+                const data = res.data.payload;
+                setStatusText(res.statusText)
+                setStatus(res.status)
+                setTimeout(() => { setStatus(null) }, 2000)
+                setLoading(null)
+                setButton(false)
+              } else {
+                showSnackbar('Beim Speichern der Anfrage ist ein Fehler aufgetreten.', SEVERITY.ERROR);
+              }
+        });
+        /*axios.post('/api/courses', data)
             .then(res => {
                 setStatusText(res.statusText)
                 setStatus(res.status)
@@ -175,7 +204,7 @@ export default function AddKurs() {
                     setButton(false)
                 }
             });
-        setOpen(false);
+        setOpen(false);*/
     };
 
     const NameOnChange = event => {
@@ -194,6 +223,11 @@ export default function AddKurs() {
             setNameError(false)
             setNameText("")
         }
+    }
+
+    const GCIdOnChange = event =>{
+        var value = event.target.value;
+        setGCId(value);
     }
 
     const checkOnChange = event => {
@@ -237,7 +271,10 @@ export default function AddKurs() {
                             </Grid>
                             <SemesterAuswahl handleValues={handleValues} anzahlSemester={checked}></SemesterAuswahl>
                         </div>
-
+                        <div className={classes.block}>
+                            <Typography variant='h6'>Bitte geben Sie die Google Calendar ID an:</Typography>
+                            <TextField required value={gcId} onChange={GCIdOnChange} id="gcId-input" label="Google Calendar ID" variant="outlined"/>
+                        </div>
                         <div className={classes.block}>
                             <Button onClick={ClickSubmit.bind(this)} disabled={button} id="submit-kurs" variant="contained" color="primary">
                                 Kurs hinzufügen

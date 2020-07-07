@@ -46,8 +46,6 @@ function handleAction(action,appointmentData, gapi, handleResponse){
     case "load":
       handleAppointmentsLoad(gapi, handleResponse);
       break;
-    default:
-      console.log("Wont happen");
   }
 }
 
@@ -74,7 +72,6 @@ function handleAppointmentDelete(deleteAppointmentId, gapi) {
     'calendarId': creds.calenderID,
     'eventId': deleteAppointmentId
   });
-  console.log(deleteAppointmentId);
 
   request.execute(function (response) {
     if (response.error || response == false) {
