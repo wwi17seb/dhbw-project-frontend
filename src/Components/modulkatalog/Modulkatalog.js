@@ -19,7 +19,10 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3),
   },
   grid: {
-    marginTop: '1rem'
+    marginTop: '1rem',
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start'
   },
   searchForm: {
     marginTop: '3rem'
@@ -27,11 +30,15 @@ const useStyles = makeStyles(theme => ({
   card: {
     height: '15rem',
     width: '15rem',
-    textAlign: "center"
+    textAlign: "center",
+    display: 'flex',
+    margin: '1rem',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
-  cardText: {
+/*   cardText: {
     marginTop: '50%'
-  },
+  }, */
   formButton: {
     marginTop: '2rem'
   },
@@ -143,15 +150,15 @@ export default function ModulkatalogTable() {
         </form>
         <Grid container justify='center' spacing={3} className={classes.grid}>
           {(searchResults).map(studyName =>
-            <Grid container item xl={3} sm={3} className='cards' justify='center' key={studyName}>
-              <div className='carddiv'>
-                <Card onMouseOver={toggleRaised} onMouseOut={toggleRaised} className={classes.card} onClick={handleCardClick}>
+            /* <Grid container item className='cards' justify='center'>
+              <div className='carddiv'> */
+                <Card onMouseOver={toggleRaised} onMouseOut={toggleRaised} className={classes.card} onClick={handleCardClick} key={studyName}>
                   <CardContent className={classes.cardContent}>
                     <Typography className={classes.cardText}>{studyName}</Typography>
                   </CardContent>
                 </Card>
-              </div>
-            </Grid>
+          /*     </div>
+            </Grid> */
           )}
         </Grid>
       </main>
