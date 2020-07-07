@@ -16,7 +16,7 @@ export async function syncGoogleCalendar(action, appointmentData, handleResponse
       discoveryDocs: creds.discoveryDocs,
       scope: creds.scope
     })
-    gapi.client.load('calendar', 'v3', () => console.log('syncGoogleCalendar'))
+    gapi.client.load('calendar', 'v3')
 
     //If not logged in yet -> login
     if (gapi.auth2.getAuthInstance().isSignedIn.get()) {

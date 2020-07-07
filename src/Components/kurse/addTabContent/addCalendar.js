@@ -71,7 +71,6 @@ function formatData(calendarData) {
 
     appointments.push(test);
   }
-  console.log(appointments);
   return appointments;
 }
 
@@ -173,7 +172,6 @@ class GoogleCalendar extends React.PureComponent {
       googleCalender: props.calendar               // get those 2 to apihandlerGoogleClaendar as creds
       //gcId: props.selectedCourse.google_calendar_id get those 2 to apihandlerGoogleClaendar as creds
     };
-    console.log(props.calendar)
     this.loadData = this.loadData.bind(this);
     this.toggleConfirmationVisible = this.toggleConfirmationVisible.bind(this);
     this.commitDeletedAppointment = this.commitDeletedAppointment.bind(this);
