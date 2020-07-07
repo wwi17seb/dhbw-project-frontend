@@ -13,6 +13,7 @@ import Notizen from './notizen';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link1 from '@material-ui/core/Link';
 import { Link } from "react-router-dom";
+import { APICall } from '../../../helper/Api';
 
 
 
@@ -58,21 +59,88 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function DozentenDetails(props) {
+export default function DozentenDetails() {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
+    const [data, setData] = React.useState(null);
+    const [name, setName] = React.useState("Loading...");
+    const [disabled, setDisabled] = React.useState(true)
+    const [currentDirector, setCurrentDirector] = React.useState("")
+
+
+    const loadDirector = () => {
+        APICall('GET', 'directorOfStudies').then(res => {
+            setCurrentDirector(res.data.payload["DirectorOfStudies"]["username"])
+        })
+    }
+
+
+    useEffect(() => {
+        if (data !== null) {
+            if (!data["allow_manipulation"]) {
+                if (data["DirectorOfStudies"]["username"] === currentDirector) {
+                    setDisabled(false)
+                } else {
+                    setDisabled(true)
+                }
+            } else {
+                setDisabled(false)
+            }
+        }
+    }, [currentDirector, data])
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
-    const data = props["location"]["state"]["data"]
-    const name = data["academic_title"] + " " + data["firstname"] + " " + data["lastname"]
+    const printIntExt = (intext) => {
+        if (intext) {
+            return ("extern")
+        } else {
+            return ("intern")
+        }
+    }
 
-    const tabLabels = ["Profil", "Lehre", "Vita", "Notizen"];
+    const getCurrentIdFromURL = () => {
+        const currentURL = window.location.href
+        const splittedURL = currentURL.split("/")
+
+        return (splittedURL[4])
+    }
+
     const finalTabLabels = [];
     const finalTabPanels = [];
-    const finalPanelContent = [<Profile data={data}></Profile>, <Lehre data={data}></Lehre>, <Vita data={data}></Vita>, <Notizen data={data}></Notizen>];
+    const tabLabels = ["Profil", "Lehre", "Vita", "Notizen"];
+
+    const loadData = () => {
+        const id = getCurrentIdFromURL()
+
+        APICall('GET', 'lecturers').then((res) => {
+            for (var i = 0; i < res.data.payload.Lecturers.length; i++) {
+                if (res.data.payload.Lecturers[i]["lecturer_id"] == id) {
+                    setData(res.data.payload.Lecturers[i])
+                    break;
+                }
+            }
+            loadDirector()
+        });
+    }
+
+    if (data === null) {
+        loadData()
+    }
+
+    useEffect(() => {
+        if (data !== null) {
+            var title = data["academic_title"]
+            if (title === null) {
+                title = ""
+            }
+            setName(title + " " + data["firstname"] + " " + data["lastname"] + " (" + printIntExt(data["is_extern"]) + ")")
+        }
+    }, [data])
+
+    const finalPanelContent = [<Profile data={data}></Profile>, <Lehre></Lehre>, <Vita data={data} editDisabled={disabled} ></ Vita>, <Notizen data={data} editDisabled={disabled}></Notizen>];
     let tabIndex = 0;
 
     for (let tabLabel of tabLabels) {

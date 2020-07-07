@@ -1,9 +1,9 @@
-import { makeStyles } from '@material-ui/core/styles';
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React, { forwardRef, useEffect } from 'react';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Nav from '../nav/Nav';
-import DozentenDetails from './dozentendetails/dozentendetails';
-import LecturerList from './lecturerlist';
+import LecturerList from './lecturerlist'
+import { Route, Switch } from 'react-router-dom'
+import DozentenDetails from './dozentendetails/dozentendetails'
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
 
 
 
-export default function AddLecturer(props) {
+export default function EditLecturer(props) {
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
     const MenuProps = {
@@ -46,26 +46,36 @@ export default function AddLecturer(props) {
     };
 
     const classes = useStyles();
-    const [salutation, setSalutation] = React.useState('');
-    const [extern, setExtern] = React.useState(false);
-    const [titel, setTitel] = React.useState('');
-    const [vorname, setVorname] = React.useState('');
-    const [nachname, setNachname] = React.useState('');
-    const [email, setEmail] = React.useState('');
+    const [salutation, setSalutation] = React.useState(props.data["salutation"]);
+    const [extern, setExtern] = React.useState(props.data["is_extern"]);
+    const [titel, setTitel] = React.useState(props.data["academic_title"]);
+    const [vorname, setVorname] = React.useState(props.data["firstname"]);
+    const [nachname, setNachname] = React.useState(props.data["lastname"]);
+    const [email, setEmail] = React.useState(props.data["email"]);
     const [emailErr, setEmailErr] = React.useState(false);
-    const [telnr, setTelnr] = React.useState('');
+    const [telnr, setTelnr] = React.useState(props.data["phonenumber"]);
     const [telnrErr, setTelnrErr] = React.useState(false);
-    const [mainFocus, setMainFocus] = React.useState([]);
+    const [mainFocus, setMainFocus] = React.useState(null);
     const [mainFocuses, setMainFocuses] = React.useState(null);
     const [mainFocusList, setMainFocusList] = React.useState(null);
     const [submit, setSubmit] = React.useState(true);
     const [open, setOpen] = React.useState(props.open);
     const [open2, setOpen2] = React.useState(false);
-    const [manipulation, setManipulation] = React.useState(false);
-    const [submitText, setSubmitText] = React.useState(null);
     const [submitState, setSubmitState] = React.useState(null);
+    const [submitText, setSubmitText] = React.useState(null);
+    const [manipulation, setManipulation] = React.useState(props.data["allow_manipulation"]);
 
+    const getCurrentMainFocuses = () => {
+        var arr = []
+        for (var i = 0; i < props.data["MainFocuses"].length; i++) {
+            arr.push(props.data["MainFocuses"][i]["name"])
+        }
+        setMainFocus(arr)
+    }
 
+    if (mainFocus === null) {
+        getCurrentMainFocuses()
+    }
 
     const handleCloseMenu = () => {
         setOpen(false);
@@ -114,13 +124,12 @@ export default function AddLecturer(props) {
             "phonenumber": telnr,
             "experience": "",
             "mainFocus_ids": selectedIds,
-            "comment": "",
+            "comment": props.data["comment"],
             "is_extern": extern,
-            "allow_manipulation": manipulation
+            "allow_manipulation": true
         }
-        const url = "api/lecturers?token=" + localStorage.getItem("ExoplanSessionToken");
-        axios.post(url, data).then(res => {
-            console.log(res.data)
+        const url = "/api/lecturers?lecturerId=" + props.data["lecturer_id"] + "&token=" + localStorage.getItem("ExoplanSessionToken");
+        axios.put(url, data).then(res => {
             setSubmitState(res.status)
             setSubmitText(res.statusText)
             setTimeout(() => { setSubmitState(null) }, 2000)
@@ -149,9 +158,6 @@ export default function AddLecturer(props) {
     const handleExtern = (event) => {
         setExtern(event.target.value);
     };
-    const handleManipulation = (event) => {
-        setManipulation(event.target.value);
-    };
     const handleTitel = (event) => {
         setTitel(event.target.value);
     };
@@ -160,6 +166,9 @@ export default function AddLecturer(props) {
     };
     const handleNachname = (event) => {
         setNachname(event.target.value);
+    };
+    const handleManipulation = (event) => {
+        setManipulation(event.target.value);
     };
     const handleEmail = (event) => {
         setEmail(event.target.value);
@@ -179,6 +188,7 @@ export default function AddLecturer(props) {
         }
     };
     const handleMainFocus = (event) => {
+        console.log(mainFocus)
         setMainFocus(event.target.value);
     };
 
@@ -212,7 +222,7 @@ export default function AddLecturer(props) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{"Neuen Dozenten hinzufügen:"}</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{"Dozenten bearbeiten:"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         <Grid container spacing={1}>
@@ -300,15 +310,16 @@ export default function AddLecturer(props) {
                                     </Select>
                                 </FormControl>
                             </Grid>
+
                         </Grid>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseMenu} color="primary" >
-                        abbrechen
+                        Abbrechen
                 </Button>
                     <Button disabled={submit} onClick={handleConfirm} color="primary" >
-                        hinzufügen
+                        Änderungen bestätigen
                 </Button>
                 </DialogActions>
             </Dialog>
@@ -320,7 +331,7 @@ export default function AddLecturer(props) {
                 <DialogTitle id="alert-dialog-title">{"Sind sie sich sicher?"}</DialogTitle>
                 <DialogActions>
                     <Button onClick={handleCloseConfirm} color="primary" >
-                        abbrechen
+                        Abbrechen
                 </Button>
                     <Button disabled={submit} onClick={handleSubmit} color="primary" >
                         ja
