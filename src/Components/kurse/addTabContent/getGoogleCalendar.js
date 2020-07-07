@@ -23,7 +23,7 @@ function GetGoogleCalendar(props){
     }
     
     if(googleCalendar !==null){
-        return <AddCalendar calendar={googleCalendar}/>
+        return <AddCalendar {...props} calendar={googleCalendar}/>
     }else {
         return  <ApiHandler url='/api/googleCalendar' handleAPIresponse={handleAPIresponse}/>; 
     }

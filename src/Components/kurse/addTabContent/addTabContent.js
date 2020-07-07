@@ -11,13 +11,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 //Funktion, welche das Auswahlmenü für einen Studiengang zurück gibt
-const AddTabContent = () => {
+const AddTabContent = (props) => {
     const classes = useStyles();
 
     return (
         <div style={{padding:0}}>
         <AddSemester></AddSemester>
-        <GetGoogleCalendar></GetGoogleCalendar>
+        <GetGoogleCalendar {...props}></GetGoogleCalendar>
         </div>
     )
 }

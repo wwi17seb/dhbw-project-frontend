@@ -62,8 +62,6 @@ function handleAppointmentsLoad(gapi, handleResponse) {
       return "Erroor";
     } else {
       handleResponse(response.items);
-      console.log("TTTTTTTTTTTTT"); 
-      console.log(response.items); 
       return response;
     }
   });
