@@ -1,10 +1,10 @@
-import axios from 'axios';
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import { Grid } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import { APICall } from '../../../helper/Api';
 
 
 const useStyles = makeStyles(theme => ({
@@ -50,11 +50,11 @@ export default function Notizen(props) {
     }, [comment, data])
 
     const updateComment = () => {
-        const url = "/api/lecturers?lecturerId=" + props.data["lecturer_id"] + "&token=" + localStorage.getItem("ExoplanSessionToken")
+        const url = "lecturers?lecturerId=" + props.data["lecturer_id"]
         var data = props.data
         delete data["lecturer_id"]
         data["comment"] = comment
-        axios.put(url, data).then(res => {
+        APICall('PUT', url, data).then(res => {
             props.reloadData()
         })
     }
