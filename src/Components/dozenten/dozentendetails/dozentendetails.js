@@ -14,6 +14,7 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link1 from '@material-ui/core/Link';
 import { Link } from "react-router-dom";
 import { APICall } from '../../../helper/Api';
+import { CollectionsOutlined } from '@material-ui/icons';
 
 
 
@@ -126,9 +127,9 @@ export default function DozentenDetails() {
         });
     }
 
-    if (data === null) {
+    useEffect(() => {
         loadData()
-    }
+    }, [])
 
     useEffect(() => {
         if (data !== null) {
@@ -140,7 +141,7 @@ export default function DozentenDetails() {
         }
     }, [data])
 
-    const finalPanelContent = [<Profile data={data}></Profile>, <Lehre></Lehre>, <Vita data={data} editDisabled={disabled} ></ Vita>, <Notizen data={data} editDisabled={disabled}></Notizen>];
+    const finalPanelContent = [<Profile data={data}></Profile>, <Lehre></Lehre>, <Vita data={data} reloadData={loadData} editDisabled={disabled} ></ Vita>, <Notizen data={data} reloadData={loadData} editDisabled={disabled}></Notizen>];
     let tabIndex = 0;
 
     for (let tabLabel of tabLabels) {
@@ -158,7 +159,7 @@ export default function DozentenDetails() {
                 <Typography color="textPrimary">{name}</Typography>
             </Breadcrumbs>
             <Typography variant="h4">{name}</Typography>
-            <Paper>
+            <Paper style={{ marginTop: 10 }}>
                 <Tabs
                     value={value}
                     onChange={handleChange}
