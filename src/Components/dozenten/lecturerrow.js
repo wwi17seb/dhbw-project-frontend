@@ -141,7 +141,7 @@ export default function LecturerRow(props) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">{"Dozent wirklich für alle löschen?"}</DialogTitle>
-                <DialogActions>
+                <DialogActions style={{ padding: 10 }}>
                     <Button onClick={handleCloseConfirm} color="primary" >
                         abbrechen
                     </Button>

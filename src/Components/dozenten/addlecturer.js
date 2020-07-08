@@ -300,7 +300,7 @@ export default function AddLecturer(props) {
                         </Grid>
                     </DialogContentText>
                 </DialogContent>
-                <DialogActions>
+                <DialogActions style={{ padding: 10 }}>
                     <Button onClick={handleCloseMenu} color="primary" >
                         abbrechen
                 </Button>
@@ -315,7 +315,7 @@ export default function AddLecturer(props) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">{"Sind sie sich sicher?"}</DialogTitle>
-                <DialogActions>
+                <DialogActions style={{ padding: 10 }}>
                     <Button onClick={handleCloseConfirm} color="primary" >
                         abbrechen
                 </Button>

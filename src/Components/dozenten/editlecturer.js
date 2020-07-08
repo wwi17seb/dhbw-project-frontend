@@ -311,7 +311,7 @@ export default function EditLecturer(props) {
                         </Grid>
                     </DialogContentText>
                 </DialogContent>
-                <DialogActions>
+                <DialogActions style={{ padding: 10 }}>
                     <Button onClick={handleCloseMenu} color="primary" >
                         Abbrechen
                 </Button>
@@ -326,7 +326,7 @@ export default function EditLecturer(props) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">{"Sind sie sich sicher?"}</DialogTitle>
-                <DialogActions>
+                <DialogActions style={{ padding: 10 }}>
                     <Button onClick={handleCloseConfirm} color="primary" >
                         Abbrechen
                 </Button>
