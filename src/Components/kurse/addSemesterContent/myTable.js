@@ -89,31 +89,6 @@ const MyTable = ({ presentations, loadData, course_id, semester, semester_id, sh
       <Grid container spacing={2}>
         <Paper className={classes.paper}>
           {header()}
-          {(new Date()).getMonth() === 3 && (new Date()).getDate() === 1 ?
-            <PresentationRow
-              presentation={{
-                presentation_id: 0,
-                academicRecord_id: 0,
-                course_id: course_id,
-                lecture_id: 0,
-                lecturer_id: 0,
-                semester_id: semester_id,
-                status: 'April, April',
-                AcademicRecord: undefined,
-                Lecture: {
-                  name: 'Studiengangsleiter zum Narren halten',
-                  workload_dhbw: 42,
-                  Module: { AcademicRecords: [{ abbreviation: 'Namen tanzen', name: '' }, { abbreviation: 'Vorsingen', name: '' }] },
-                },
-                Lecturer: { firstname: 'Bold', lastname: 'Witz' },
-              }}
-              loadData={loadData}
-              course_id={course_id}
-              semester_id={semester_id}
-              showSnackbar={showSnackbar}
-              modifyPresentation={modifyPresentation}
-            /> : null
-          }
           {presentations.map((presentation, index) => (
             <PresentationRow
               presentation={presentation}
