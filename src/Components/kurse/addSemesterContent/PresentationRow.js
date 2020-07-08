@@ -74,11 +74,11 @@ const PresentationRow = ({ presentation, course_id, semester_id, showSnackbar, l
           </Grid>
           <Grid item xs={1}>
             <Tooltip title='Vorlesung editieren'>
-              <Edit style={{ cursor: 'pointer' }} onClick={() => setEditPresentation(true)} />
+              <Edit style={{ cursor: 'pointer', marginRight: '0.5rem' }} onClick={() => setEditPresentation(true)} />
             </Tooltip>
             <Tooltip title='Löschen der Vorlesung'>
               <Delete
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', marginRight: '0.5rem' }}
                 onClick={() => setPresentationIdToDelete(presentation.presentation_id)}
               />
             </Tooltip>
