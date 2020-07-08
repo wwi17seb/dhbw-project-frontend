@@ -17,6 +17,7 @@ function GetGoogleCalendar(props){
 
     function handleAPIresponse(response){
         if(response.status == 200){
+           // if(response.data.payload.GoogleCalendar)
             setGoogleCalendar(response.data.payload.GoogleCalendar);
         }
     }

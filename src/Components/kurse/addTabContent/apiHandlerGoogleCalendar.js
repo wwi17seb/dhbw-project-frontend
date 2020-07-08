@@ -1,3 +1,5 @@
+import GoogleCalendar from "../../admin/GCContent";
+
 const creds = {
   clientId: "696108575064-pqp0vf98bbrklbet30qbkka6mc3io6p5.apps.googleusercontent.com",
   apiKey: "AIzaSyA5OGAMBup2tHpeQvt7EA0w2zR-3ZCQ6-0",
@@ -17,21 +19,26 @@ export async function syncGoogleCalendar(action, appointmentData, googleCalender
     })
     gapi.client.load('calendar', 'v3')
 
-    //If not logged in yet -> login
-    if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
-      handleAction(action, appointmentData, gapi, handleResponse);
-    } else { //If not logged in yet -> login
-      
-      gapi.auth2.getAuthInstance().signIn().then(
-        () => {
-           handleAction(action, appointmentData, gapi, handleResponse);
-        }
-      )
+
+    if (action != "load") {
+      if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+        handleAction(action, appointmentData, gapi, handleResponse, googleCalender);
+      } else {
+        gapi.auth2.getAuthInstance().signIn().then(function (response) {
+
+          handleAction(action, appointmentData, gapi, handleResponse, googleCalender);
+        }, function (error) {
+          handleResponse();
+        });
+
+      }
+    } else {
+      handleAction(action, appointmentData, gapi, handleResponse, googleCalender);
     }
   })
 }
 
-function handleAction(action,appointmentData, gapi, handleResponse){
+function handleAction(action, appointmentData, gapi, handleResponse, googleCalender) {
   switch (action) {
     case "delete":
       handleAppointmentDelete(appointmentData, gapi);
@@ -40,15 +47,34 @@ function handleAction(action,appointmentData, gapi, handleResponse){
       handleAppointmentChange(appointmentData, gapi);
       break;
     case "insert":
-      handleAppointmentInsert(appointmentData, gapi);
+      handleAppointmentInsert(appointmentData, gapi, handleResponse);
       break;
     case "load":
-      handleAppointmentsLoad(gapi, handleResponse);
+      handleAppointmentsLoad(gapi, handleResponse, googleCalender);
       break;
   }
 }
 
+function handleAppointmentsLoad(gapi, handleResponse, googleCalender) {
+
+  const PUBLIC_KEY = googleCalender.apiKey,
+    CALENDAR_ID = 'iq90i34lq6v196rqs4986dp370@group.calendar.google.com';
+  const dataUrl = ['https://www.googleapis.com/calendar/v3/calendars/',
+    CALENDAR_ID, '/events?key=', PUBLIC_KEY
+  ].join('');
+
+  fetch(dataUrl).then(
+    (response) => response.json()
+  ).then((appointments) => {
+    setTimeout(() => {
+      handleResponse(appointments.items);
+      return (appointments.items)
+    }, 600);
+  })
+}
+/*
 function handleAppointmentsLoad(gapi, handleResponse) {
+
   var request = gapi.client.calendar.events.list({
     'calendarId': creds.calenderID
   })
@@ -56,7 +82,7 @@ function handleAppointmentsLoad(gapi, handleResponse) {
   request.execute(function (response) {
     if (response.error || response == false) {
       alert('Error');
-      return "Erroor";
+      return "Error";
     } else {
       handleResponse(response.items);
       return response;
@@ -64,7 +90,7 @@ function handleAppointmentsLoad(gapi, handleResponse) {
   });
 
 }
-
+*/
 function handleAppointmentDelete(deleteAppointmentId, gapi) {
 
   var request = gapi.client.calendar.events.delete({
@@ -81,7 +107,7 @@ function handleAppointmentDelete(deleteAppointmentId, gapi) {
   });
 }
 
-function handleAppointmentInsert(insertAppointmentData, gapi) {
+function handleAppointmentInsert(insertAppointmentData, gapi, handleResponse) {
   let event = {
     'summary': insertAppointmentData.title,
     'location': insertAppointmentData.location,
@@ -105,6 +131,7 @@ function handleAppointmentInsert(insertAppointmentData, gapi) {
     if (response.error || response == false) {
       alert('Error');
     } else {
+      handleResponse();
       alert('Success');
     }
   });
