@@ -25,7 +25,6 @@ export default function DozentenTable() {
       <Nav />
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        {/* @erik, do you really check all the code? */}
         <Switch>
           <Route exact path='/dozenten' component={LecturerList} />
           <Route path='/dozenten/:id' component={DozentenDetails} />

@@ -19,6 +19,7 @@ const useStyles = makeStyles(theme => ({
   paper: {
     flexGrow: 1,
     padding: theme.spacing(3),
+    marginTop: 10
   },
   btn_align: {
     textAlign: 'right',
@@ -78,7 +79,7 @@ export default function LecturerList() {
       for (var i = 0; i < lecturers["Lecturers"].length; i++) {
         if (checkName(searchTerm, lecturers["Lecturers"][i]["lastname"]) || checkFocus(searchTerm, lecturers["Lecturers"][i]["MainFocuses"])) {
           temp.push(
-            <LecturerRow data={lecturers["Lecturers"][i]}></LecturerRow>
+            <LecturerRow key={"lecturerrow-" + lecturers["Lecturers"][i]["lecturer_id"]} data={lecturers["Lecturers"][i]}></LecturerRow>
           )
         }
       }
@@ -119,7 +120,7 @@ export default function LecturerList() {
                 <Typography variant="h5">Name</Typography>
               </Grid>
               <Grid item xs={3}>
-                <Typography variant="h5">Vorlesungen</Typography>
+                <Typography variant="h5">Schwerpunkte</Typography>
               </Grid>
               <Grid item xs={3}>
                 <Typography variant="h5">Studiengangsleiter</Typography>

@@ -1,13 +1,13 @@
 import React, { Fragment } from 'react';
 
-import AddCalendar from './addCalendar';
 import AddSemester from './addSemester';
+import GetGoogleCalendar from './getGoogleCalendar';
 
 const AddTabContent = (props) => {
   return (
     <Fragment>
       <AddSemester {...props} />
-      <AddCalendar {...props} />
+      <GetGoogleCalendar {...props} />
     </Fragment>
   );
 };
