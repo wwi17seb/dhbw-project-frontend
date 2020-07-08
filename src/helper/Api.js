@@ -13,9 +13,13 @@ export const APICall = async (method, url, data) => {
       url: `/api/${url}`,
       params,
     })
-    .then(res => { return res })
-    .catch(err => { return err.response })
-}
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+};
 
 function ApiHandler(props) {
   //THIS COMPONENT TAKES PROPS:
@@ -52,9 +56,6 @@ function ApiHandler(props) {
             props.handleAPIresponse(response);
           })
           .catch((err) => {
-            console.log(err);
-            console.log(err.response);
-
             if (typeof err.response !== 'undefined') {
               setError(err.response.status);
 
