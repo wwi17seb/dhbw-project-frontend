@@ -17,6 +17,7 @@ import Input from '@material-ui/core/Input';
 import SubmitFeedback from '../../kurse/addkurs/submitfeedback'
 import Menu from '@material-ui/core/Menu';
 import download from 'downloadjs'
+import { APICall } from '../../../helper/Api';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -60,7 +61,7 @@ export default function Vita(props) {
 
     var url = ""
     if (data !== null) {
-        url = "/api/lecturerCV?lecturerId=" + props.data["lecturer_id"] + "&token=" + localStorage.getItem("ExoplanSessionToken")
+        url = "lecturerCV?lecturerId=" + props.data["lecturer_id"]
     }
 
     const handleAdd = (event) => {
@@ -100,7 +101,7 @@ export default function Vita(props) {
     const handleSubmit = () => {
         const data = new FormData()
         data.append("cv", cv,)
-        axios.put(url, data).then(res => {
+        APICall('PUT', url, data).then(res => {
             setSubmitState(res.status)
             setSubmitText(res.statusText)
             setTimeout(() => { setSubmitState(null) }, 2000)
@@ -109,7 +110,6 @@ export default function Vita(props) {
             props.reloadData()
         }
         ).catch(err => {
-            console.log(err.response)
             setSubmitState(err.response.status)
             setSubmitText(err.response.statusText)
             setTimeout(() => { setSubmitState(null) }, 3000)
@@ -136,8 +136,6 @@ export default function Vita(props) {
             setSubmit(true)
         }
     }, [cv])
-
-    console.log(cvName)
 
     return (
         <Paper className={classes.paper}>
