@@ -25,15 +25,17 @@ const AddSemesterContent = (props) => {
 
   useEffect(() => {
     loadData();
-  }, [props]);
+  }, []);
 
   return (
     <MyTable
       presentations={presentations}
       loadData={loadData}
       course_id={props.selectedCourse.course_id}
+      semester={props.semester}
       semester_id={props.semester.semester_id}
       showSnackbar={props.showSnackbar}
+      moduleCatalog={props.moduleCatalog}
     />
   );
 };

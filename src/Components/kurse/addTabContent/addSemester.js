@@ -4,7 +4,9 @@ import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
+
+import { APICall } from '../../../helper/Api';
 import AddSemesterContent from '../addSemesterContent/addSemesterContent';
 
 function TabPanel(props) {
@@ -37,7 +39,21 @@ function a11yProps(index) {
 }
 
 export default function ScrollableTabsButtonAuto(props) {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [moduleCatalog, setModuleCatalog] = useState();
+
+  const loadModuleCatalog = async () => {
+    APICall('GET', `/modulecatalog?majorSubjectId=${props.selectedCourse.majorSubject_id}`).then((res) => {
+      const { status, data } = res;
+      if (status === 200 && data) {
+        setModuleCatalog(data.payload);
+      }
+    });
+  };
+
+  useEffect(() => {
+    loadModuleCatalog();
+  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -53,7 +69,7 @@ export default function ScrollableTabsButtonAuto(props) {
   const finalPanelContent = [];
 
   Semesters.forEach((sem, index) => {
-    finalPanelContent.push(<AddSemesterContent semester={sem} {...props} />);
+    finalPanelContent.push(<AddSemesterContent semester={sem} moduleCatalog={moduleCatalog} {...props} />);
     finalTabLabels.push(<Tab key={index} label={sem.name} {...a11yProps({ index })} />);
     finalTabPanels.push(
       <TabPanel key={index} value={value} index={index}>

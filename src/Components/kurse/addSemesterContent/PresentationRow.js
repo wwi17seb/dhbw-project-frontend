@@ -7,9 +7,8 @@ import { APICall } from '../../../helper/Api';
 import DeleteEntityDialog from '../../data/DeleteEntityDialog';
 import { SEVERITY } from '../../Snackbar/SnackbarSeverity';
 import { getNameOfLecturer } from './helper';
-import ModifyPresentation from './ModifyPresentation';
 
-const PresentationRow = ({ presentation, course_id, semester_id, showSnackbar, loadData }) => {
+const PresentationRow = ({ presentation, course_id, semester_id, showSnackbar, loadData, modifyPresentation }) => {
   const [editPresentation, setEditPresentation] = useState(false);
   const [presentationIdToDelete, setPresentationIdToDelete] = useState(0);
 
@@ -17,22 +16,8 @@ const PresentationRow = ({ presentation, course_id, semester_id, showSnackbar, l
   const { workload_dhbw, Module } = Lecture;
   const { AcademicRecords } = Module;
 
-  const modifyPresentation = () => {
-    return (
-      <ModifyPresentation
-        open={true}
-        edit={editPresentation}
-        handleClose={() => setEditPresentation(false)}
-        course_id={course_id}
-        semester_id={semester_id}
-        presentation={presentation}
-        academicRecord={AcademicRecord}
-        academicRecords={AcademicRecords}
-        majorSubjectId={presentation.Lecture.Module.moduleGroup_id}
-        loadData={loadData}
-        showSnackbar={showSnackbar}
-      />
-    );
+  const handleClose = () => {
+    setEditPresentation(false);
   };
 
   const deletePresentationDialog = () => {
@@ -64,7 +49,7 @@ const PresentationRow = ({ presentation, course_id, semester_id, showSnackbar, l
 
   return (
     <Fragment>
-      {editPresentation ? modifyPresentation() : null}
+      {editPresentation ? modifyPresentation(presentation, handleClose) : null}
       {presentationIdToDelete ? deletePresentationDialog() : null}
       <Grid item xs={12}>
         <Grid container spacing={2}>
@@ -75,15 +60,13 @@ const PresentationRow = ({ presentation, course_id, semester_id, showSnackbar, l
             {getNameOfLecturer(Lecturer) || 'Kein Dozent vorhanden'}
           </Grid>
           <Grid item xs={2}>
-            {workload_dhbw}
+            {workload_dhbw + (!isNaN(workload_dhbw) ? 'h' : '')}
           </Grid>
           <Grid item xs={2}>
-            {AcademicRecord
-              ? `${AcademicRecord.abbreviation} (${AcademicRecords.reduce(
-                  (str, ar, index) => str + (index > 0 ? ', ' : '') + ar.abbreviation,
-                  ''
-                )})`
-              : ''}
+            {`${(AcademicRecord ? AcademicRecord.abbreviation : '') || '-'} (${AcademicRecords.reduce(
+              (str, ar, index) => str + (index > 0 ? ', ' : '') + ar.abbreviation,
+              ''
+            )})`}
           </Grid>
           <Grid item xs={2}>
             {/* Add Color to specific status - how about: angeschrieben - yellow | - - red | bestätigt - blue | termine eingetragen - green */}

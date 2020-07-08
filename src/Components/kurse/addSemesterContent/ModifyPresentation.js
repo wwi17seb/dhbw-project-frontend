@@ -18,17 +18,17 @@ import LectureDropdown from './LectureDropdown';
 
 const ModifyPresentation = ({
   open,
-  handleClose,
   edit,
+  handleClose,
   course_id,
+  semester,
   semester_id,
-  academicRecords,
-  presentation,
-  majorSubjectId,
   loadData,
   showSnackbar,
+  moduleCatalog,
+  presentation,
 }) => {
-  // TODO: rename to ModifyPresentationDialog
+  // TODO: rename to CreateAndModifyPresentationDialog
   const [lecturers, setLecturers] = useState([]);
 
   // Presentation
@@ -36,27 +36,28 @@ const ModifyPresentation = ({
   const [inputLecturer, setInputLecturer] = useState('');
   const [lecture, setLecture] = useState({});
   const [academicRecord, setAcademicRecord] = useState({});
+  const [possibleAcademicRecords, setPossibleAcademicRecords] = useState([]);
   const [status, setStatus] = useState('');
 
   const [presentationToEdit, setPresentationToEdit] = useState({});
 
   useEffect(() => {
-    setPresentationToEdit(presentation);
-    setStatus(presentation.status);
-    setAcademicRecord(presentation.AcademicRecord);
-    setLecture(presentation.Lecture);
+    if (presentation) {
+      setPresentationToEdit(presentation);
+      setStatus(presentation.status);
+      setAcademicRecord(presentation.AcademicRecord);
+      setLecture(presentation.Lecture);
+    }
 
     APICall('GET', 'lecturers').then((res) => {
       const { status, data } = res;
       if (status === 200 && data) {
         setLecturers(data.payload.Lecturers);
-        if (presentation.Lecturer) {
+        if (presentation && presentation.Lecturer) {
           setLecturer(data.payload.Lecturers.find((l) => l.lecturer_id === presentation.Lecturer.lecturer_id));
         }
       }
     });
-
-    return () => {};
   }, [presentation]);
 
   // search for presentation.Lecturer in lecturers
@@ -82,17 +83,39 @@ const ModifyPresentation = ({
       }`,
       preparedPresentation
     ).then((res) => {
-      if (res.data && res.status === 201) {
-        showSnackbar('Die Vorlesung wurde erstellt.', SEVERITY.SUCCESS);
+      if (!Boolean(presentationToEdit.presentation_id) && res.data && res.status === 201) {
+        showSnackbar('Die Vorlesung wurde erfolgreich gespeichert.', SEVERITY.SUCCESS);
         loadData();
-      } else if (res.data && res.status === 200) {
-        showSnackbar('Die Vorlesung wurde aktualisiert.', SEVERITY.SUCCESS);
+      } else if (Boolean(presentationToEdit.presentation_id) && res.data && res.status === 200) {
+        showSnackbar('Die Vorlesung wurde erfolgreich aktualisiert.', SEVERITY.SUCCESS);
         loadData();
       } else {
-        showSnackbar('Es ist ein Problem aufgetreten. Die Vorlesung wurde nicht geändert.', SEVERITY.ERROR);
+        let message = edit
+          ? 'Es ist ein Problem aufgetreten. Die Vorlesung wurde nicht geändert.'
+          : 'Es ist ein Problem aufgetreten. Die Vorlesung wurde nicht gespeichert.';
+        showSnackbar(message, SEVERITY.ERROR);
       }
       handleClose();
     });
+  };
+
+  useEffect(() => {
+    if (lecture) {
+      setPossibleAcademicRecords(getAcademicRecordsForLecture(lecture));
+    }
+  }, [lecture]);
+
+  const getAcademicRecordsForLecture = (lecture) => {
+    for (const modGroup of moduleCatalog.ModuleGroups || []) {
+      for (const mod of modGroup.Modules || []) {
+        for (const lec of mod.Lectures || []) {
+          if (lec.lecture_id === lecture.lecture_id) {
+            return mod.AcademicRecords;
+          }
+        }
+      }
+    }
+    return [];
   };
 
   return (
@@ -104,8 +127,8 @@ const ModifyPresentation = ({
             <Col>
               <LectureDropdown
                 openDialog={open}
-                majorSubjectId={majorSubjectId}
-                currentSemesterNumber={presentationToEdit.Semester?.number}
+                moduleCatalog={moduleCatalog}
+                currentSemesterNumber={semester.number}
                 Lecture={lecture}
                 setLecture={setLecture}
               />
@@ -134,7 +157,7 @@ const ModifyPresentation = ({
             <Col>
               <AcademicRecordDialog
                 AcademicRecord={academicRecord}
-                possibleAcademicRecords={academicRecords}
+                possibleAcademicRecords={possibleAcademicRecords}
                 setAcademicRecord={setAcademicRecord}
               />
             </Col>

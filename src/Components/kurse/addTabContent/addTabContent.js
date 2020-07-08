@@ -7,7 +7,7 @@ const AddTabContent = (props) => {
   return (
     <Fragment>
       <AddSemester {...props} />
-      <AddCalendar />
+      <AddCalendar {...props} />
     </Fragment>
   );
 };

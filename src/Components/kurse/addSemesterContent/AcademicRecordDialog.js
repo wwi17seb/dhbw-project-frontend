@@ -30,7 +30,7 @@ const AcademicRecordDialog = ({ openDialog, AcademicRecord, possibleAcademicReco
   };
 
   useEffect(() => {
-    if (AcademicRecord) {
+    if (AcademicRecord && AcademicRecord.academicRecord_id) {
       setAcademicRecordId(AcademicRecord.academicRecord_id);
     }
   }, [AcademicRecord, possibleAcademicRecords, openDialog]);

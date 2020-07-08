@@ -2,9 +2,7 @@ import { TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import React, { useEffect, useState } from 'react';
 
-import { APICall } from '../../../helper/Api';
-
-const LectureDropdown = ({ majorSubjectId, currentSemesterNumber, Lecture, setLecture }) => {
+const LectureDropdown = ({ moduleCatalog, currentSemesterNumber, Lecture, setLecture }) => {
   const [lectures, setLectures] = useState([]);
 
   const [inputValue, setInputValue] = React.useState('');
@@ -19,15 +17,8 @@ const LectureDropdown = ({ majorSubjectId, currentSemesterNumber, Lecture, setLe
 
   // GET
   useEffect(() => {
-    APICall('GET', `modulecatalog?majorSubjectId=${majorSubjectId}`).then((res) => {
-      const { status, data } = res;
-      if (status === 200 && data) {
-        const Lectures = getFlattedLecturers(data.payload.ModuleGroups);
-        setLectures(Lectures);
-      } else {
-        // TODO: Implement handling of possible failure
-      }
-    });
+    const Lectures = getFlattedLecturers(moduleCatalog.ModuleGroups);
+    setLectures(Lectures);
   }, [Lecture]);
 
   return (
