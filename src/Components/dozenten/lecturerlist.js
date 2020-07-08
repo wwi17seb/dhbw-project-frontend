@@ -5,7 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import * as testdata from "./dozententestdata.json";
 import LecturerRow from "./lecturerrow"
 import AddLecturer from "./addlecturer"
 import TextField from '@material-ui/core/TextField';
@@ -14,7 +13,7 @@ import Button from '@material-ui/core/Button';
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-  }, 
+  },
   toolbar: theme.mixins.toolbar,
   paper: {
     flexGrow: 1,
@@ -89,7 +88,6 @@ export default function LecturerList() {
 
   if (lecturers === null) {
     loadData()
-    //setLecturers(testdata)
   }
 
   return (
@@ -105,7 +103,7 @@ export default function LecturerList() {
             <TextField fullWidth={true} label="Suchen Sie nach dem Nachnamen oder Schwerpunkt" value={searchTerm} onChange={handleSearch} id="searchLecturer" variant="filled" />
           </Grid>
           <Grid item sm={4}>
-            <div className={classes.btn_align}> 
+            <div className={classes.btn_align}>
               <Button variant="contained" color="primary" onClick={ClickSubmit.bind(this)}>Dozent hinzufügen</Button>
             </div>
           </Grid>
