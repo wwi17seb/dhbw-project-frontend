@@ -28,7 +28,7 @@ const LectureDropdown = ({ moduleCatalog, currentSemesterNumber, Lecture, setLec
       getOptionLabel={(lecture) => lecture.name}
       getOptionSelected={(lecture, Lecture) => lecture.lecture_id === Lecture.lecture_id}
       style={{ width: 300 }}
-      value={Lecture}
+      value={Lecture && Object.keys(Lecture).length > 0 ? Lecture : null}
       onChange={(event, newValue) => {
         setLecture(newValue);
       }}
