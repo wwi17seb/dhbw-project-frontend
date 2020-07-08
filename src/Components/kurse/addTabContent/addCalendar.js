@@ -16,8 +16,6 @@ import {
   AllDayPanel,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { connectProps } from '@devexpress/dx-react-core';
-import { KeyboardDateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import MomentUtils from '@date-io/moment';
 import { withStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -25,13 +23,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
-import LocationOn from '@material-ui/icons/LocationOn';
-import Notes from '@material-ui/icons/Notes';
-import Close from '@material-ui/icons/Close';
-import CalendarToday from '@material-ui/icons/CalendarToday';
-import Create from '@material-ui/icons/Create';
 import {syncGoogleCalendar, handleAppointmentsLoad} from './apiHandlerGoogleCalendar';
 import AppointmentFormContainerBasic from './gcAppointmentForm';
 
@@ -41,7 +32,7 @@ function formatData(calendarData) {
   appointments = [];
 
   for (let i = 0; i < calendarData.length; i++) {
-    let test = {
+    let appointment = {
       title: 'No title given',
       startDate: undefined,
       endDate: undefined,
@@ -51,25 +42,24 @@ function formatData(calendarData) {
     };
 
     if (calendarData[i].location) {
-      test.location = calendarData[i].location;
+      appointment.location = calendarData[i].location;
     }
 
     if (calendarData[i].summary) {
-      test.title = calendarData[i].summary;
+      appointment.title = calendarData[i].summary;
     }
 
     if (calendarData[i].id) {
-      test.gcId = calendarData[i].id;
+      appointment.gcId = calendarData[i].id;
     }
-    //test.id = calendarData[i].id;
 
     let startDateString = calendarData[i].start.dateTime;
-    test.startDate = new Date(startDateString);
+    appointment.startDate = new Date(startDateString);
 
     let endDateString = calendarData[i].end.dateTime;
-    test.endDate = new Date(endDateString);
+    appointment.endDate = new Date(endDateString);
 
-    appointments.push(test);
+    appointments.push(appointment);
   }
   return appointments;
 }
@@ -228,11 +218,12 @@ class GoogleCalendar extends React.PureComponent {
   }
 
   loadData() {
-    syncGoogleCalendar("load", " ", this.handleResponse); 
+    syncGoogleCalendar("load", " ", this.state.googleCalender, this.handleResponse); 
   }
 
   componentDidUpdate() {
     this.appointmentForm.update();
+    console.log(this.appointmentForm)
   }
 
   onEditingAppointmentChange(editingAppointment) {
@@ -271,7 +262,7 @@ class GoogleCalendar extends React.PureComponent {
       const { data, deletedAppointmentId } = state;
       const nextData = data.filter((appointment) => appointment.id !== deletedAppointmentId);
       /** Google Calendar Delete */
-      syncGoogleCalendar('delete', data[deletedAppointmentId].gcId);
+      syncGoogleCalendar('delete', data[deletedAppointmentId].gcId, this.state.googleCalender);
       return { data: nextData, deletedAppointmentId: null };
     });
     this.toggleConfirmationVisible();
@@ -283,7 +274,7 @@ class GoogleCalendar extends React.PureComponent {
       if (added) {
         const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0;
         data = [...data, { id: startingAddedId, ...added }];
-        syncGoogleCalendar('insert', added);
+        syncGoogleCalendar('insert', added, this.state.googleCalender);
       }
       if (changed) {
         data = data.map((appointment) =>
@@ -293,9 +284,9 @@ class GoogleCalendar extends React.PureComponent {
         if (changed[state.editingAppointment.id].title === undefined) {
           data[state.editingAppointment.id].startDate = changed[state.editingAppointment.id].startDate;
           data[state.editingAppointment.id].endDate = changed[state.editingAppointment.id].endDate;
-          syncGoogleCalendar('change', data[state.editingAppointment.id]);
+          syncGoogleCalendar('change', data[state.editingAppointment.id], this.state.googleCalender);
         } else {
-          syncGoogleCalendar('change', changed[state.editingAppointment.id]);
+          syncGoogleCalendar('change', changed[state.editingAppointment.id], this.state.googleCalender);
         }
       }
       if (deleted !== undefined) {
