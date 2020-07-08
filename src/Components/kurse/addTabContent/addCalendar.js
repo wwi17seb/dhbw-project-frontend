@@ -25,7 +25,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import {syncGoogleCalendar, handleAppointmentsLoad} from './apiHandlerGoogleCalendar';
 import AppointmentFormContainerBasic from './gcAppointmentForm';
- let appointments = [];
+import SnackBar from '../../Snackbar/Snackbar';
+import { SEVERITY } from '../../Snackbar/SnackbarSeverity';
+let appointments = [];
 
 function formatData(calendarData) {
   appointments = [];
@@ -157,9 +159,13 @@ class GoogleCalendar extends React.PureComponent {
       startDayHour: 9,
       endDayHour: 19,
       isNewAppointment: false,
-      dataReady: false,
-      googleCalender: props.calendar               // get those 2 to apihandlerGoogleClaendar as creds
-      //gcId: props.selectedCourse.google_calendar_id get those 2 to apihandlerGoogleClaendar as creds
+      dataReady: "loading",
+      googleCalendar: props.googleCalendar,
+      message: '',
+      severity: '',
+      snackbarOpen: false, 
+      
+      //gcId: props.selectedCourse.google_calendar_id get those to apihandlerGoogleClaendar as creds
     };
     this.loadData = this.loadData.bind(this);
     this.toggleConfirmationVisible = this.toggleConfirmationVisible.bind(this);
@@ -208,22 +214,36 @@ class GoogleCalendar extends React.PureComponent {
   componentDidMount(){
     this.loadData(); 
   }
+  
+  showSnackbar = (message, severity) => {
+    this.setState({message: message, severity:severity, snackbarOpen: true});
+  };
+
 
   handleResponse = (response) => {
+    if(response == "failedLoad"){
+      this.setState({
+        dataReady: "failedLoad"
+      })  
+    }else if(response == "successSnackbar"){
+      this.showSnackbar('Aktion erfolgreich.', SEVERITY.SUCCESS)
+    }else if(response == "errorSnackbar"){
+      this.showSnackbar('Aktion fehlgeschlagen.', SEVERITY.ERROR)
+    }else{
     this.setState({
       data : formatData(response),
-      dataReady: true
+      dataReady: "ready"
     })
+  }
   }
 
   reloadAfterResponse = (response) => {
-    console.log("Peter");
     this.loadData(); 
   }
 
 
   loadData() {
-    syncGoogleCalendar("load", " ", this.state.googleCalender, this.handleResponse); 
+    syncGoogleCalendar("load", " ", this.state.googleCalendar, this.handleResponse); 
   }
 
   componentDidUpdate() {
@@ -267,7 +287,7 @@ class GoogleCalendar extends React.PureComponent {
       const { data, deletedAppointmentId } = state;
       const nextData = data.filter((appointment) => appointment.id !== deletedAppointmentId);
       /** Google Calendar Delete */
-      syncGoogleCalendar('delete', data[deletedAppointmentId].gcId, this.state.googleCalender, this.reloadAfterResponse);
+      syncGoogleCalendar('delete', data[deletedAppointmentId].gcId, this.state.googleCalendar, this.reloadAfterResponse);
 
       return { data: nextData, deletedAppointmentId: null };
     });
@@ -280,7 +300,7 @@ class GoogleCalendar extends React.PureComponent {
       if (added) {
         const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0;
         data = [...data, { id: startingAddedId, ...added }];
-        syncGoogleCalendar('insert', added, this.state.googleCalender, this.reloadAfterResponse);
+        syncGoogleCalendar('insert', added, this.state.googleCalendar, this.reloadAfterResponse);
       }
       if (changed) {
         data = data.map((appointment) =>
@@ -290,9 +310,9 @@ class GoogleCalendar extends React.PureComponent {
         if (changed[state.editingAppointment.id].title === undefined) {
           data[state.editingAppointment.id].startDate = changed[state.editingAppointment.id].startDate;
           data[state.editingAppointment.id].endDate = changed[state.editingAppointment.id].endDate;
-          syncGoogleCalendar('change', data[state.editingAppointment.id], this.state.googleCalender,this.reloadAfterResponse);
+          syncGoogleCalendar('change', data[state.editingAppointment.id], this.state.googleCalendar,this.reloadAfterResponse);
         } else {
-          syncGoogleCalendar('change', changed[state.editingAppointment.id], this.state.googleCalender,this.reloadAfterResponse);
+          syncGoogleCalendar('change', changed[state.editingAppointment.id], this.state.googleCalendar,this.reloadAfterResponse);
         }
       }
       if (deleted !== undefined) {
@@ -312,21 +332,26 @@ class GoogleCalendar extends React.PureComponent {
       editingFormVisible,
       startDayHour,
       endDayHour,
+      message,
+      snackbarOpen,
+      severity
     } = this.state;
     const { classes } = this.props;
 
-    if (!dataReady) {
+    if (dataReady == "loading") {
       return <p>Loading...</p>;
-    } else {
+    } else if(dataReady=="failedLoad"){
+      return <p>Laden des Google Kalenders fehlgeschlagen, bitte geben Sie die benötigten Informationen im Admin-Bereich unter dem Tab "Google Calendar" an.</p>;
+    }else {
       return (
         <Paper>
           <Scheduler
             data={data}
-            height={700}
             firstDayOfWeek={1}
+            height={700}
           >
             <ViewState
-              currentDate={currentDate}
+              currentDate={currentDate} /** TODO: set current date to date of semester start */
               onCurrentDateChange={this.currentDateChange}
             />
             <EditingState
@@ -388,6 +413,7 @@ class GoogleCalendar extends React.PureComponent {
           >
             Vorlesung im Kalender eintragen
           </Button>
+          <SnackBar isOpen={snackbarOpen} message={message} severity={severity} />
         </Paper>
       );
     }
