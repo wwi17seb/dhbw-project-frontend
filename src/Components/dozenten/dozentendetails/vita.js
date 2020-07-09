@@ -17,6 +17,8 @@ import Input from '@material-ui/core/Input';
 import SubmitFeedback from '../../kurse/addkurs/submitfeedback'
 import Menu from '@material-ui/core/Menu';
 import download from 'downloadjs'
+import { APICall } from '../../../helper/Api';
+import { getTokenFromStorage } from '../../../helper/tokenHelper';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -43,12 +45,12 @@ export default function Vita(props) {
     const [submitState, setSubmitState] = React.useState(null);
     const [cv, setCv] = React.useState(null);
     const [anchorEl, setAnchorEl] = React.useState(null);
-
     const [data, setData] = React.useState(props.data);
 
     useEffect(() => {
         if (data !== props.data) {
             setData(props.data)
+            setCvName(props.data["cv"])
         }
     }, [props.data])
 
@@ -60,10 +62,8 @@ export default function Vita(props) {
 
     var url = ""
     if (data !== null) {
-        url = "/api/lecturerCV?lecturerId=" + props.data["lecturer_id"] + "&token=" + localStorage.getItem("ExoplanSessionToken")
+        url = "lecturerCV?lecturerId=" + props.data["lecturer_id"]
     }
-
-    const output = []
 
     const handleAdd = (event) => {
         setOpen(true)
@@ -84,13 +84,15 @@ export default function Vita(props) {
     };
 
     const deleteCV = () => {
-        axios.delete(url).then(res => {
-            window.location.reload()
+        APICall('DELETE', url).then(res => {
+            props.reloadData()
         })
     }
 
     const handleSubmitDelete = () => {
         deleteCV()
+        setOpen2(false);
+        setAnchorEl(null);
     };
 
     const handleDelete = () => {
@@ -100,17 +102,22 @@ export default function Vita(props) {
     const handleSubmit = () => {
         const data = new FormData()
         data.append("cv", cv,)
-        axios.put(url, data).then(res => {
+        APICall('PUT', url, data).then(res => {
             setSubmitState(res.status)
             setSubmitText(res.statusText)
             setTimeout(() => { setSubmitState(null) }, 2000)
             setOpen(false);
-            window.location.reload()
+            setAnchorEl(null);
+            props.reloadData()
         }
         ).catch(err => {
-            console.log(err.response)
-            setSubmitState(err.response.status)
-            setSubmitText(err.response.statusText)
+            if (Boolean(err.response)) {
+                setSubmitState(err.response.status)
+                setSubmitText(err.response.statusText)
+            } else {
+                setSubmitState(400)
+                setSubmitText("Failed: File too large")
+            }
             setTimeout(() => { setSubmitState(null) }, 3000)
             setOpen(false);
         }
@@ -122,6 +129,7 @@ export default function Vita(props) {
     }
 
     const handleDownload = event => {
+        url = "/api/lecturerCV?lecturerId=" + props.data["lecturer_id"] + "&token=" + getTokenFromStorage()
         axios.get(url, { responseType: 'blob' }).then(res => {
             const content = res.headers['content-type'];
             download(res.data, cvName, content)
@@ -136,63 +144,54 @@ export default function Vita(props) {
         }
     }, [cv])
 
-    if (cvName === "" || cvName === null) {
-        output.push(
-            <Grid key="add-cv-button" item>
-                <Button disabled={disabled} onClick={handleAdd} variant="contained" color="primary">
-                    Lebenslauf hinzufügen
-                </Button>
-            </Grid>
-        )
-    } else {
-        output.push(
-            <React.Fragment key="change-cv">
-                <Grid item>
-                    <Typography variant="h6">{cvName}</Typography>
-                </Grid>
-                <Grid item>
-                    <Button disabled={disabled} onClick={handleOpenEdit} variant="outlined" color="primary">
-                        Lebenslauf ändern
-                    </Button>
-                    <Menu
-                        id={"edit-cv-menu"}
-                        anchorEl={anchorEl}
-                        keepMounted
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
-                    >
-                        <MenuItem onClick={handleAdd}>Bearbeiten</MenuItem>
-                        <MenuItem onClick={handleDelete}>Löschen</MenuItem>
-                    </Menu>
-                    <Dialog
-                        open={open2}
-                    >
-                        <DialogTitle id="delete-cv-title">{"Lebenslauf wirklich entfernen?"}</DialogTitle>
-                        <DialogActions>
-                            <Button onClick={handleCloseConfirm} color="primary" >
-                                abbrechen
-                            </Button>
-                            <Button onClick={handleSubmitDelete} color="primary" >
-                                löschen
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
-                </Grid>
-                <Grid item>
-                    <Button variant="contained" onClick={handleDownload} color="primary">
-                        Lebenslauf herunterladen
-                    </Button>
-                </Grid>
-
-
-            </React.Fragment>
-        )
-    }
-
     return (
         <Paper className={classes.paper}>
             <Grid container spacing={2}>
-                {output}
+                {(cvName === "" || cvName === null) ?
+                    <Grid key="add-cv-button" item>
+                        <Button disabled={disabled} onClick={handleAdd} variant="contained" color="primary">
+                            Lebenslauf hinzufügen
+                        </Button>
+                    </Grid> :
+                    <React.Fragment>
+                        <Grid item>
+                            <Typography variant="h6">{cvName}</Typography>
+                        </Grid>
+                        <Grid item>
+                            <Button disabled={disabled} onClick={handleOpenEdit} variant="outlined" color="primary">
+                                Lebenslauf ändern
+                            </Button>
+                            <Menu
+                                id={"edit-cv-menu"}
+                                anchorEl={anchorEl}
+                                open={Boolean(anchorEl)}
+                                keepMounted
+                                onClose={handleClose}
+                            >
+                                <MenuItem onClick={handleAdd}>Bearbeiten</MenuItem>
+                                <MenuItem onClick={handleDelete}>Löschen</MenuItem>
+                            </Menu>
+                            <Dialog
+                                open={open2}
+                            >
+                                <DialogTitle id="delete-cv-title">{"Lebenslauf wirklich entfernen?"}</DialogTitle>
+                                <DialogActions style={{ padding: 20 }}>
+                                    <Button onClick={handleCloseConfirm} color="primary" >
+                                        abbrechen
+                                    </Button>
+                                    <Button onClick={handleSubmitDelete} color="primary" >
+                                        löschen
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
+                        </Grid>
+                        <Grid item>
+                            <Button variant="contained" onClick={handleDownload} color="primary">
+                                Lebenslauf herunterladen
+                            </Button>
+                        </Grid>
+                    </React.Fragment>
+                }
             </Grid>
             <Dialog
                 open={open}
@@ -210,7 +209,7 @@ export default function Vita(props) {
                         </Grid>
                     </DialogContentText>
                 </DialogContent>
-                <DialogActions>
+                <DialogActions style={{ padding: 20 }}>
                     <Button onClick={handleCloseMenu} color="primary" >
                         abbrechen
                     </Button>

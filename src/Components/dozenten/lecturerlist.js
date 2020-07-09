@@ -1,20 +1,19 @@
-import axios from 'axios';
 import React, { useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import * as testdata from "./dozententestdata.json";
 import LecturerRow from "./lecturerrow"
 import AddLecturer from "./addlecturer"
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { APICall } from '../../helper/Api';
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-  }, 
+  },
   toolbar: theme.mixins.toolbar,
   paper: {
     flexGrow: 1,
@@ -42,8 +41,7 @@ export default function LecturerList() {
   };
 
   const loadData = () => {
-    const url = "api/lecturers?token=" + localStorage.getItem("ExoplanSessionToken")
-    axios.get(url).then(res => {
+    APICall('GET', 'lecturers').then(res => {
       setLecturers(res.data.payload);
     })
   }
@@ -79,7 +77,7 @@ export default function LecturerList() {
       for (var i = 0; i < lecturers["Lecturers"].length; i++) {
         if (checkName(searchTerm, lecturers["Lecturers"][i]["lastname"]) || checkFocus(searchTerm, lecturers["Lecturers"][i]["MainFocuses"])) {
           temp.push(
-            <LecturerRow key={"lecturerrow-" + lecturers["Lecturers"][i]["lecturer_id"]} data={lecturers["Lecturers"][i]}></LecturerRow>
+            <LecturerRow key={"lecturerrow-" + lecturers["Lecturers"][i]["lecturer_id"]} reloadLecturers={loadData} data={lecturers["Lecturers"][i]}></LecturerRow>
           )
         }
       }
@@ -89,7 +87,6 @@ export default function LecturerList() {
 
   if (lecturers === null) {
     loadData()
-    //setLecturers(testdata)
   }
 
   return (
@@ -105,7 +102,7 @@ export default function LecturerList() {
             <TextField fullWidth={true} label="Suchen Sie nach dem Nachnamen oder Schwerpunkt" value={searchTerm} onChange={handleSearch} id="searchLecturer" variant="filled" />
           </Grid>
           <Grid item sm={4}>
-            <div className={classes.btn_align}> 
+            <div className={classes.btn_align}>
               <Button variant="contained" color="primary" onClick={ClickSubmit.bind(this)}>Dozent hinzufügen</Button>
             </div>
           </Grid>
@@ -131,7 +128,7 @@ export default function LecturerList() {
           {output}
         </Paper>
 
-        <AddLecturer open={open}></AddLecturer>
+        <AddLecturer reloadLecturers={loadData} open={open}></AddLecturer>
       </Grid>
     </React.Fragment>
 
