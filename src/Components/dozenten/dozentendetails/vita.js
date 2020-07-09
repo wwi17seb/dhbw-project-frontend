@@ -129,7 +129,7 @@ export default function Vita(props) {
     }
 
     const handleDownload = event => {
-        url = "lecturerCV?lecturerId=" + props.data["lecturer_id"] + "&token=" + getTokenFromStorage()
+        url = "/api/lecturerCV?lecturerId=" + props.data["lecturer_id"] + "&token=" + getTokenFromStorage()
         axios.get(url, { responseType: 'blob' }).then(res => {
             const content = res.headers['content-type'];
             download(res.data, cvName, content)
