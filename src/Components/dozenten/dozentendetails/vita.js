@@ -83,7 +83,7 @@ export default function Vita(props) {
     };
 
     const deleteCV = () => {
-        axios.delete(url).then(res => {
+        APICall('DELETE', url).then(res => {
             props.reloadData()
         })
     }
@@ -110,8 +110,13 @@ export default function Vita(props) {
             props.reloadData()
         }
         ).catch(err => {
-            setSubmitState(err.response.status)
-            setSubmitText(err.response.statusText)
+            if (Boolean(err.response)) {
+                setSubmitState(err.response.status)
+                setSubmitText(err.response.statusText)
+            } else {
+                setSubmitState(400)
+                setSubmitText("Failed: File too large")
+            }
             setTimeout(() => { setSubmitState(null) }, 3000)
             setOpen(false);
         }
@@ -168,7 +173,7 @@ export default function Vita(props) {
                                 open={open2}
                             >
                                 <DialogTitle id="delete-cv-title">{"Lebenslauf wirklich entfernen?"}</DialogTitle>
-                                <DialogActions>
+                                <DialogActions style={{ padding: 20 }}>
                                     <Button onClick={handleCloseConfirm} color="primary" >
                                         abbrechen
                                     </Button>
