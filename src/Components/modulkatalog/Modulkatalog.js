@@ -83,8 +83,10 @@ export default function ModulkatalogTable() {
   }, [searchTerm]);
 
   const handleCardClick = event => {
-    console.log(event.target.textContent);
-    history.push('/modulkatalog/details/' + event.target.textContent);
+    console.log(event.target.textContent); // this is fieldOfStudy + majorSubject + effectiveFrom
+    let majorSubjectID = majorSubjectIDs.find(element => element.name == event.target.textContent).id;
+    console.log(majorSubjectID)
+    history.push('/modulkatalog/details/' + majorSubjectID);
   }
 
   function toggleRaised(event) { //this is supposed to raise the card as a hover effect, but seemingly React doesn't allow DOM attribute manipulation
@@ -100,9 +102,7 @@ export default function ModulkatalogTable() {
       majorSubjectIDs = [];
       for (let [index, fieldOfStudy] of Object.entries(response.data.payload.FieldsOfStudy)) {
         for (let majorSubject of fieldOfStudy.MajorSubjects) {
-          if ( (majorSubjectIDs.find(i => i.id == majorSubject.majorSubject_id)) === undefined
-            && (majorSubjectIDs.find(i => i.name.toString().includes(majorSubject.name))) === undefined //this second check is only needed until majorSubject_id is unambiguous (unique)
-          ) {
+          if ( (majorSubjectIDs.find(i => i.id == majorSubject.majorSubject_id)) === undefined){
             let year = ""
             if (majorSubject.catalog_effective_from !== null) {
               year = majorSubject.catalog_effective_from;
@@ -132,33 +132,20 @@ export default function ModulkatalogTable() {
             Grenzen Sie hier die Liste mit Kriterien ein: </Typography>
           <Grid container spacing={4}>
             <Grid item sm={8}>
-              {/* <label className="card-label" forhtml="inputStudiengang">Studiengang:</label> */}
-              {/* <input type="text" label='Suchen Sie nach Jahr, Studienrichtung oder Spezialisierung' value={searchTerm} onChange={handleSearch} className="form-control" id="inputStudiengang" /> */}
               <TextField id="filled-basic" fullWidth={true} label="Suchen Sie nach Jahr, Studienrichtung oder Spezialisierung" value={searchTerm} onChange={handleSearch} id="inputStudiengang" variant="filled" />
             </Grid>
             <Grid item sm={4}>
               <ModulkatalogAdd/>
             </Grid>
-            {/* <Grid item md={5} sm={12}>
-              <label className="card-label" forhtml="inputSpezialisierung">Spezialisierung:</label>
-              <input type="text" className="form-control" id="inputSpezialisierung" />
-            </Grid> */}
-            {/* <Grid item md={2} sm={12}>
-              <button className='btn_dhbw btn'>Suchen</button>
-            </Grid> */}
           </Grid>
         </form>
         <Grid container justify='center' spacing={3} className={classes.grid}>
           {(searchResults).map(studyName =>
-            /* <Grid container item className='cards' justify='center'>
-              <div className='carddiv'> */
-                <Card onMouseOver={toggleRaised} onMouseOut={toggleRaised} className={classes.card} onClick={handleCardClick} key={studyName}>
-                  <CardContent className={classes.cardContent}>
-                    <Typography className={classes.cardText}>{studyName}</Typography>
-                  </CardContent>
-                </Card>
-          /*     </div>
-            </Grid> */
+            <Card onMouseOver={toggleRaised} onMouseOut={toggleRaised} className={classes.card} onClick={handleCardClick} key={studyName}>
+              <CardContent className={classes.cardContent}>
+                <Typography className={classes.cardText}>{studyName}</Typography>
+              </CardContent>
+            </Card>
           )}
         </Grid>
       </main>
