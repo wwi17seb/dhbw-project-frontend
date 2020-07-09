@@ -152,6 +152,10 @@ class Login extends Component {
     this.setState({ registerKey: event.target.value });
   }
 
+  handleBackClick = (event) => {
+    this.setState({ register: false })
+  }
+
   displayAlertErrorMessage = (message, classes) => {
     if (message !== '') {
       return (
@@ -282,6 +286,10 @@ class Login extends Component {
               <Button variant='contained' color='primary' fullWidth className={classes.submit} onClick={this.handleRegistrationClick}>
                 Registrieren
               </Button>
+
+              { this.state.register && <Button variant='contained' color='primary' fullWidth className={classes.submit} onClick={this.handleBackClick}>
+                Zurück
+              </Button>}
             </form>
           </Paper>
         </main>
