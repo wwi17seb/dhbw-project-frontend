@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { getTokenFromStorage } from './tokenHelper';
 
-export const APICall = async (method, url, data) => {
+export const APICall = async (method, url, data, params={}) => {
   const token = getTokenFromStorage();
-  const params = token ? { token } : {};
+  if (token) params.token = token;
   return axios
     .request({
       data,
@@ -52,8 +52,8 @@ function ApiHandler(props) {
             props.handleAPIresponse(response);
           })
           .catch((err) => {
-            console.log(err);
-            console.log(err.response);
+            
+            
 
             if (typeof err.response !== 'undefined') {
               setError(err.response.status);
