@@ -9,6 +9,8 @@ import CreateIcon from '@material-ui/icons/Create';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button'
 import DeleteIcon from '@material-ui/icons/Delete'
+import { APICall } from '../../helper/Api';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -29,11 +31,12 @@ const useStyles = makeStyles(theme => ({
 
 function ExpansionPanels(props) {
     const classes = useStyles();
-
-    var studyName = props.studyName;
-    if (typeof props.moduleGroups !== "undefined" && props.moduleGroups !== null && props.moduleGroups.length > 0) {
-        console.log("From ExpansionPanel:")
-        console.log(props.moduleGroups);
+    const history = useHistory();
+    const onDelete = (event) => {
+        let id = event.currentTarget.id
+        APICall("DELETE", "/moduleGroups", {}, {'moduleGroupId': id}).then(
+            history.push("/modulkatalog") //details/
+        )
     }
     return (
         <div className={classes.root}>
@@ -90,7 +93,7 @@ function ExpansionPanels(props) {
                             </div>
                         </Grid>
                         <Grid item sm={12} xl={12}>
-                            <Button variant="contained" color="primary" startIcon={<DeleteIcon />} size="small">Modul löschen</Button>
+                            <Button onClick={onDelete} id={moduleGroup.moduleGroup_id} variant="contained" color="primary" startIcon={<DeleteIcon />} size="small">Modul löschen</Button>
                         </Grid>
                     </Grid>
                 )}
