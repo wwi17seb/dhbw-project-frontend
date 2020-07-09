@@ -18,14 +18,13 @@ const PresentationRow = ({ presentation, course_id, semester_id, showSnackbar, l
 
   const handleClose = () => {
     setEditPresentation(false);
+    setPresentationIdToDelete(0);
   };
 
   const deletePresentationDialog = () => {
     return (
       <DeleteEntityDialog
-        handleClose={() => {
-          setPresentationIdToDelete(0);
-        }}
+        handleClose={handleClose}
         deleteDialog={true}
         labelSingular={'Lehrveranstaltung'}
         onDelete={(e) => deletePresentation(e, presentationIdToDelete)}
@@ -40,6 +39,7 @@ const PresentationRow = ({ presentation, course_id, semester_id, showSnackbar, l
       if (res.status === 200) {
         loadData();
         showSnackbar('Vorlesung erfolgreich gelöscht!', SEVERITY.SUCCESS);
+        handleClose();
       } else {
         // TODO: Implement handling of possible failure
         showSnackbar('Vorlesung konnte nicht gelöscht werden!', SEVERITY.ERROR);
