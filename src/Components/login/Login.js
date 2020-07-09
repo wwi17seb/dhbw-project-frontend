@@ -64,30 +64,34 @@ class Login extends Component {
 
   handleRegistration(){
     if(this.state.password === this.state.reentered_password){
-      let data = {
-        username: this.state.email,
-        password: this.state.password,
-        registerKey: this.state.registerKey
-      };
-
-      axios
-      .post("/api/register",data)
-      .then((res) => {
-        const { payload } = res.data;
-        const token = payload.token;
-        localStorage.setItem('ExoplanSessionToken', token);
-        this.props.history.push({
-          pathname: NAV_ITEMS.COURSES.link, //oder zu der Seite auf der man zuvor war? (bei session timout)
-        });
-        this.setState({ message: "Registrierung erfolgreich. Bitte anmelden!" })
-      })
-      .catch((err) => {
-        this.clearInputFields();
-        this.setState({ error: "Registrierung fehlgeschlagen. Bitte Registrierungsschlüssel prüfen!" })
-      })
-    } else {
-      this.setState({ error: "Passwöter sind nicht gleich!" });
-    }
+      if(this.state.email === this.state.email.trim()){
+        let data = {
+          username: this.state.email,
+          password: this.state.password,
+          registerKey: this.state.registerKey
+        };
+  
+        axios
+        .post("/api/register",data)
+        .then((res) => {
+          const { payload } = res.data;
+          const token = payload.token;
+          localStorage.setItem('ExoplanSessionToken', token);
+          this.props.history.push({
+            pathname: NAV_ITEMS.COURSES.link, //oder zu der Seite auf der man zuvor war? (bei session timout)
+          });
+          this.setState({ message: "Registrierung erfolgreich. Bitte anmelden!" })
+        })
+        .catch((err) => {
+          this.clearInputFields();
+          this.setState({ error: "Registrierung fehlgeschlagen. Bitte Registrierungsschlüssel prüfen!" })
+        })
+      } else {
+        this.setState({ error: "Benutzername darf nicht mit einem Leerzeichen beginnen oder enden!" });
+      }
+      } else {
+        this.setState({ error: "Passwöter sind nicht gleich!" });
+      }
   }
 
   handleRegistrationClick(event){
