@@ -3,6 +3,16 @@ import React, { Fragment, useState } from 'react';
 
 import ModifyPresentation from './ModifyPresentation';
 import PresentationRow from './PresentationRow';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import ColorInfoDialog from './ColorInfoDialog';
+
+const COLOR_KEYWORDS = [
+  { color: '#EF5350', keywords: ['abgesagt', 'abgebrochen', 'Absage'] },
+  { color: '#FFA07A', keywords: ['offen', 'frei', 'ausstehend'] },
+  { color: '#AFEEEE', keywords: ['angeschrieben', 'angefragt', 'kontaktiert'] },
+  { color: '#FFEE58', keywords: ['in Planung', 'in Absprache', 'Termine finden', 'Zusage', 'zugesagt'] },
+  { color: '#90EE90', keywords: ['abgeschlossen', 'fertig', 'Termine festgelegt', 'Termine eingetragen'] },
+];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,37 +25,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const header = () => (
-  <Grid item xs={12} style={{ marginBottom: 10 }}>
-    <Grid container spacing={2}>
-      <Grid item xs={3}>
-        <Typography variant='h5'>Vorlesung</Typography>
-      </Grid>
-      <Grid item xs={2}>
-        <Typography variant='h5'>Dozent</Typography>
-      </Grid>
-      <Grid item xs={2}>
-        <Typography variant='h5'>Präsenzzeit</Typography>
-      </Grid>
-      <Grid item xs={2}>
-        <Typography variant='h5'>Prüfungsleistung</Typography>
-      </Grid>
-      <Grid item xs={2}>
-        <Typography variant='h5'>Status</Typography>
-      </Grid>
-      <Grid item xs={1}>
-        <Typography variant='h5'>Aktionen</Typography>
-      </Grid>
-    </Grid>
-    <Divider style={{ marginBottom: 10 }} />
-  </Grid>
-);
-
 // receives given data
 const MyTable = ({ presentations, loadData, course_id, semester, semester_id, showSnackbar, moduleCatalog }) => {
   const classes = useStyles();
   const [createPresentationDialog, setCreatePresentationDialog] = useState(false);
   const [editPresentation, setEditPresentation] = useState(false);
+  const [showColorInfoDialog, setShowColorInfoDialog] = useState(false);
+
+  const openColorInfoDialog = () => {
+    setShowColorInfoDialog(true);
+  };
 
   const createNewPresentation = () => {
     setEditPresentation(false);
@@ -54,7 +43,46 @@ const MyTable = ({ presentations, loadData, course_id, semester, semester_id, sh
 
   const handleClose = () => {
     setCreatePresentationDialog(false);
+    setShowColorInfoDialog(false);
   };
+
+  const getColorInfoDialog = (handleClose) => {
+    return <ColorInfoDialog COLOR_KEYWORDS={COLOR_KEYWORDS} handleClose={handleClose} />;
+  };
+
+  const header = () => (
+    <Grid item xs={12} style={{ marginBottom: 10 }}>
+      <Grid container spacing={2}>
+        <Grid item xs={3}>
+          <Typography variant='h5'>Vorlesung</Typography>
+        </Grid>
+        <Grid item xs={2}>
+          <Typography variant='h5'>Dozent</Typography>
+        </Grid>
+        <Grid item xs={2}>
+          <Typography variant='h5'>Präsenzzeit</Typography>
+        </Grid>
+        <Grid item xs={2}>
+          <Typography variant='h5'>Prüfungsleistung</Typography>
+        </Grid>
+        <Grid item xs={2}>
+          <Typography variant='h5'>
+            Status
+            <HelpOutlineIcon
+              onClick={() => {
+                openColorInfoDialog(handleClose);
+              }}
+              style={{ cursor: 'pointer', fontSize: '0.8em', marginLeft: '5', marginBottom: '2', color: '#666' }}
+            />
+          </Typography>
+        </Grid>
+        <Grid item xs={1}>
+          <Typography variant='h5'>Aktionen</Typography>
+        </Grid>
+      </Grid>
+      <Divider style={{ marginBottom: 10 }} />
+    </Grid>
+  );
 
   const modifyPresentation = (presentation, handleClose) => {
     return (
@@ -75,6 +103,7 @@ const MyTable = ({ presentations, loadData, course_id, semester, semester_id, sh
 
   return (
     <Fragment>
+      {showColorInfoDialog ? getColorInfoDialog(handleClose) : null}
       {createPresentationDialog ? modifyPresentation(null, handleClose) : null}
       <div style={{ textAlign: 'right' }}>
         <button
@@ -98,6 +127,7 @@ const MyTable = ({ presentations, loadData, course_id, semester, semester_id, sh
               semester_id={semester_id}
               showSnackbar={showSnackbar}
               modifyPresentation={modifyPresentation}
+              COLOR_KEYWORDS={COLOR_KEYWORDS}
             />
           ))}
         </Paper>

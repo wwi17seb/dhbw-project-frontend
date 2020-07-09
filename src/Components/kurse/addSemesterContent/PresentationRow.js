@@ -8,15 +8,7 @@ import DeleteEntityDialog from '../../data/DeleteEntityDialog';
 import { SEVERITY } from '../../Snackbar/SnackbarSeverity';
 import { getNameOfLecturer } from './helper';
 
-const COLOR_KEYWORDS = [
-  { color: '#EF5350', keywords: ['abgesagt'] },
-  { color: '#FFA07A', keywords: ['offen'] },
-  { color: '#AFEEEE', keywords: ['angeschrieben', 'angefragt'] },
-  { color: '#FFEE58', keywords: ['in Planung', 'in Absprache', 'Termine finden'] },
-  { color: '#90EE90', keywords: ['abgeschlossen', 'fertig', 'Termine festgelegt', 'Termine eingetragen'] },
-];
-
-const PresentationRow = ({ presentation, course_id, semester_id, showSnackbar, loadData, modifyPresentation }) => {
+const PresentationRow = ({ presentation, showSnackbar, loadData, modifyPresentation, COLOR_KEYWORDS }) => {
   const [editPresentation, setEditPresentation] = useState(false);
   const [presentationIdToDelete, setPresentationIdToDelete] = useState(0);
 
@@ -65,7 +57,7 @@ const PresentationRow = ({ presentation, course_id, semester_id, showSnackbar, l
         }
       }
     }
-    return { };
+    return {};
   };
 
   return (
