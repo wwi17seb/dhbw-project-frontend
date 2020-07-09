@@ -18,6 +18,7 @@ import SubmitFeedback from '../../kurse/addkurs/submitfeedback'
 import Menu from '@material-ui/core/Menu';
 import download from 'downloadjs'
 import { APICall } from '../../../helper/Api';
+import { getTokenFromStorage } from '../../../helper/tokenHelper';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -128,6 +129,7 @@ export default function Vita(props) {
     }
 
     const handleDownload = event => {
+        url = "lecturerCV?lecturerId=" + props.data["lecturer_id"] + "&token=" + getTokenFromStorage()
         axios.get(url, { responseType: 'blob' }).then(res => {
             const content = res.headers['content-type'];
             download(res.data, cvName, content)
