@@ -86,7 +86,7 @@ export default function ScrollableTabsButtonAuto(props) {
   for (let tabLabel of tabLabels) {
     finalTabLabels.push(<Tab key={tabIndex} label={tabLabel} {...a11yProps({ tabIndex })} />);
     finalTabPanels.push(
-      <TabPanel key={tabIndex} value={value} index={tabIndex}>
+      <TabPanel key={tabIndex} value={value} index={tabIndex} style={{ paddingLeft: 15, paddingRight: 15 }}>
         {finalPanelContent[tabIndex]}
       </TabPanel>
     );
