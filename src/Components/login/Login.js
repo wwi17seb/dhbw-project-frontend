@@ -203,6 +203,33 @@ class Login extends Component {
     }
   };
 
+  renderRegistrationFields = () => {
+    return (
+      <div>
+         <TextField
+          id='InputReenteredPassword'
+          label='Passwort wiederholen'
+          margin='dense'
+          variant='outlined'
+          type='password'
+          fullWidth
+          value={this.state.reentered_password}
+          onChange={this.handleReenteredPassword}
+        />
+        <TextField
+          id='InputRegisterKey'
+          label='Registrierungsschlüssel'
+          margin='dense'
+          variant='outlined'
+          type='password'
+          fullWidth
+          value={this.state.registerKey}
+          onChange={this.handleRegisterKey}
+        />
+      </div>
+    );
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -251,27 +278,7 @@ class Login extends Component {
                 }}
               />
 
-              { this.state.register && <TextField
-                id='InputReenteredPassword'
-                label='Passwort wiederholen'
-                margin='dense'
-                variant='outlined'
-                type='password'
-                fullWidth
-                value={this.state.reentered_password}
-                onChange={this.handleReenteredPassword}
-              />}
-
-              { this.state.register && <TextField
-                id='InputRegisterKey'
-                label='Registrierungsschlüssel'
-                margin='dense'
-                variant='outlined'
-                type='password'
-                fullWidth
-                value={this.state.registerKey}
-                onChange={this.handleRegisterKey}
-              />}
+              {this.state.register ? this.renderRegistrationFields() : null}
 
               <Grid container justify='flex-start'>
                 <Grid item>
