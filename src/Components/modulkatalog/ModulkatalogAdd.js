@@ -45,10 +45,10 @@ export default function FormDialog() {
             } ).then((res) => {
                 history.push("/modulkatalog/details/"+fieldOfStudy + " " + majorSubject + " " + year);
             }).catch((err) => {
-                console.log(err)
+                
             })
         }).catch((err) => {
-            console.log(err)
+            
         })
         
         setOpen(false);

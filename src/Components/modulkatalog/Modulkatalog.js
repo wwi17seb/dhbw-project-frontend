@@ -83,20 +83,19 @@ export default function ModulkatalogTable() {
   }, [searchTerm]);
 
   const handleCardClick = event => {
-    console.log(event.target.textContent); // this is fieldOfStudy + majorSubject + effectiveFrom
+    //INFO: event.target.textContent  is fieldOfStudy + majorSubject + effectiveFrom
     let majorSubjectID = majorSubjectIDs.find(element => element.name == event.target.textContent).id;
-    console.log(majorSubjectID)
+    
     history.push('/modulkatalog/details/' + majorSubjectID);
   }
 
   function toggleRaised(event) { //this is supposed to raise the card as a hover effect, but seemingly React doesn't allow DOM attribute manipulation
-    //console.log(event.target);
     event.target.setAttribute("raised", !raised);
     setRaised(raised => !raised);// update the state to force render
   }
 
   const handleAPIresponse = (response) => {
-    console.log(response.data.payload);
+    
     if (typeof response.data.payload["FieldsOfStudy"] !== "undefined"){
       let fieldsOfStudyWithMajorSubject = [];
       majorSubjectIDs = [];
@@ -112,8 +111,8 @@ export default function ModulkatalogTable() {
           }
         }
       }
-      console.log(fieldsOfStudyWithMajorSubject);
-      console.log(majorSubjectIDs);
+      
+      
       setFieldsOfStudyList (fieldsOfStudyWithMajorSubject);
       setSearchTerm(" ")
   }

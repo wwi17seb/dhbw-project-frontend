@@ -52,8 +52,8 @@ function ApiHandler(props) {
             props.handleAPIresponse(response);
           })
           .catch((err) => {
-            console.log(err);
-            console.log(err.response);
+            
+            
 
             if (typeof err.response !== 'undefined') {
               setError(err.response.status);
