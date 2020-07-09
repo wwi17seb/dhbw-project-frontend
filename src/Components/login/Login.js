@@ -42,8 +42,57 @@ class Login extends Component {
       message: '',
       error: '',
       open: true,
+      register: false,
+      reentered_password: "",
+      registerKey: ""
     };
     this.handleClickShowPassword = this.handleClickShowPassword.bind(this);
+    this.handleRegistrationClick = this.handleRegistrationClick.bind(this);
+    this.handleReenteredPassword = this.handleReenteredPassword.bind(this);
+    this.handleRegistration = this.handleRegistration.bind(this);
+    this.clearInputFields = this.clearInputFields.bind(this);
+  }
+
+  clearInputFields(){
+    this.setState({
+      email: "",
+      password: "",
+      reentered_password: "",
+      registerKey: ""
+    })
+  }
+
+  handleRegistration(){
+    if(this.state.password === this.state.reentered_password){
+      let data = {
+        username: this.state.email,
+        password: this.state.password,
+        registerKey: this.state.registerKey
+      };
+
+      axios
+      .post("/api/register",data)
+      .then((res) => {
+        const { payload } = res.data;
+        const token = payload.token;
+        localStorage.setItem('ExoplanSessionToken', token);
+        this.props.history.push({
+          pathname: NAV_ITEMS.COURSES.link, //oder zu der Seite auf der man zuvor war? (bei session timout)
+        });
+        this.setState({ message: "Registrierung erfolgreich. Bitte anmelden!" })
+      })
+      .catch((err) => {
+        this.clearInputFields();
+        this.setState({ error: "Registrierung fehlgeschlagen. Bitte Registrierungsschlüssel prüfen!" })
+      })
+    } else {
+      this.setState({ error: "Passwöter sind nicht gleich!" });
+    }
+  }
+
+  handleRegistrationClick(event){
+    if(this.state.register) this.handleRegistration();
+    this.setState({ register: !this.state.register })
   }
 
   handleClickShowPassword() {
@@ -94,6 +143,14 @@ class Login extends Component {
   handlePassword = (event) => {
     this.setState({ password: event.target.value });
   };
+
+  handleReenteredPassword = (event) => {
+    this.setState({ reentered_password: event.target.value });
+  }
+
+  handleRegisterKey = (event) => {
+    this.setState({ registerKey: event.target.value });
+  }
 
   displayAlertErrorMessage = (message, classes) => {
     if (message !== '') {
@@ -190,17 +247,39 @@ class Login extends Component {
                 }}
               />
 
+              { this.state.register && <TextField
+                id='InputReenteredPassword'
+                label='Passwort wiederholen'
+                margin='dense'
+                variant='outlined'
+                type='password'
+                fullWidth
+                value={this.state.reentered_password}
+                onChange={this.handleReenteredPassword}
+              />}
+
+              { this.state.register && <TextField
+                id='InputRegisterKey'
+                label='Registrierungsschlüssel'
+                margin='dense'
+                variant='outlined'
+                type='password'
+                fullWidth
+                value={this.state.registerKey}
+                onChange={this.handleRegisterKey}
+              />}
+
               <Grid container justify='flex-start'>
                 <Grid item>
                   <Link onClick={() => this.setState({ openResetPasswordDialog: true })}>Passwort vergessen?</Link>
                 </Grid>
               </Grid>
 
-              <Button type='submit' variant='contained' color='primary' fullWidth className={classes.submit}>
+              { !this.state.register && <Button type='submit' variant='contained' color='primary' fullWidth className={classes.submit}>
                 Anmelden
-              </Button>
+              </Button>}
 
-              <Button variant='contained' color='primary' fullWidth className={classes.submit}>
+              <Button variant='contained' color='primary' fullWidth className={classes.submit} onClick={this.handleRegistrationClick}>
                 Registrieren
               </Button>
             </form>
