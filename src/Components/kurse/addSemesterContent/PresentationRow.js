@@ -57,7 +57,7 @@ const PresentationRow = ({ presentation, course_id, semester_id, showSnackbar, l
             {Lecture.name}
           </Grid>
           <Grid item xs={2}>
-            {getNameOfLecturer(Lecturer) || 'Kein Dozent vorhanden'}
+            {getNameOfLecturer(Lecturer) || '-'}
           </Grid>
           <Grid item xs={2}>
             {workload_dhbw + (!isNaN(workload_dhbw) ? 'h' : '')}

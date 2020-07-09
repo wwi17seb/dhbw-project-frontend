@@ -12,7 +12,7 @@ import Row from 'react-bootstrap/Row';
 
 import { APICall } from '../../../helper/Api';
 import { SEVERITY } from '../../Snackbar/SnackbarSeverity';
-import AcademicRecordDialog from './AcademicRecordDialog';
+import AcademicRecordDropdown from './AcademicRecordDropdown';
 import { getNameOfLecturer } from './helper';
 import LectureDropdown from './LectureDropdown';
 
@@ -101,7 +101,8 @@ const ModifyPresentation = ({
 
   useEffect(() => {
     if (lecture) {
-      setPossibleAcademicRecords(getAcademicRecordsForLecture(lecture));
+      const academicRecords = getAcademicRecordsForLecture(lecture);
+      setPossibleAcademicRecords(academicRecords);
     }
   }, [lecture]);
 
@@ -155,10 +156,11 @@ const ModifyPresentation = ({
           </Form.Group>
           <Form.Group as={Row} controlId='Prüfungsleistung'>
             <Col>
-              <AcademicRecordDialog
-                AcademicRecord={academicRecord}
-                possibleAcademicRecords={possibleAcademicRecords}
+              <AcademicRecordDropdown
+                openDialog={open}
+                academicRecord={academicRecord}
                 setAcademicRecord={setAcademicRecord}
+                possibleAcademicRecords={possibleAcademicRecords}
               />
             </Col>
           </Form.Group>
