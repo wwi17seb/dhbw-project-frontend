@@ -41,3 +41,9 @@ code {
 .MuiDialogActions-root.MuiDialogActions-spacing {
  padding: 0;
 }
+
+/* */
+.MuiDivider-root {
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+}

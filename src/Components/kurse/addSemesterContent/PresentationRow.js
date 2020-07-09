@@ -8,6 +8,14 @@ import DeleteEntityDialog from '../../data/DeleteEntityDialog';
 import { SEVERITY } from '../../Snackbar/SnackbarSeverity';
 import { getNameOfLecturer } from './helper';
 
+const COLOR_KEYWORDS = [
+  { color: '#EF5350', keywords: ['abgesagt'] },
+  { color: '#FFA07A', keywords: ['offen'] },
+  { color: '#AFEEEE', keywords: ['angeschrieben', 'angefragt'] },
+  { color: '#FFEE58', keywords: ['in Planung', 'in Absprache', 'Termine finden'] },
+  { color: '#90EE90', keywords: ['abgeschlossen', 'fertig', 'Termine festgelegt', 'Termine eingetragen'] },
+];
+
 const PresentationRow = ({ presentation, course_id, semester_id, showSnackbar, loadData, modifyPresentation }) => {
   const [editPresentation, setEditPresentation] = useState(false);
   const [presentationIdToDelete, setPresentationIdToDelete] = useState(0);
@@ -47,6 +55,19 @@ const PresentationRow = ({ presentation, course_id, semester_id, showSnackbar, l
     });
   };
 
+  const getStatusStyle = (status) => {
+    for (const rule of COLOR_KEYWORDS) {
+      for (const keyword of rule.keywords) {
+        if (status.includes(keyword)) {
+          return {
+            backgroundColor: rule.color,
+          };
+        }
+      }
+    }
+    return { };
+  };
+
   return (
     <Fragment>
       {editPresentation ? modifyPresentation(presentation, handleClose) : null}
@@ -68,7 +89,7 @@ const PresentationRow = ({ presentation, course_id, semester_id, showSnackbar, l
               ''
             )})`}
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={2} style={getStatusStyle(status)}>
             {/* Add Color to specific status - how about: angeschrieben - yellow | - - red | bestätigt - blue | termine eingetragen - green */}
             {status}
           </Grid>
