@@ -78,7 +78,7 @@ const PresentationRow = ({ presentation, course_id, semester_id, showSnackbar, l
             </Tooltip>
             <Tooltip title='Löschen der Vorlesung'>
               <Delete
-                style={{ cursor: 'pointer', marginRight: '0.5rem' }}
+                style={{ cursor: 'pointer', marginRight: '0.70rem' }}
                 onClick={() => setPresentationIdToDelete(presentation.presentation_id)}
               />
             </Tooltip>
