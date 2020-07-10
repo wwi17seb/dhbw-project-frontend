@@ -88,7 +88,7 @@ class Login extends Component {
   };
 
   handleEmail = (event) => {
-    this.setState({ email: event.target.value });
+    this.setState({ email: event.target.value.trim() });
   };
 
   handlePassword = (event) => {
