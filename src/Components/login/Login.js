@@ -90,7 +90,7 @@ class Login extends Component {
         this.setState({ error: "Benutzername darf nicht mit einem Leerzeichen beginnen oder enden!" });
       }
       } else {
-        this.setState({ error: "Passwöter sind nicht gleich!" });
+        this.setState({ error: "Passwörter sind nicht gleich!" });
       }
   }
 
