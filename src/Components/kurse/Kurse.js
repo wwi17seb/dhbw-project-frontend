@@ -5,9 +5,12 @@ import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { APICall } from '../../helper/Api';
 import ApiHandler from '../../helper/Api';
 import Nav from '../nav/Nav';
+import SnackBar from '../Snackbar/Snackbar';
 import AddKurs from './addkurs/addkurs';
 import AddTabContent from './addTabContent/addTabContent';
 
@@ -54,39 +57,78 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ScrollableTabsButtonAuto(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [courses, setCourses] = useState([]);
+
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const showSnackbar = (message, severity) => {
+    setMessage(message);
+    setSeverity(severity);
+    setSnackbarOpen(true);
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const tabLabels = ['ABC17DEF', 'Kurs Hinzufügen'];
+  const courseNames = courses.map((course) => course.name);
+  const tabLabels = courseNames.concat(['Kurs Hinzufügen']);
   const finalTabLabels = [];
   const finalTabPanels = [];
-  const finalPanelContent = [<AddTabContent></AddTabContent>, <AddKurs></AddKurs>];
+  const finalPanelContent = courses
+    .map((course) => <AddTabContent selectedCourse={course} showSnackbar={showSnackbar} />)
+    .concat([<AddKurs />]);
   let tabIndex = 0;
 
   for (let tabLabel of tabLabels) {
     finalTabLabels.push(<Tab key={tabIndex} label={tabLabel} {...a11yProps({ tabIndex })} />);
     finalTabPanels.push(
-      <TabPanel key={tabIndex} value={value} index={tabIndex}>
-        {' '}
-        {finalPanelContent[tabIndex]}{' '}
+      <TabPanel key={tabIndex} value={value} index={tabIndex} style={{ paddingLeft: 15, paddingRight: 15 }}>
+        {finalPanelContent[tabIndex]}
       </TabPanel>
     );
     tabIndex++;
   }
 
-  const handleAPIresponse = (response) => {
-    console.log('parent comp');
-    console.log(response);
+  useEffect(() => {
+    APICall('GET', 'courses').then((res) => {
+      if (res.data && res.status === 200) {
+        setCourses(res.data.payload.Courses);
+      } else {
+        //alert('Problem occurred: Not Loaded!'); // TODO: exchange with snackbar
+      }
+    });
+    return () => {};
+  }, []);
+
+  const handleAPIresponse = async (response) => {
+    const { Courses } = response.data.payload;
+    setCourses(Courses);
   };
+
+  const getMessage = (props) => {
+    if (props.location && props.location.state) {
+      return props.location.state.message;
+    }
+  };
+
   return (
     <div className={classes.root}>
-      <Nav></Nav>
-      <ApiHandler url='/api/courses' handleAPIresponse={handleAPIresponse}></ApiHandler>
+      <Nav />
+      <ApiHandler url='/api/courses' handleAPIresponse={handleAPIresponse} />
       <main className={classes.content}>
         <div className={classes.toolbar} />
+        {(props.location && props.location.state) !== undefined ? (
+          <div className='alert alert-success alert-dismissible fadeOut' role='alert' id='success-alert'>
+            <strong>{getMessage(props)}</strong>
+            <button type='button' className='close' data-dismiss='alert' aria-label='Close'>
+              <span aria-hidden='true'>&times;</span>
+            </button>
+          </div>
+        ) : null}
 
         <Paper>
           <Tabs
@@ -101,6 +143,7 @@ export default function ScrollableTabsButtonAuto(props) {
           </Tabs>
         </Paper>
         {finalTabPanels}
+        <SnackBar isOpen={snackbarOpen} message={message} severity={severity} />
       </main>
     </div>
   );

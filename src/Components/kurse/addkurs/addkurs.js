@@ -55,7 +55,6 @@ export default function AddKurs() {
             setSubjectData(data)
         }).catch(err => {
             setSubjectData({})
-            console.log("Failed to load subjects!")
         })
     }
 

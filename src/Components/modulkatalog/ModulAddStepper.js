@@ -134,7 +134,6 @@ export default function ModulAddStepper(props) {
                 }
             ]
         }).then((res) => {
-            
             if (res.data && res.status === 201) {
                 setAlertOpen(true)
                 setMessage('Modul wurde erfolgreich hinzugefügt')

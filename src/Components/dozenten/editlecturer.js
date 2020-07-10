@@ -1,7 +1,6 @@
-import axios from 'axios';
 import React, { useEffect } from 'react';
 import { Grid, TextField } from '@material-ui/core';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Dialog from '@material-ui/core/Dialog';
@@ -10,12 +9,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
 import Chip from '@material-ui/core/Chip';
 import SubmitFeedback from '../kurse/addkurs/submitfeedback'
+import { APICall } from '../../helper/Api';
 
 const useStyles = makeStyles(theme => ({
     textfield: {
@@ -128,17 +127,16 @@ export default function EditLecturer(props) {
             "is_extern": extern,
             "allow_manipulation": true
         }
-        const url = "/api/lecturers?lecturerId=" + props.data["lecturer_id"] + "&token=" + localStorage.getItem("ExoplanSessionToken");
-        axios.put(url, data).then(res => {
+        const url = "lecturers?lecturerId=" + props.data["lecturer_id"]
+        APICall('PUT', url, data).then(res => {
             setSubmitState(res.status)
             setSubmitText(res.statusText)
             setTimeout(() => { setSubmitState(null) }, 2000)
             setOpen2(false);
             setOpen(false);
-            window.location.reload();
+            props.reloadLecturers()
         }
         ).catch(err => {
-            console.log(err.response)
             setSubmitState(err.response.status)
             setSubmitText(err.response.statusText)
             setTimeout(() => { setSubmitState(null) }, 3000)
@@ -188,14 +186,13 @@ export default function EditLecturer(props) {
         }
     };
     const handleMainFocus = (event) => {
-        console.log(mainFocus)
         setMainFocus(event.target.value);
     };
 
     const getMainFocuses = () => {
-        const url = "api/mainFocuses?token=" + localStorage.getItem("ExoplanSessionToken")
+        const url = "mainFocuses"
 
-        axios.get(url).then(res => {
+        APICall('GET', url).then(res => {
             var data = res.data.payload;
             var output = []
 
@@ -314,7 +311,7 @@ export default function EditLecturer(props) {
                         </Grid>
                     </DialogContentText>
                 </DialogContent>
-                <DialogActions>
+                <DialogActions style={{ padding: 10 }}>
                     <Button onClick={handleCloseMenu} color="primary" >
                         Abbrechen
                 </Button>
@@ -329,7 +326,7 @@ export default function EditLecturer(props) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">{"Sind sie sich sicher?"}</DialogTitle>
-                <DialogActions>
+                <DialogActions style={{ padding: 10 }}>
                     <Button onClick={handleCloseConfirm} color="primary" >
                         Abbrechen
                 </Button>

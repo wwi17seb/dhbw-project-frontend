@@ -95,7 +95,6 @@ export default function ModulkatalogTable() {
   }
 
   const handleAPIresponse = (response) => {
-    
     if (typeof response.data.payload["FieldsOfStudy"] !== "undefined"){
       let fieldsOfStudyWithMajorSubject = [];
       majorSubjectIDs = [];
@@ -111,8 +110,6 @@ export default function ModulkatalogTable() {
           }
         }
       }
-      
-      
       setFieldsOfStudyList (fieldsOfStudyWithMajorSubject);
       setSearchTerm(" ")
   }

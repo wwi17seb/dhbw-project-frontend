@@ -16,7 +16,7 @@ export async function syncGoogleCalendar(action, appointmentData, handleResponse
       discoveryDocs: creds.discoveryDocs,
       scope: creds.scope
     })
-    gapi.client.load('calendar', 'v3', () => console.log('syncGoogleCalendar'))
+    gapi.client.load('calendar', 'v3')
 
     //If not logged in yet -> login
     if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
@@ -46,8 +46,6 @@ function handleAction(action,appointmentData, gapi, handleResponse){
     case "load":
       handleAppointmentsLoad(gapi, handleResponse);
       break;
-    default:
-      console.log("Wont happen");
   }
 }
 
@@ -62,8 +60,6 @@ function handleAppointmentsLoad(gapi, handleResponse) {
       return "Erroor";
     } else {
       handleResponse(response.items);
-      console.log("TTTTTTTTTTTTT"); 
-      console.log(response.items); 
       return response;
     }
   });
@@ -76,13 +72,12 @@ function handleAppointmentDelete(deleteAppointmentId, gapi) {
     'calendarId': creds.calenderID,
     'eventId': deleteAppointmentId
   });
-  console.log(deleteAppointmentId);
 
   request.execute(function (response) {
     if (response.error || response == false) {
-      alert('Error');
+      alert('Error'); // TODO: exchange with snackbar
     } else {
-      alert('Success');
+      alert('Success'); // TODO: exchange with snackbar
     }
   });
 }
@@ -109,9 +104,9 @@ function handleAppointmentInsert(insertAppointmentData, gapi) {
 
   request.execute(function (response) {
     if (response.error || response == false) {
-      alert('Error');
+      alert('Error'); // TODO: exchange with snackbar
     } else {
-      alert('Success');
+      alert('Success'); // TODO: exchange with snackbar
     }
   });
 }
@@ -139,9 +134,9 @@ function handleAppointmentChange(changedAppointmentData, gapi) {
 
   request.execute(function (response) {
     if (response.error || response == false) {
-      alert('Error');
+      alert('Error'); // TODO: exchange with snackbar
     } else {
-      alert('Success');
+      alert('Success'); // TODO: exchange with snackbar
     }
   });
 }
