@@ -16,7 +16,6 @@ function GetGoogleCalendar(props){
     const [googleCalendar, setGoogleCalendar] = React.useState(null);
 
     function handleAPIresponse(response){
-        console.log(response.data.payload);
         if(response.status == 200){
             setGoogleCalendar(response.data.payload.GoogleCalendar);
         }
