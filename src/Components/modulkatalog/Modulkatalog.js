@@ -33,11 +33,12 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     margin: '1rem',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    "&:hover": {
+      boxShadow: "-1px 10px 29px 0px rgba(0,0,0,0.8)",
+      cursor: 'pointer'
+    }
   },
-/*   cardText: {
-    marginTop: '50%'
-  }, */
   formButton: {
     marginTop: '2rem'
   },
@@ -88,11 +89,6 @@ export default function ModulkatalogTable() {
     history.push('/modulkatalog/details/' + majorSubjectID);
   }
 
-  function toggleRaised(event) { //this is supposed to raise the card as a hover effect, but seemingly React doesn't allow DOM attribute manipulation
-    event.target.setAttribute("raised", !raised);
-    setRaised(raised => !raised);// update the state to force render
-  }
-
   const handleAPIresponse = (response) => {
     if (typeof response.data.payload["FieldsOfStudy"] !== "undefined"){
       let fieldsOfStudyWithMajorSubject = [];
@@ -141,7 +137,7 @@ export default function ModulkatalogTable() {
 
         <Grid container justify='center' spacing={3} className={classes.grid}>
           {(searchResults).map(studyName =>
-            <Card onMouseOver={toggleRaised} onMouseOut={toggleRaised} className={classes.card} onClick={handleCardClick} key={studyName}>
+            <Card className={classes.card} onClick={handleCardClick} key={studyName}>
               <CardContent className={classes.cardContent}>
                 <Typography className={classes.cardText}>{studyName}</Typography>
               </CardContent>
