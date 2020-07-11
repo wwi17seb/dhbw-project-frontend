@@ -81,10 +81,14 @@ class Login extends Component {
           const token = payload.token;
           localStorage.setItem('backend-login-response', JSON.stringify(payload));
           localStorage.setItem('ExoplanSessionToken', token);
-          this.props.history.push({
-            pathname: NAV_ITEMS.COURSES.link, //oder zu der Seite auf der man zuvor war? (bei session timout)
-          });
-          this.setState({ message: "Registrierung erfolgreich. Bitte anmelden!" })
+
+          setTimeout(() => {
+            this.props.history.push({
+              pathname: NAV_ITEMS.COURSES.link, //oder zu der Seite auf der man zuvor war? (bei session timout)
+            });
+          }, 3000)
+          
+          this.setState({ message: "Registrierung erfolgreich!\nBitte warten. Sie werden angemeldet!" })
         })
         .catch((err) => {
           this.clearInputFields();
