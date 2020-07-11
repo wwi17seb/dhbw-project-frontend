@@ -1,5 +1,6 @@
 import { Divider, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
 import React, { Fragment, useEffect, useState } from 'react';
+import Button from '@material-ui/core/Button';
 
 import { APICall } from '../../helper/Api';
 import SnackBar from '../Snackbar/Snackbar';
@@ -74,14 +75,12 @@ const UserContent = () => {
 
   return (
     <Fragment>
-      <div style={{ textAlign: 'right' }}>
-        <button
-          style={{ color: '#ffffff', backgroundColor: '#e30613', marginBottom: '1rem' }}
-          className='btn'
-          onClick={handleOpenDialog}>
-          Studiengangsleiter hinzufügen
-        </button>
-      </div>
+      <Grid container justify='flex-end'>
+        <Grid item>
+            <Button variant="contained" color="primary" size="medium" style={{ marginBottom: '1.5rem' }} onClick={handleOpenDialog}>Studiengangsleiter hinzufügen</Button>
+        </Grid>
+      </Grid>
+      
       <AddUserDialog
         openAddUserDialog={openAddUserDialog}
         handleClose={handleCloseDialog}

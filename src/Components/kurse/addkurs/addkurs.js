@@ -215,7 +215,7 @@ export default function AddKurs() {
                     <Paper className={classes.paper}>
                         <div className={classes.block}>
                             <Typography variant='h6'>Bitte geben Sie den Namen des Kurses an:</Typography>
-                            <TextField required value={nameValue} error={nameerror} onChange={NameOnChange} id="kursname-input" label="Kursname" variant="outlined" helperText={nametext} />
+                            <TextField required value={nameValue} error={nameerror} onChange={NameOnChange} id="kursname-input" label="Kursname" variant="outlined" margin="dense" helperText={nametext} />
                         </div>
                         <div className={classes.block}>
                             <Typography variant='h6'>Bitte geben Sie den Studiengang und Studienrichtung an:</Typography>
