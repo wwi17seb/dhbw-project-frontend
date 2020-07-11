@@ -97,6 +97,7 @@ class Login extends Component {
 
   handleRegistrationClick(event){
     if(this.state.register) this.handleRegistration();
+    this.clearInputFields();
     this.setState({ register: !this.state.register })
   }
 
@@ -158,6 +159,7 @@ class Login extends Component {
   }
 
   handleBackClick = (event) => {
+    this.clearInputFields();
     this.setState({ register: false })
   }
 
@@ -259,7 +261,7 @@ class Login extends Component {
                 margin='dense'
                 variant='outlined'
                 fullWidth
-                value={this.state.username}
+                value={this.state.email}
                 onChange={this.handleEmail}
               />
 
