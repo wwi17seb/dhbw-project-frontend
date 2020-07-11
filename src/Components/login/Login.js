@@ -64,32 +64,36 @@ class Login extends Component {
 
   handleRegistration(){
     if(this.state.password === this.state.reentered_password){
-        let data = {
-          username: this.state.email.trim(),
-          password: this.state.password,
-          registerKey: this.state.registerKey
-        };
-  
-        axios
-        .post("/api/register",data)
-        .then((res) => {
-          const { payload } = res.data;
-          const token = payload.token;
-          localStorage.setItem('backend-login-response', JSON.stringify(payload));
-          localStorage.setItem('ExoplanSessionToken', token);
+      if(this.state.registerKey !== ""){
+          let data = {
+            username: this.state.email.trim(),
+            password: this.state.password,
+            registerKey: this.state.registerKey
+          };
+    
+          axios
+          .post("/api/register",data)
+          .then((res) => {
+            const { payload } = res.data;
+            const token = payload.token;
+            localStorage.setItem('backend-login-response', JSON.stringify(payload));
+            localStorage.setItem('ExoplanSessionToken', token);
 
-          setTimeout(() => {
-            this.props.history.push({
-              pathname: NAV_ITEMS.COURSES.link, //oder zu der Seite auf der man zuvor war? (bei session timout)
-            });
-          }, 3000)
-          
-          this.setState({ message: "Registrierung erfolgreich!\nBitte warten. Sie werden angemeldet!" })
-        })
-        .catch((err) => {
-          this.clearInputFields();
-          this.setState({ error: "Registrierung fehlgeschlagen. Bitte Registrierungsschlüssel prüfen!" })
-        })
+            setTimeout(() => {
+              this.props.history.push({
+                pathname: NAV_ITEMS.COURSES.link, //oder zu der Seite auf der man zuvor war? (bei session timout)
+              });
+            }, 3000)
+            
+            this.setState({ message: "Registrierung erfolgreich!\nBitte warten. Sie werden angemeldet!" })
+          })
+          .catch((err) => {
+            this.clearInputFields();
+            this.setState({ error: "Registrierung fehlgeschlagen. Bitte Registrierungsschlüssel prüfen!" })
+          })
+        } else {
+          this.setState({ error: "Der Registrierungsschlüssel ist leer!" });
+        }
       } else {
         this.setState({ error: "Passwörter sind nicht gleich!" });
       }
