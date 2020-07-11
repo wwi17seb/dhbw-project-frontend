@@ -24,9 +24,6 @@ const useStyles = makeStyles(theme => ({
     flexWrap: 'wrap',
     justifyContent: 'flex-start'
   },
-  searchForm: {
-    marginTop: '3rem'
-  },
   card: {
     height: '15rem',
     width: '15rem',
@@ -120,15 +117,12 @@ export default function ModulkatalogTable() {
       <ApiHandler url='/api/fieldsOfStudy' handleAPIresponse={handleAPIresponse} params={{withMajorSubjects: true}}></ApiHandler>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Typography variant="h5" noWrap>
-          Modulkataloge
-        </Typography>
-        <form className={classes.searchForm}>
+        <form>
           <Typography variant='h6'>
             Grenzen Sie hier die Liste mit Kriterien ein: </Typography>
           <Grid container spacing={4}>
             <Grid item sm={8}>
-              <TextField id="filled-basic" fullWidth={true} label="Suchen Sie nach Jahr, Studienrichtung oder Spezialisierung" value={searchTerm} onChange={handleSearch} id="inputStudiengang" variant="filled" />
+              <TextField fullWidth={true} label="Suchen Sie nach Jahr, Studienrichtung oder Spezialisierung" value={searchTerm} onChange={handleSearch} id="inputStudiengang" variant="filled" />
             </Grid>
             <Grid item sm={4}>
               <ModulkatalogAdd/>
