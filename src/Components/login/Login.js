@@ -97,8 +97,10 @@ class Login extends Component {
 
   handleRegistrationClick(event){
     if(this.state.register) this.handleRegistration();
-    this.clearInputFields();
-    this.setState({ register: !this.state.register })
+    else {
+      this.clearInputFields();
+      this.setState({ register: !this.state.register })
+    }
   }
 
   handleClickShowPassword() {
