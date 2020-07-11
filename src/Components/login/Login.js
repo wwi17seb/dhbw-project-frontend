@@ -51,6 +51,7 @@ class Login extends Component {
     this.handleReenteredPassword = this.handleReenteredPassword.bind(this);
     this.handleRegistration = this.handleRegistration.bind(this);
     this.clearInputFields = this.clearInputFields.bind(this);
+    this.validateRegistartionForm = this.validateRegistartionForm.bind(this);
   }
 
   clearInputFields(){
@@ -62,41 +63,65 @@ class Login extends Component {
     })
   }
 
-  handleRegistration(){
-    if(this.state.password === this.state.reentered_password){
-      if(this.state.registerKey !== ""){
-          let data = {
-            username: this.state.email.trim(),
-            password: this.state.password,
-            registerKey: this.state.registerKey
-          };
-    
-          axios
-          .post("/api/register",data)
-          .then((res) => {
-            const { payload } = res.data;
-            const token = payload.token;
-            localStorage.setItem('backend-login-response', JSON.stringify(payload));
-            localStorage.setItem('ExoplanSessionToken', token);
-
-            setTimeout(() => {
-              this.props.history.push({
-                pathname: NAV_ITEMS.COURSES.link, //oder zu der Seite auf der man zuvor war? (bei session timout)
-              });
-            }, 3000)
-            
-            this.setState({ message: "Registrierung erfolgreich!\nBitte warten. Sie werden angemeldet!" })
-          })
-          .catch((err) => {
-            this.clearInputFields();
-            this.setState({ error: "Registrierung fehlgeschlagen. Bitte Registrierungsschlüssel prüfen!" })
-          })
+  validateRegistartionForm(password, password_reentered, registerKey, email){
+    if(email.trim() !== "") {
+      if(password !== "" || password_reentered !== "") {
+        if(password === password_reentered) {
+          if(registerKey !== "") {
+            return true;
+          } else {
+            this.setState({ error: "Der Registrierungsschlüssel ist leer!" });
+            return false;
+          }
         } else {
-          this.setState({ error: "Der Registrierungsschlüssel ist leer!" });
+          this.setState({ error: "Passwörter sind nicht gleich!" });
+          return false;
         }
       } else {
-        this.setState({ error: "Passwörter sind nicht gleich!" });
+        this.setState({ error: "Passwortfelder dürfen nicht leer sein" })
+        return false;
       }
+    } else {
+      this.setState({ error: "Nutzername darf nicht leer sein!" });
+      return false ;
+    }
+  }
+
+  handleRegistration() {
+    if (this.validateRegistartionForm(this.state.password, this.state.reentered_password, this.state.registerKey, this.state.email)) {
+      let data = {
+        username: this.state.email.trim(),
+        password: this.state.password,
+        registerKey: this.state.registerKey
+      };
+
+      axios
+        .post("/api/register", data)
+        .then((res) => {
+          const {
+            payload
+          } = res.data;
+          const token = payload.token;
+          localStorage.setItem('backend-login-response', JSON.stringify(payload));
+          localStorage.setItem('ExoplanSessionToken', token);
+
+          setTimeout(() => {
+            this.props.history.push({
+              pathname: NAV_ITEMS.COURSES.link, //oder zu der Seite auf der man zuvor war? (bei session timout)
+            });
+          }, 3000)
+
+          this.setState({
+            error: "",
+            message: "Registrierung erfolgreich!\nBitte warten. Sie werden angemeldet!"
+          })
+        })
+        .catch((err) => {
+          this.setState({
+            error: "Registrierung fehlgeschlagen. Bitte Registrierungsschlüssel prüfen!"
+          })
+        })
+    }
   }
 
   handleRegistrationClick(event){
