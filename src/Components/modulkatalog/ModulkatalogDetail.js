@@ -46,11 +46,11 @@ function ModulkatalogDetail(props) {
             <ApiHandler url='/api/modulecatalog' handleAPIresponse={handleAPIresponse} params={{ majorSubjectId: majorSubjectId }}></ApiHandler>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <Breadcrumbs aria-label="breadcrumb">
+                <Breadcrumbs style={{ marginBottom: 10 }}>
                     <Link color="inherit" href="/modulkatalog">
                         Modulkataloge
                     </Link>
-                    <Typography color="inherit" href="/modulkatalog">
+                    <Typography color="textPrimary" href="/modulkatalog">
                         {studyName}
                     </Typography>
                 </Breadcrumbs>

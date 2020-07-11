@@ -7,6 +7,8 @@ import { Grid, Card, CardContent, Button } from '@material-ui/core';
 import './modulkatalog.css';
 import ApiHandler from '../../helper/Api';
 import TextField from '@material-ui/core/TextField';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Link from '@material-ui/core/Link';
 import ModulkatalogAdd from './ModulkatalogAdd'
 
 const useStyles = makeStyles(theme => ({
@@ -117,7 +119,14 @@ export default function ModulkatalogTable() {
       <ApiHandler url='/api/fieldsOfStudy' handleAPIresponse={handleAPIresponse} params={{withMajorSubjects: true}}></ApiHandler>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <form>
+
+        <div>
+        <Breadcrumbs style={{ marginBottom: 10 }}>
+            <Link color="inherit" href="/modulkatalog">
+                Modulkataloge
+            </Link>
+        </Breadcrumbs>
+      
           <Typography variant='h6'>
             Grenzen Sie hier die Liste mit Kriterien ein: </Typography>
           <Grid container spacing={4}>
@@ -128,7 +137,8 @@ export default function ModulkatalogTable() {
               <ModulkatalogAdd/>
             </Grid>
           </Grid>
-        </form>
+        </div>
+
         <Grid container justify='center' spacing={3} className={classes.grid}>
           {(searchResults).map(studyName =>
             <Card onMouseOver={toggleRaised} onMouseOut={toggleRaised} className={classes.card} onClick={handleCardClick} key={studyName}>

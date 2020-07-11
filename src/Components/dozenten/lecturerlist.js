@@ -8,6 +8,9 @@ import LecturerRow from "./lecturerrow"
 import AddLecturer from "./addlecturer"
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Link1 from '@material-ui/core/Link';
+import { Link } from "react-router-dom";
 import { APICall } from '../../helper/Api';
 
 const useStyles = makeStyles(theme => ({
@@ -89,6 +92,11 @@ export default function LecturerList() {
   return (
     <React.Fragment>
       <div>
+        <Breadcrumbs style={{ marginBottom: 10 }}>
+           <Link1 color="inherit" to="/dozenten" component={Link}>
+               Dozenten
+           </Link1>
+        </Breadcrumbs>
         <Typography variant='h6'>
           Grenzen Sie hier die Liste mit Kriterien ein: </Typography>
         <Grid container spacing={4}>
