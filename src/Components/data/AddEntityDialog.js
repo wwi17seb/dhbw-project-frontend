@@ -84,6 +84,7 @@ const AddEntityDialog = ({
                   value={getAttribute(attr.db)}
                   onChange={({ target: { value } }) => setAttribute(attr.db, value)}
                   variant="outlined"
+                  margin='dense'
                   fullWidth
                 />
               </Col>
@@ -92,14 +93,14 @@ const AddEntityDialog = ({
           <DialogActions>
             <Form.Group as={Row}>
               <Col sm={{ span: 8, offset: 0 }}>
-                <Button variant='outlined' color='primary' type='reset' onClick={handleClose}>
+                <Button color='primary' type='reset' onClick={handleClose}>
                   Abbrechen
                 </Button>
               </Col>
             </Form.Group>
             <Form.Group as={Row}>
               <Col sm={{ span: 8, offset: 0 }}>
-                <Button variant='outlined' color='primary' type='submit'>
+                <Button color='primary' type='submit'>
                   {!idToBeUpdated ? 'Erstellen' : 'Aktualisieren'}
                 </Button>
               </Col>

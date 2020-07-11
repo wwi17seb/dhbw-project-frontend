@@ -1,5 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import GeneralTabTable from './GeneralTabTable';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 
 const GeneralTab = (props) => {
   const [addDialog, setAddDialog] = useState(false);
@@ -10,14 +12,11 @@ const GeneralTab = (props) => {
 
   return (
     <Fragment>
-      <div style={{ textAlign: 'right' }}>
-        <button
-          style={{ color: '#ffffff', backgroundColor: '#e30613', marginBottom: '1rem' }}
-          className='btn'
-          onClick={handleOpenDialog}>
-          {`${props.labelSingular} hinzufügen`}
-        </button>
-      </div>
+      <Grid container justify='flex-end'>
+        <Grid item>
+            <Button variant="contained" color="primary" size="medium" style={{ marginBottom: '1.5rem' }} onClick={handleOpenDialog}>{`${props.labelSingular} hinzufügen`}</Button>
+        </Grid>
+      </Grid>
       <GeneralTabTable {...props} addDialog={addDialog} setAddDialog={setAddDialog} />
     </Fragment>
   );
