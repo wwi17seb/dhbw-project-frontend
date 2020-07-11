@@ -65,14 +65,10 @@ class Login extends Component {
   handleRegistration(){
     if(this.state.password === this.state.reentered_password){
         let data = {
-          username: this.state.email,
+          username: this.state.email.trim(),
           password: this.state.password,
           registerKey: this.state.registerKey
         };
-
-        if(this.state.email !== this.state.email.trim()) {
-          this.setState({ email: this.state.email.trim() });
-        }
   
         axios
         .post("/api/register",data)
