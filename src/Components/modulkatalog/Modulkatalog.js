@@ -123,7 +123,7 @@ export default function ModulkatalogTable() {
             </Link>
         </Breadcrumbs>
       
-          <Typography variant='h6'>
+          <Typography style={{"font-weight": "bold"}} variant='subtitle1'>
             Grenzen Sie hier die Liste mit Kriterien ein: </Typography>
           <Grid container spacing={4}>
             <Grid item sm={8}>
