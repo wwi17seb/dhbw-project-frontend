@@ -101,7 +101,7 @@ const AddEntityDialog = ({
             <Form.Group as={Row}>
               <Col sm={{ span: 8, offset: 0 }}>
                 <Button color='primary' type='submit'>
-                  {!idToBeUpdated ? 'Erstellen' : 'Aktualisieren'}
+                  {!idToBeUpdated ? 'Erstellen' : 'Speichern'}
                 </Button>
               </Col>
             </Form.Group>
