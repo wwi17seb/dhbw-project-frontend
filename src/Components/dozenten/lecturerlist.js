@@ -8,6 +8,9 @@ import LecturerRow from "./lecturerrow"
 import AddLecturer from "./addlecturer"
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Link1 from '@material-ui/core/Link';
+import { Link } from "react-router-dom";
 import { APICall } from '../../helper/Api';
 
 const useStyles = makeStyles(theme => ({
@@ -18,10 +21,7 @@ const useStyles = makeStyles(theme => ({
   paper: {
     flexGrow: 1,
     padding: theme.spacing(3),
-    marginTop: 10
-  },
-  btn_align: {
-    textAlign: 'right',
+    marginTop: "2rem"
   }
 }));
 export default function LecturerList() {
@@ -91,20 +91,20 @@ export default function LecturerList() {
 
   return (
     <React.Fragment>
-      <Typography variant="h5" noWrap>
-        Dozenten
-      </Typography>
-      <div style={{ marginTop: 10 }}>
-        <Typography variant='h6'>
+      <div>
+        <Breadcrumbs style={{ marginBottom: 10 }}>
+           <Link1 color="inherit" to="/dozenten" component={Link}>
+               Dozenten
+           </Link1>
+        </Breadcrumbs>
+        <Typography style={{"font-weight": "bold"}} variant='subtitle1'>
           Grenzen Sie hier die Liste mit Kriterien ein: </Typography>
-        <Grid container spacing={4} alignItems="center">
+        <Grid container spacing={4}>
           <Grid item sm={8}>
             <TextField fullWidth={true} label="Suchen Sie nach dem Nachnamen oder Schwerpunkt" value={searchTerm} onChange={handleSearch} id="searchLecturer" variant="filled" />
           </Grid>
           <Grid item sm={4}>
-            <div className={classes.btn_align}>
-              <Button variant="contained" color="primary" onClick={ClickSubmit.bind(this)}>Dozent hinzufügen</Button>
-            </div>
+            <Button variant="contained" color="primary" size="large" onClick={ClickSubmit.bind(this)}>Dozent hinzufügen</Button>
           </Grid>
         </Grid>
       </div>

@@ -14,7 +14,8 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(3),
     },
     title: {
-        marginBottom: 15
+        marginBottom: 15,
+        fontWeight: "bold"
     }
 }));
 
@@ -52,25 +53,25 @@ export default function Profile(props) {
         <Paper className={classes.paper}>
             <Grid container spacing={2}>
                 <Grid item xs={2}>
-                    <Typography className={classes.title} variant="h6">Tel.: </Typography>
+                    <Typography className={classes.title} variant="subtitle1">Tel.: </Typography>
                 </Grid>
                 <Grid item xs={10}>
                     {phone}
                 </Grid>
                 <Grid item xs={2}>
-                    <Typography className={classes.title} variant="h6">Email: </Typography>
+                    <Typography className={classes.title} variant="subtitle1">Email: </Typography>
                 </Grid>
                 <Grid item xs={10}>
                     {email}
                 </Grid>
                 <Grid item xs={2}>
-                    <Typography className={classes.title} variant="h6">Studiengangsleiter: </Typography>
+                    <Typography className={classes.title} variant="subtitle1">Studiengangsleiter: </Typography>
                 </Grid>
                 <Grid item xs={10}>
                     {director}
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography variant="h6">Schwerpunkte: </Typography>
+                    <Typography style={{"font-weight": "bold"}} variant="subtitle1">Schwerpunkte: </Typography>
                 </Grid>
                 <Grid item xs={12}>
                     {temp}

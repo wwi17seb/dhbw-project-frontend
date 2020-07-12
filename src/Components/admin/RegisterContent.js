@@ -70,19 +70,20 @@ const RegisterContent = () => {
           onChange={handleRegisterKey}
           label='Registrierungsschlüssel'
           variant='outlined'
+          margin="dense"
           fullWidth
         />
       </Grid>
       <Button
-        style={{ color: '#ffffff', backgroundColor: '#e30613', marginRight: '0.5em', marginTop: '1em' }}
-        variant='outlined'
+        style={{ marginRight: '0.5em', marginTop: '1em' }}
+        variant='contained'
         color='primary'
         onClick={handleUpdate}>
         Speichern
       </Button>
       <Button
-        style={{ marginLeft: '0.5rem', color: '#ffffff', backgroundColor: '#e30613', marginTop: '1em' }}
-        variant='outlined'
+        style={{ marginLeft: '0.5rem', marginTop: '1em' }}
+        variant='contained'
         color='primary'
         onClick={handleDisable}>
         Deaktivieren

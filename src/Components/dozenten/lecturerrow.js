@@ -99,7 +99,7 @@ export default function LecturerRow(props) {
 
     for (var j = 0; j < mainFocus.length; j++) {
         temp2.push(
-            <Typography key={"mainfocus-" + mainFocus[j]["mainFocus_id"]} variant="h6">{mainFocus[j]["name"]}</Typography>
+            <Typography key={"mainfocus-" + mainFocus[j]["mainFocus_id"]} variant="subtitle1">{mainFocus[j]["name"]}</Typography>
         )
     }
 
@@ -114,10 +114,10 @@ export default function LecturerRow(props) {
                     <Typography variant="subtitle1">{email}</Typography>
                 </Grid>
                 <Grid item xs={3}>
-                    {temp2}
+                   {temp2}
                 </Grid>
                 <Grid item xs={3}>
-                    <Typography variant="h6">{director}</Typography>
+                    <Typography variant="subtitle1">{director}</Typography>
                 </Grid>
                 <Grid item xs={2}>
                     <Button disabled={disabled} variant="outlined" color="primary" onClick={handleClick}>

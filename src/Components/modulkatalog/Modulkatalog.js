@@ -7,6 +7,8 @@ import { Grid, Card, CardContent, Button } from '@material-ui/core';
 import './modulkatalog.css';
 import ApiHandler from '../../helper/Api';
 import TextField from '@material-ui/core/TextField';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Link from '@material-ui/core/Link';
 import ModulkatalogAdd from './ModulkatalogAdd'
 
 const useStyles = makeStyles(theme => ({
@@ -24,9 +26,6 @@ const useStyles = makeStyles(theme => ({
     flexWrap: 'wrap',
     justifyContent: 'flex-start'
   },
-  searchForm: {
-    marginTop: '3rem'
-  },
   card: {
     height: '15rem',
     width: '15rem',
@@ -34,11 +33,12 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     margin: '1rem',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    "&:hover": {
+      boxShadow: "-1px 10px 29px 0px rgba(0,0,0,0.8)",
+      cursor: 'pointer'
+    }
   },
-/*   cardText: {
-    marginTop: '50%'
-  }, */
   formButton: {
     marginTop: '2rem'
   },
@@ -89,11 +89,6 @@ export default function ModulkatalogTable() {
     history.push('/modulkatalog/details/' + majorSubjectID);
   }
 
-  function toggleRaised(event) { //this is supposed to raise the card as a hover effect, but seemingly React doesn't allow DOM attribute manipulation
-    event.target.setAttribute("raised", !raised);
-    setRaised(raised => !raised);// update the state to force render
-  }
-
   const handleAPIresponse = (response) => {
     if (typeof response.data.payload["FieldsOfStudy"] !== "undefined"){
       let fieldsOfStudyWithMajorSubject = [];
@@ -120,24 +115,29 @@ export default function ModulkatalogTable() {
       <ApiHandler url='/api/fieldsOfStudy' handleAPIresponse={handleAPIresponse} params={{withMajorSubjects: true}}></ApiHandler>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Typography variant="h5" noWrap>
-          Modulkataloge
-        </Typography>
-        <form className={classes.searchForm}>
-          <Typography variant='h6'>
+
+        <div>
+        <Breadcrumbs style={{ marginBottom: 10 }}>
+            <Link color="inherit" href="/modulkatalog">
+                Modulkataloge
+            </Link>
+        </Breadcrumbs>
+      
+          <Typography style={{"font-weight": "bold"}} variant='subtitle1'>
             Grenzen Sie hier die Liste mit Kriterien ein: </Typography>
           <Grid container spacing={4}>
             <Grid item sm={8}>
-              <TextField id="filled-basic" fullWidth={true} label="Suchen Sie nach Jahr, Studienrichtung oder Spezialisierung" value={searchTerm} onChange={handleSearch} id="inputStudiengang" variant="filled" />
+              <TextField fullWidth={true} label="Suchen Sie nach Jahr, Studienrichtung oder Spezialisierung" value={searchTerm} onChange={handleSearch} id="inputStudiengang" variant="filled" />
             </Grid>
             <Grid item sm={4}>
               <ModulkatalogAdd/>
             </Grid>
           </Grid>
-        </form>
+        </div>
+
         <Grid container justify='center' spacing={3} className={classes.grid}>
           {(searchResults).map(studyName =>
-            <Card onMouseOver={toggleRaised} onMouseOut={toggleRaised} className={classes.card} onClick={handleCardClick} key={studyName}>
+            <Card className={classes.card} onClick={handleCardClick} key={studyName}>
               <CardContent className={classes.cardContent}>
                 <Typography className={classes.cardText}>{studyName}</Typography>
               </CardContent>
