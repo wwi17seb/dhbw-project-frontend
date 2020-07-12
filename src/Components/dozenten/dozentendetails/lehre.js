@@ -86,11 +86,11 @@ export default function Lehre() {
             <Table className={classes.table} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell >Modul</TableCell>
-                        <TableCell >Kurs</TableCell>
-                        <TableCell >Zeitraum</TableCell>
-                        <TableCell >SWS</TableCell>
-                        <TableCell >Co-Dozent</TableCell>
+                        <TableCell style={{"font-weight": "bold"}}>Modul</TableCell>
+                        <TableCell style={{"font-weight": "bold"}}>Kurs</TableCell>
+                        <TableCell style={{"font-weight": "bold"}}>Zeitraum</TableCell>
+                        <TableCell style={{"font-weight": "bold"}}>SWS</TableCell>
+                        <TableCell style={{"font-weight": "bold"}}>Co-Dozent</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

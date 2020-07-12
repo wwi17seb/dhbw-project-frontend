@@ -196,7 +196,7 @@ export default function Vita(props) {
             <Dialog
                 open={open}
             >
-                <DialogTitle id="add-cv-title">{"Lebenslauf für Dozenten hinzufügen:"}</DialogTitle>
+                <DialogTitle id="add-cv-title">{"Lebenslauf für Dozenten hinzufügen"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="add-cv-description">
                         <Grid container spacing={1}>
