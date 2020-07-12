@@ -7,6 +7,10 @@ import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import ColorInfoDialog from './ColorInfoDialog';
 
 const COLOR_KEYWORDS = [
+  // the order of these objects is important for mapping 
+  // -> if something matches with one of the first rows and one of the last rows it will have the color of the first match
+  // e.g. "Anfrage ausstehend" will match with "ausstehend" and therefore be #FFA07A (orange) instead of #AFEEEE (blue)
+  // therefore worse states have a higher importance than better ones with the following order
   { color: '#EF5350', keywords: ['Absage', 'abgesagt', 'abgebrochen'] },
   { color: '#FFA07A', keywords: ['offen', 'frei', 'ausstehend'] },
   { color: '#AFEEEE', keywords: ['angeschrieben', 'kontaktiert', 'Anfrage', 'angefragt'] },
