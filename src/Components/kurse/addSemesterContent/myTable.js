@@ -9,9 +9,9 @@ import ColorInfoDialog from './ColorInfoDialog';
 const COLOR_KEYWORDS = [
   { color: '#EF5350', keywords: ['absage', 'abgesagt', 'abgebrochen'] },
   { color: '#FFA07A', keywords: ['offen', 'frei', 'ausstehend'] },
-  { color: '#AFEEEE', keywords: ['angeschrieben', 'kontaktiert', 'anfrage', 'angefragt'] },
-  { color: '#FFEE58', keywords: ['in planung', 'in absprache', 'termine finden', 'zusage', 'zugesagt'] },
-  { color: '#90EE90', keywords: ['abgeschlossen', 'beendet', 'vollendet', 'fertig', 'termine festgelegt', 'termine eingetragen'] },
+  { color: '#AFEEEE', keywords: ['angeschrieben', 'kontaktiert', 'Anfrage', 'angefragt'] },
+  { color: '#FFEE58', keywords: ['in Planung', 'in Absprache', 'Termine finden', 'Zusage', 'zugesagt'] },
+  { color: '#90EE90', keywords: ['abgeschlossen', 'beendet', 'vollendet', 'fertig', 'Termine festgelegt', 'Termine eingetragen'] },
 ];
 
 const useStyles = makeStyles((theme) => ({
