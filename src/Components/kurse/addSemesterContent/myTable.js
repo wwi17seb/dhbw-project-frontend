@@ -7,7 +7,7 @@ import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import ColorInfoDialog from './ColorInfoDialog';
 
 const COLOR_KEYWORDS = [
-  { color: '#EF5350', keywords: ['absage', 'abgesagt', 'abgebrochen'] },
+  { color: '#EF5350', keywords: ['Absage', 'abgesagt', 'abgebrochen'] },
   { color: '#FFA07A', keywords: ['offen', 'frei', 'ausstehend'] },
   { color: '#AFEEEE', keywords: ['angeschrieben', 'kontaktiert', 'Anfrage', 'angefragt'] },
   { color: '#FFEE58', keywords: ['in Planung', 'in Absprache', 'Termine finden', 'Zusage', 'zugesagt'] },
