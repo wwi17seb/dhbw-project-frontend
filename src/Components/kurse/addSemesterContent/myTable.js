@@ -7,11 +7,15 @@ import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import ColorInfoDialog from './ColorInfoDialog';
 
 const COLOR_KEYWORDS = [
-  { color: '#EF5350', keywords: ['abgesagt', 'abgebrochen', 'Absage'] },
+  // the order of these objects is important for mapping 
+  // -> if something matches with one of the first rows and one of the last rows it will have the color of the first match
+  // e.g. "Anfrage ausstehend" will match with "ausstehend" and therefore be #FFA07A (orange) instead of #AFEEEE (blue)
+  // therefore worse states have a higher importance than better ones with the following order
+  { color: '#EF5350', keywords: ['Absage', 'abgesagt', 'abgebrochen'] },
   { color: '#FFA07A', keywords: ['offen', 'frei', 'ausstehend'] },
-  { color: '#AFEEEE', keywords: ['angeschrieben', 'angefragt', 'kontaktiert'] },
+  { color: '#AFEEEE', keywords: ['angeschrieben', 'kontaktiert', 'Anfrage', 'angefragt'] },
   { color: '#FFEE58', keywords: ['in Planung', 'in Absprache', 'Termine finden', 'Zusage', 'zugesagt'] },
-  { color: '#90EE90', keywords: ['abgeschlossen', 'fertig', 'Termine festgelegt', 'Termine eingetragen'] },
+  { color: '#90EE90', keywords: ['abgeschlossen', 'beendet', 'vollendet', 'fertig', 'Termine festgelegt', 'Termine eingetragen'] },
 ];
 
 const useStyles = makeStyles((theme) => ({

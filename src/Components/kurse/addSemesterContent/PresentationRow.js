@@ -50,7 +50,7 @@ const PresentationRow = ({ presentation, showSnackbar, loadData, modifyPresentat
   const getStatusStyle = (status) => {
     for (const rule of COLOR_KEYWORDS) {
       for (const keyword of rule.keywords) {
-        if (status.includes(keyword)) {
+        if (status.toLowerCase().includes(keyword.toLowerCase())) {
           return {
             backgroundColor: rule.color,
           };
