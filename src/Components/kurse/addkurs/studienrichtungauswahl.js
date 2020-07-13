@@ -39,9 +39,11 @@ export default function StudienrichtungAuswahl({ studiengang, data }) {
 
     //hinzufügen der MenuItems anhand der List mit Studienrichtungen
     var richtungen = []
-    for (var i = 0; i < data["default"]["payload"]["fieldOfStudies"].length; i++) {
-        if (studiengang === data["default"]["payload"]["fieldOfStudies"][i]["name"]) {
-            richtungen = data["default"]["payload"]["fieldOfStudies"][i]["majorSubjects"]
+    if (data !== null) {
+        for (var i = 0; i < data["payload"]["FieldsOfStudy"].length; i++) {
+            if (studiengang === data["payload"]["FieldsOfStudy"][i]["name"]) {
+                richtungen = data["payload"]["FieldsOfStudy"][i]["MajorSubjects"]
+            }
         }
     }
 
