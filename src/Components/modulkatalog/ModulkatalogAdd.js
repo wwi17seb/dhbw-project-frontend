@@ -21,11 +21,11 @@ export default function FormDialog() {
 
     const useStyles = makeStyles((theme) => ({
         formControl: {
-          margin: theme.spacing(1),
-          minWidth: 120,
-          maxWidth: 300,
+            margin: theme.spacing(1),
+            minWidth: 120,
+            maxWidth: 300,
         }
-      }));
+    }));
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -37,26 +37,27 @@ export default function FormDialog() {
     const handleAddClick = () => {
         APICall("POST", "/fieldsOfStudy", {
             "name": fieldOfStudy
-        } ).then((res) => {
+        }).then((res) => {
             APICall("POST", "/majorSubjects", {
                 "fieldOfStudy_id": res.data.payload.fieldOfStudy_id,
                 "name": majorSubject,
                 "catalog_effective_from": year.toString()
-            } ).then((res) => {
-                history.push("/modulkatalog/details/"+fieldOfStudy + " " + majorSubject + " " + year);
+            }).then((res) => {
+                let id = res.data.payload.majorSubject_id
+                history.push("/modulkatalog/details/" + id);
             }).catch((err) => {
-                
+
             })
         }).catch((err) => {
-            
+
         })
-        
+
         setOpen(false);
     };
 
     const handleFieldOfStudyChange = (event) => {
         setFieldOfStudy(event.target.value);
-      };
+    };
     const handleMajorSubjectChange = (event) => {
         setMajorSubject(event.target.value);
     };
@@ -65,10 +66,10 @@ export default function FormDialog() {
     };
     const getMenuItems_forYearSelect = () => {
         let year = moment().year();
-        let years = [year-5, year-4, year-3, year-2, year-1, year, year+1, year+2, year+3, year+4, year+5];
-        return ( (years).map((year) => (
+        let years = [year - 5, year - 4, year - 3, year - 2, year - 1, year, year + 1, year + 2, year + 3, year + 4, year + 5];
+        return ((years).map((year) => (
             <MenuItem key={year} value={year}>{year}</MenuItem>
-            ))
+        ))
         );
     }
 
@@ -87,7 +88,7 @@ export default function FormDialog() {
                             labelId="study-label"
                             value={fieldOfStudy}
                             onChange={handleFieldOfStudyChange}
-                            >
+                        >
                             <MenuItem value={"BWL"}>BWL</MenuItem>
                             <MenuItem value={"Digitale Medien"}>Digitale Medien</MenuItem>
                             <MenuItem value={"Wirtschaftsinformatik"}>Wirtschaftsinformatik</MenuItem>
@@ -100,21 +101,21 @@ export default function FormDialog() {
                             labelId="year-label"
                             value={year}
                             onChange={handleYearChange}
-                            >
+                        >
                             {getMenuItems_forYearSelect()}
                         </Select>
                     </FormControl>
                     <br></br>
                     <FormControl className={classes.formControl}>
-                    <TextField
-                        margin="dense"
-                        id="studienrichtung"
-                        label="Studienrichtung"
-                        type="text"
-                        fullWidth
-                        value={majorSubject}
-                        onChange={handleMajorSubjectChange}
-                    />
+                        <TextField
+                            margin="dense"
+                            id="studienrichtung"
+                            label="Studienrichtung"
+                            type="text"
+                            fullWidth
+                            value={majorSubject}
+                            onChange={handleMajorSubjectChange}
+                        />
                     </FormControl>
                 </DialogContent>
                 <DialogActions>

@@ -47,7 +47,7 @@ const routing = (
       <PrivateRoute path={NAV_ITEMS.COURSES.link} component={Kurse} />
       <PrivateRoute path={NAV_ITEMS.LECTURERS.link} component={Dozenten} />
       <PrivateRoute exact path={NAV_ITEMS.MODULECATALOG.link} component={Modulkatalog} />
-      <PrivateRoute exact path={`${NAV_ITEMS.MODULECATALOG.link}/details/:name`} component={ModulkatalogDetail} />
+      <PrivateRoute exact path={`${NAV_ITEMS.MODULECATALOG.link}/details/:id`} component={ModulkatalogDetail} />
       <Route exact path={NAV_ITEMS.LOGIN.link} component={Login} />
       <Route exact path={NAV_ITEMS.RESET.link} component={ResetPassword} /> {/* DEPRECATED */}
       <Route exact path={NAV_ITEMS.PASSWORD_RESET_FORCED.link} component={PasswordResetForced} />
