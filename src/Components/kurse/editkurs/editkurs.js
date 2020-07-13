@@ -32,13 +32,10 @@ export default function EditKurs(props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(props.open);
     const [open2, setOpen2] = React.useState(false);
-    const [button, setButton] = React.useState(false);
-    const [checked, setChecked] = React.useState(false);
     const [nameValue, setNameValue] = React.useState(props.selectedCourse.name);
     const [gcId, setGCId] = React.useState(props.selectedCourse.google_calendar_id);
     const [nametext, setNameText] = React.useState("")
     const [nameerror, setNameError] = React.useState(false)
-    const [state, setState] = React.useState({});
     const [status, setStatus] = React.useState(null);
     const [statusText, setStatusText] = React.useState(null);
     const [subjectData, setSubjectData] = React.useState(null);
@@ -90,7 +87,6 @@ export default function EditKurs(props) {
     }
 
     const handlePut = (event) => {
-        setButton(true)
 
         let data = {
             name: nameValue,
@@ -104,13 +100,11 @@ export default function EditKurs(props) {
                 setStatusText(res.statusText)
                 setStatus(res.status)
                 setTimeout(() => { setStatus(null) }, 2000)
-                setButton(false)
                 window.location.reload()
             } else {
                 setStatusText("Kurs konnte nicht hinzugefügt werden")
                 setStatus(400)
                 setTimeout(() => { setStatus(null) }, 3000)
-                setButton(false)
             }
         });
         setOpen(false);
