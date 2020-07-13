@@ -190,23 +190,6 @@ export default function AddKurs() {
                 setButton(false)
             }
         });
-        /*axios.post('/api/courses', data)
-            .then(res => {
-                setStatusText(res.statusText)
-                setStatus(res.status)
-                setTimeout(() => { setStatus(null) }, 2000)
-                setLoading(null)
-                setButton(false)
-            })
-            .catch(err => {
-                if (err.response) {
-                    setStatusText(err.response.statusText)
-                    setStatus(err.response.status)
-                    setTimeout(() => { setStatus(null) }, 3000)
-                    setLoading(null)
-                    setButton(false)
-                }
-            });*/
         setOpen(false);
     };
 
