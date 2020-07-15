@@ -7,7 +7,7 @@ const creds = {
   calenderID: 'iq90i34lq6v196rqs4986dp370@group.calendar.google.com' //"cefk6hvf4f82ltu9pnnr31rd1o@group.calendar.google.com" // '
 }
 
-export async function syncGoogleCalendar(action, appointmentData, googleCalendar, handleResponse) {
+export async function syncGoogleCalendar(action, appointmentData, googleCalendar, gcID, handleResponse) {
   const gapi = window.gapi ;
   gapi.load('client:auth2', () => {
       gapi.client.init({
@@ -21,45 +21,43 @@ export async function syncGoogleCalendar(action, appointmentData, googleCalendar
 
     if (action != "load") {
       if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
-        handleAction(action, appointmentData, gapi, handleResponse, googleCalendar);
+        handleAction(action, appointmentData, gapi, handleResponse, googleCalendar, gcID);
       } else {
         gapi.auth2.getAuthInstance().signIn().then(function (response) {
-          handleAction(action, appointmentData, gapi, handleResponse, googleCalendar);
+          handleAction(action, appointmentData, gapi, handleResponse, googleCalendar, gcID);
         }, function (error) {
           handleResponse();
         });
 
       }
     } else {
-      handleAction(action, appointmentData, gapi, handleResponse, googleCalendar);
+      handleAction(action, appointmentData, gapi, handleResponse, googleCalendar, gcID);
     }
   })
 }
 
-function handleAction(action, appointmentData, gapi, handleResponse, googleCalendar) {
-  
-  console.log("testtest",action);
+function handleAction(action, appointmentData, gapi, handleResponse, googleCalendar, gcID) {
   switch (action) {
     case "delete":
-      handleAppointmentDelete(appointmentData, gapi);
+      handleAppointmentDelete(appointmentData, gapi, gcID);
       break;
     case "change":
-      handleAppointmentChange(appointmentData, gapi);
+      handleAppointmentChange(appointmentData, gapi, gcID);
       break;
     case "insert":
-      handleAppointmentInsert(appointmentData, gapi, handleResponse);
+      handleAppointmentInsert(appointmentData, gapi, handleResponse, gcID);
       break;
     case "load":
-      handleAppointmentsLoad(gapi, handleResponse, googleCalendar);
+      handleAppointmentsLoad(gapi, handleResponse, googleCalendar, gcID);
       break;
   }
 }
 
-function handleAppointmentsLoad(gapi, handleResponse, googleCalendar) {
+function handleAppointmentsLoad(gapi, handleResponse, googleCalendar, gcID) {
   let success = false; 
 
   const PUBLIC_KEY = googleCalendar.apiKey,//googleCalendar.apiKey,
-    CALENDAR_ID = 'iq90i34lq6v196rqs4986dp370@group.calendar.google.com';
+    CALENDAR_ID = gcID;
   const dataUrl = ['https://www.googleapis.com/calendar/v3/calendars/',
     CALENDAR_ID, '/events?key=', PUBLIC_KEY
   ].join('');
@@ -84,10 +82,10 @@ function handleAppointmentsLoad(gapi, handleResponse, googleCalendar) {
   })
 }
 
-function handleAppointmentDelete(deleteAppointmentId, gapi) {
+function handleAppointmentDelete(deleteAppointmentId, gapi, gcID) {
 
   var request = gapi.client.calendar.events.delete({
-    'calendarId': creds.calenderID,
+    'calendarId': gcID,
     'eventId': deleteAppointmentId
   });
 
@@ -100,7 +98,7 @@ function handleAppointmentDelete(deleteAppointmentId, gapi) {
   });
 }
 
-function handleAppointmentInsert(insertAppointmentData, gapi, handleResponse) {
+function handleAppointmentInsert(insertAppointmentData, gapi, handleResponse, gcID) {
   let event = {
     'summary': insertAppointmentData.title,
     'location': insertAppointmentData.location,
@@ -116,7 +114,7 @@ function handleAppointmentInsert(insertAppointmentData, gapi, handleResponse) {
   }
 
   var request = gapi.client.calendar.events.insert({
-    'calendarId': creds.calenderID,
+    'calendarId': gcID,
     'resource': event
   });
 
@@ -130,7 +128,7 @@ function handleAppointmentInsert(insertAppointmentData, gapi, handleResponse) {
   });
 }
 
-function handleAppointmentChange(changedAppointmentData, gapi) {
+function handleAppointmentChange(changedAppointmentData, gapi, gcID) {
   var event1 = {
     'summary': changedAppointmentData.title,
     'location': changedAppointmentData.location,
@@ -146,7 +144,7 @@ function handleAppointmentChange(changedAppointmentData, gapi) {
   }
 
   var request = gapi.client.calendar.events.update({
-    'calendarId': creds.calenderID,
+    'calendarId': gcID,
     'eventId': changedAppointmentData.gcId,
     'resource': event1
   });

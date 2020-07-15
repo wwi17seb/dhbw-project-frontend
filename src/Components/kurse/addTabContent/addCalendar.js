@@ -23,7 +23,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
-import {syncGoogleCalendar, handleAppointmentsLoad} from './apiHandlerGoogleCalendar';
+import {syncGoogleCalendar} from './apiHandlerGoogleCalendar';
 import AppointmentFormContainerBasic from './gcAppointmentForm';
 import SnackBar from '../../Snackbar/Snackbar';
 import { SEVERITY } from '../../Snackbar/SnackbarSeverity';
@@ -164,8 +164,7 @@ class GoogleCalendar extends React.PureComponent {
       message: '',
       severity: '',
       snackbarOpen: false, 
-      
-      //gcId: props.selectedCourse.google_calendar_id get those to apihandlerGoogleClaendar as creds
+      gcId: props.selectedCourse.google_calendar_id,
     };
     this.loadData = this.loadData.bind(this);
     this.toggleConfirmationVisible = this.toggleConfirmationVisible.bind(this);
@@ -243,7 +242,7 @@ class GoogleCalendar extends React.PureComponent {
 
 
   loadData() {
-    syncGoogleCalendar("load", " ", this.state.googleCalendar, this.handleResponse); 
+    syncGoogleCalendar("load", " ", this.state.googleCalendar, this.state.gcId, this.handleResponse); 
   }
 
   componentDidUpdate() {
@@ -286,8 +285,7 @@ class GoogleCalendar extends React.PureComponent {
     this.setState((state) => {
       const { data, deletedAppointmentId } = state;
       const nextData = data.filter((appointment) => appointment.id !== deletedAppointmentId);
-      /** Google Calendar Delete */
-      syncGoogleCalendar('delete', data[deletedAppointmentId].gcId, this.state.googleCalendar, this.reloadAfterResponse);
+      syncGoogleCalendar('delete', data[deletedAppointmentId].gcId, this.state.googleCalendar, this.state.gcId, this.reloadAfterResponse);
 
       return { data: nextData, deletedAppointmentId: null };
     });
@@ -300,7 +298,7 @@ class GoogleCalendar extends React.PureComponent {
       if (added) {
         const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0;
         data = [...data, { id: startingAddedId, ...added }];
-        syncGoogleCalendar('insert', added, this.state.googleCalendar, this.reloadAfterResponse);
+        syncGoogleCalendar('insert', added, this.state.googleCalendar, this.state.gcId, this.reloadAfterResponse);
       }
       if (changed) {
         data = data.map((appointment) =>
@@ -310,9 +308,9 @@ class GoogleCalendar extends React.PureComponent {
         if (changed[state.editingAppointment.id].title === undefined) {
           data[state.editingAppointment.id].startDate = changed[state.editingAppointment.id].startDate;
           data[state.editingAppointment.id].endDate = changed[state.editingAppointment.id].endDate;
-          syncGoogleCalendar('change', data[state.editingAppointment.id], this.state.googleCalendar,this.reloadAfterResponse);
+          syncGoogleCalendar('change', data[state.editingAppointment.id], this.state.googleCalendar, this.state.gcId, this.reloadAfterResponse);
         } else {
-          syncGoogleCalendar('change', changed[state.editingAppointment.id], this.state.googleCalendar,this.reloadAfterResponse);
+          syncGoogleCalendar('change', changed[state.editingAppointment.id], this.state.googleCalendar, this.state.gcId, this.reloadAfterResponse);
         }
       }
       if (deleted !== undefined) {
