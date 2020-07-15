@@ -58,6 +58,10 @@ const KontoeinstellungenTable = () => {
     setSnackbarOpen(true);
   };
 
+  const closeSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
   const handleDialogPassword = () => {
     setOpenPassword(true);
   };
@@ -131,7 +135,7 @@ const KontoeinstellungenTable = () => {
             classes={classes}
           />
         </Grid>
-        <SnackBar isOpen={snackbarOpen} message={message} severity={severity} />
+        <SnackBar isOpen={snackbarOpen} message={message} severity={severity} closeSnackbar={closeSnackbar} />
       </main>
     </div>
   );
