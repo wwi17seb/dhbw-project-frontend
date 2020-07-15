@@ -35,7 +35,7 @@ export default function StudienrichtungAuswahl({ fieldOfStudy, data, studienrich
       <Select
         labelId='studienrichtung-label'
         id='studienrichtung-select'
-        // value={studienrichtung ? studienrichtung.majorSubject_id : ''}
+        value={studienrichtung ? studienrichtung.majorSubject_id : ''}
         onChange={({ target: { value } }) => getSelection(value)}>
         <MenuItem value={''}>-</MenuItem>
         {getDataToRender().map((ms, index) => (
