@@ -62,7 +62,7 @@ class Login extends Component {
 
     if (password === '') {
       valid = false;
-      errorMessages.push('Passwortfeld darf nicht leer sein');
+      errorMessages.push('Passwortfeld darf nicht leer sein!');
     }
 
     if (password_reentered === '') {
