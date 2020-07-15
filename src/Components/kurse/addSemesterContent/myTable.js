@@ -16,7 +16,10 @@ const COLOR_KEYWORDS = [
   { color: '#FFA07A', keywords: ['offen', 'frei', 'ausstehend'] },
   { color: '#AFEEEE', keywords: ['angeschrieben', 'kontaktiert', 'Anfrage', 'angefragt'] },
   { color: '#FFEE58', keywords: ['in Planung', 'in Absprache', 'Termine finden', 'Zusage', 'zugesagt'] },
-  { color: '#90EE90', keywords: ['abgeschlossen', 'beendet', 'vollendet', 'fertig', 'Termine festgelegt', 'Termine eingetragen'] },
+  {
+    color: '#90EE90',
+    keywords: ['abgeschlossen', 'beendet', 'vollendet', 'fertig', 'Termine festgelegt', 'Termine eingetragen'],
+  },
 ];
 
 const useStyles = makeStyles((theme) => ({
@@ -27,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     flexGrow: 1,
     padding: theme.spacing(3),
-    marginBottom: 20
+    marginBottom: 20,
   },
 }));
 
@@ -112,7 +115,7 @@ const MyTable = ({ presentations, loadData, course_id, semester, semester_id, sh
       {showColorInfoDialog ? getColorInfoDialog(handleClose) : null}
       {createPresentationDialog ? modifyPresentation(null, handleClose) : null}
       <div style={{ textAlign: 'right', marginBottom: 20 }}>
-        <Button variant="contained" color="primary" onClick={createNewPresentation}>
+        <Button variant='contained' color='primary' onClick={createNewPresentation}>
           Vorlesung planen
         </Button>
       </div>
@@ -134,7 +137,6 @@ const MyTable = ({ presentations, loadData, course_id, semester, semester_id, sh
           ))}
         </Grid>
       </Paper>
-
     </Fragment>
   );
 };

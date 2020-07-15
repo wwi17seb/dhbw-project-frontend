@@ -2,7 +2,6 @@ import { Grid, Tooltip } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import { Delete, Edit, Email } from '@material-ui/icons';
 import React, { Fragment, useState } from 'react';
-
 import { APICall } from '../../../helper/Api';
 import DeleteEntityDialog from '../../data/DeleteEntityDialog';
 import { SEVERITY } from '../../Snackbar/SnackbarSeverity';

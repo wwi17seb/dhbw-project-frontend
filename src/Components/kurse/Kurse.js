@@ -101,7 +101,6 @@ export default function ScrollableTabsButtonAuto(props) {
         //alert('Problem occurred: Not Loaded!'); // TODO: exchange with snackbar
       }
     });
-    return () => {};
   }, []);
 
   const handleAPIresponse = async (response) => {
