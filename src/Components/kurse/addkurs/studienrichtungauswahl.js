@@ -1,68 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
-const useStyles = makeStyles(theme => ({
-    formControl: {
-        minWidth: 150,
-    },
+const useStyles = makeStyles(() => ({
+  formControl: {
+    minWidth: 150,
+  },
 }));
 
 //Funktion, welche das Auswahlmenü für eine Studienrichtung zurück gibt
-export default function StudienrichtungAuswahl({ studiengang, data }) {
-    const classes = useStyles();
+export default function StudienrichtungAuswahl({ fieldOfStudyId, data }) {
+  const classes = useStyles();
 
-    const studienrichtungAuswahl = []
-    const [studienrichtung, setStudienrichtung] = React.useState('');
-    const [studiengang1, setStudiengang1] = React.useState(studiengang);
-    const [state, setState] = React.useState(data);
+  const [studienrichtung, setStudienrichtung] = useState(undefined);
 
-    React.useEffect(() => {
-        if (state !== data) {
-            setState(data)
-        }
-    }, [state, setState, data]);
+  const getDataToRender = () => {
+    const fieldOfStudy = data.find((fos) => fos.fieldOfStudy_id === fieldOfStudyId);
+    return fieldOfStudy ? fieldOfStudy.MajorSubjects : [];
+  };
 
-    React.useEffect(() => {
-        if (studiengang1 !== studiengang) {
-            setStudiengang1(studiengang)
-        }
-    }, [studiengang1, setStudiengang1, studiengang]);
-
-    const handleChange = event => {
-        setStudienrichtung(event.target.value);
-    };
-
-    //hinzufügen der MenuItems anhand der List mit Studienrichtungen
-    var richtungen = []
-    if (data !== null) {
-        for (var i = 0; i < data["payload"]["FieldsOfStudy"].length; i++) {
-            if (studiengang === data["payload"]["FieldsOfStudy"][i]["name"]) {
-                richtungen = data["payload"]["FieldsOfStudy"][i]["MajorSubjects"]
-            }
-        }
-    }
-
-    for (var i = 0; i < richtungen.length; i++) {
-        var richtung = richtungen[i]["name"]
-        studienrichtungAuswahl.push(<MenuItem key={i} value={richtung}>{richtung}</MenuItem>)
-    }
-
-    return (
-        <FormControl required className={classes.formControl}>
-            <InputLabel id="studienrichtung-label">Studienrichtung</InputLabel>
-            <Select
-                labelId="studienrichtung-label"
-                id="studienrichtung-select"
-
-                value={studienrichtung}
-                onChange={handleChange}
-            >
-                {studienrichtungAuswahl}
-            </Select>
-        </FormControl>
-    )
+  return (
+    <FormControl required className={classes.formControl}>
+      <InputLabel id='studienrichtung-label'>Studienrichtung</InputLabel>
+      <Select
+        labelId='studienrichtung-label'
+        id='studienrichtung-select'
+        value={studienrichtung || fieldOfStudyId}
+        onChange={({ target: { value } }) => setStudienrichtung(value)}>
+        <MenuItem value={''}>-</MenuItem>
+        {getDataToRender().map((ms, index) => (
+          <MenuItem key={index} value={ms.majorSubject_id}>
+            {ms.name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  );
 }

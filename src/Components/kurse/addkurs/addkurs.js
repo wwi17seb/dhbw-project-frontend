@@ -45,14 +45,15 @@ export default function AddKurs() {
   const [status, setStatus] = React.useState(null);
   const [statusText, setStatusText] = React.useState(null);
   const [loading, setLoading] = React.useState(null);
-  const [subjectData, setSubjectData] = React.useState(null);
+  const [subjectData, setSubjectData] = React.useState([]);
 
   const [semesters, setSemesters] = useState([]);
 
   const loadSubjects = () => {
     APICall('GET', 'fieldsOfStudy?withMajorSubjects=true').then((res) => {
-      if (res && res.status) {
-        setSubjectData(res.data);
+      console.log('payload', res.data.payload);
+      if (res && res.status === 200) {
+        setSubjectData(res.data.payload.FieldsOfStudy);
       }
     });
   };
@@ -82,7 +83,7 @@ export default function AddKurs() {
   }, []);
 
   const ClickSubmit = () => {
-    var kursname = document.getElementById('kursname-input').value;
+    var kursname = setNameValue;
     var studiengang = document.getElementById('studiengang-select').innerHTML;
     var studienrichtung = document.getElementById('studienrichtung-select').innerHTML;
     if (kursname === '' || studiengang === '<span>​</span>' || studienrichtung === '<span>​</span>') {
