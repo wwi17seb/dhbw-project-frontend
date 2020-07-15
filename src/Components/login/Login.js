@@ -12,13 +12,13 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import Link from '@material-ui/core/Link';
 import CloseIcon from '@material-ui/icons/Close';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Alert from '@material-ui/lab/Alert';
 import axios from 'axios';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 
 import Background from '../../images/dhbw_campus2.jpg';
 import Logo from '../../images/ExoPlanLogo_transparent.png';
@@ -88,7 +88,7 @@ class Login extends Component {
   };
 
   handleEmail = (event) => {
-    this.setState({ email: event.target.value });
+    this.setState({ email: event.target.value.trim() });
   };
 
   handlePassword = (event) => {
@@ -192,7 +192,7 @@ class Login extends Component {
 
               <Grid container justify='flex-start'>
                 <Grid item>
-                  <Link onClick={() => this.setState({ openResetPasswordDialog: true })}>Passwort vergessen?</Link>
+                  <Link href="#" onClick={() => this.setState({ openResetPasswordDialog: true })}>Passwort vergessen?</Link>
                 </Grid>
               </Grid>
 

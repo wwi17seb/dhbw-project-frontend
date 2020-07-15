@@ -77,14 +77,14 @@ const SettingsChangePassword = ({ openPassword, classes, handleClose, showSnackb
             <DialogActions>
               <Form.Group as={Row}>
                 <Col sm={{ span: 8, offset: 0 }}>
-                  <Button variant='outlined' color='primary' type='reset' onClick={handleClose}>
+                  <Button color='primary' type='reset' onClick={handleClose}>
                     Abbrechen
                   </Button>
                 </Col>
               </Form.Group>
               <Form.Group as={Row}>
                 <Col sm={{ span: 8, offset: 0 }}>
-                  <Button variant='outlined' color='primary' type='submit'>
+                  <Button color='primary' type='submit'>
                     Bestätigen
                   </Button>
                 </Col>

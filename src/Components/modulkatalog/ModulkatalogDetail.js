@@ -22,37 +22,40 @@ const useStyles = makeStyles(theme => ({
 
 function ModulkatalogDetail(props) {
 
-    const [payload, setPayload] = React.useState([]);
-    const [moduleName, setModuleName] = React.useState('');
+    const [moduleGroups, setModuleGroups] = React.useState([]);
+    const [majorSubjectId, setMajorSubjectId] = React.useState(props.match.params.name) ; //the majorSubjectId is passed in the url 
+    const [studyName, setStudyName] = React.useState('');
     const [lectureSample, setLectureSample] = React.useState([]);
 
 
     const classes = useStyles();
-    var studyName = props.match.params.name; //the selected course of study 
 
     const handleAPIresponse = (response) => {
-        setPayload(response.data.payload);
-        if (typeof response.data.payload.FieldsOfStudy !== "undefined" && response.data.payload.FieldsOfStudy.length > 0) {
-            setLectureSample(response.data.payload.FieldsOfStudy[0].Modules[0].Lectures);
+        var majorSubject = response.data.payload.MajorSubject;
+        var fieldOfStudy = majorSubject.FieldOfStudy.name;
+        setStudyName(`${fieldOfStudy} ${majorSubject.name} ab ${majorSubject.catalog_effective_from}`);
+        if ("ModuleGroups" in response.data.payload && response.data.payload.ModuleGroups.length > 0) {
+            var moduleGroups = response.data.payload.ModuleGroups;
+            setModuleGroups(moduleGroups);
         }
     }
 
     return (
         <div className={classes.root} >
             <Nav></Nav>
-            <ApiHandler url='/api/modulecatalog' handleAPIresponse={handleAPIresponse} params={{ majorSubjectId: 4 }}></ApiHandler>
+            <ApiHandler url='/api/modulecatalog' handleAPIresponse={handleAPIresponse} params={{ majorSubjectId: majorSubjectId }}></ApiHandler>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <Breadcrumbs aria-label="breadcrumb">
+                <Breadcrumbs style={{ marginBottom: 10 }}>
                     <Link color="inherit" href="/modulkatalog">
                         Modulkataloge
                     </Link>
-                    <Typography color="inherit" href="/modulkatalog">
+                    <Typography color="textPrimary" href="/modulkatalog">
                         {studyName}
                     </Typography>
                 </Breadcrumbs>
-                <ExpansionPanels studyName={studyName} content={lectureSample} />
-                <ModulAddStepper majorSubjectId={4} />
+                <ExpansionPanels studyName={studyName} moduleGroups={moduleGroups} majorSubjectId={majorSubjectId}/>
+                <ModulAddStepper majorSubjectId={majorSubjectId} />
             </main>
         </div>
 

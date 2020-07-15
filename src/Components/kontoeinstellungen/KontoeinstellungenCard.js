@@ -15,7 +15,7 @@ const KontoeinstellungenCard = ({ icon, cardBody, btnDescription, func, classes 
         </Typography>
       </CardContent>
       <CardActions>
-        <Button type='button' variant='outlined' style={{ margin: '0 auto' }} onClick={func}>
+        <Button type='button' variant='contained' color="primary" style={{ margin: '0 auto' }} onClick={func}>
           {btnDescription}
         </Button>
       </CardActions>

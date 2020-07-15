@@ -45,6 +45,7 @@ const AddUserDialog = ({ openAddUserDialog, handleClose, showSnackbar, reloadDat
                 value={username}
                 onChange={({ target: { value } }) => setUsername(value)}
                 variant='outlined'
+                margin="dense"
                 fullWidth
               />
             </Col>
@@ -56,6 +57,7 @@ const AddUserDialog = ({ openAddUserDialog, handleClose, showSnackbar, reloadDat
                 value={password}
                 onChange={({ target: { value } }) => setPassword(value)}
                 variant='outlined'
+                margin="dense"
                 type='password'
                 fullWidth
               />
@@ -64,14 +66,14 @@ const AddUserDialog = ({ openAddUserDialog, handleClose, showSnackbar, reloadDat
           <DialogActions>
             <Form.Group as={Row}>
               <Col sm={{ span: 8, offset: 0 }}>
-                <Button variant='outlined' color='primary' type='reset' onClick={handleClose}>
+                <Button color='primary' type='reset' onClick={handleClose}>
                   Abbrechen
                 </Button>
               </Col>
             </Form.Group>
             <Form.Group as={Row}>
               <Col sm={{ span: 8, offset: 0 }}>
-                <Button variant='outlined' color='primary' type='submit'>
+                <Button color='primary' type='submit'>
                   Erstellen
                 </Button>
               </Col>

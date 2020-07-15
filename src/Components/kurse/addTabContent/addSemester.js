@@ -1,28 +1,25 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import Nav from '../../nav/Nav';
-import AddSemesterContent from '../addSemesterContent/addSemesterContent'
+import Paper from '@material-ui/core/Paper';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
+import React, { Fragment, useEffect, useState } from 'react';
 
-
+import { APICall } from '../../../helper/Api';
+import AddSemesterContent from '../addSemesterContent/addSemesterContent';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
     <Typography
-      component="div"
-      role="tabpanel"
+      component='div'
+      role='tabpanel'
       hidden={value !== index}
       id={`scrollable-auto-tabpanel-${index}`}
       aria-labelledby={`scrollable-auto-tab-${index}`}
-      {...other}
-    >
+      {...other}>
       {value === index && <Box p={0}>{children}</Box>}
     </Typography>
   );
@@ -41,56 +38,62 @@ function a11yProps(index) {
   };
 }
 
-const useStyles = makeStyles(theme => ({
-    formControl: {
-        margin: 20,
-        minWidth: 150,
-    },
-}));
+export default function ScrollableTabsButtonAuto(props) {
+  const [value, setValue] = useState(0);
+  const [moduleCatalog, setModuleCatalog] = useState();
 
+  const loadModuleCatalog = async () => {
+    APICall('GET', `/modulecatalog?majorSubjectId=${props.selectedCourse.majorSubject_id}`).then((res) => {
+      const { status, data } = res;
+      if (status === 200 && data) {
+        setModuleCatalog(data.payload);
+      }
+    });
+  };
 
-export default function ScrollableTabsButtonAuto() {
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  useEffect(() => {
+    loadModuleCatalog();
+  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const tabLabels = ["Semester 1", "Semester 2","Semester 3","Semester 4","Semester 5","Semester 6",];
+  const { Semesters } = props.selectedCourse;
+  Semesters.sort((sem1, sem2) => {
+    return new Date(sem1.start_date).getTime() - new Date(sem2.start_date).getTime();
+  });
+
   const finalTabLabels = [];
   const finalTabPanels = [];
-  const finalPanelContent = [<AddSemesterContent></AddSemesterContent>,  <AddSemesterContent></AddSemesterContent>, <AddSemesterContent></AddSemesterContent>, <AddSemesterContent></AddSemesterContent>, <AddSemesterContent></AddSemesterContent>, <AddSemesterContent></AddSemesterContent>];
-  let tabIndex = 0;
+  const finalPanelContent = [];
 
-
-
-  for (let tabLabel of tabLabels) {
-    finalTabLabels.push(<Tab key={tabIndex} label={tabLabel} {...a11yProps({ tabIndex })} />);
-    finalTabPanels.push(<TabPanel key={tabIndex} value={value} index={tabIndex}> {finalPanelContent[tabIndex]} </TabPanel>)
-    tabIndex++;
-  }
+  Semesters.forEach((sem, index) => {
+    finalPanelContent.push(<AddSemesterContent semester={sem} moduleCatalog={moduleCatalog} {...props} />);
+    finalTabLabels.push(<Tab key={index} label={sem.name} {...a11yProps({ index })} />);
+    finalTabPanels.push(
+      <TabPanel key={index} value={value} index={index}>
+        {finalPanelContent[index]}
+      </TabPanel>
+    );
+  });
 
   return (
-    <div className={classes.root}>
-      <Nav></Nav>
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        <Paper>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="scrollable"
-            scrollButtons="auto"
-            aria-label="scrollable auto tabs example"
-          >
-            {finalTabLabels}
-          </Tabs>
-        </Paper>
-        {finalTabPanels}
-      </main>
-    </div>
+    <Fragment>
+      <Paper>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          indicatorColor='primary'
+          textColor='primary'
+          variant='scrollable'
+          scrollButtons='auto'
+          aria-label='scrollable auto tabs example'
+          style={{ marginBottom: '1.5rem' }}>
+          {finalTabLabels}
+        </Tabs>
+      </Paper>
+      {finalTabPanels}
+    </Fragment>
   );
 }

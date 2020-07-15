@@ -72,14 +72,15 @@ const GoogleCalendar = () => {
               value={getAttribute(attr.db) || ''}
               onChange={({ target: { value } }) => setAttribute(attr.db, value)}
               variant='outlined'
+              margin="dense"
               fullWidth
             />
           </div>
         ))}
       </Grid>
       <Button
-        style={{ color: '#ffffff', backgroundColor: '#e30613', marginTop: '1em' }}
-        variant='outlined'
+        style={{ marginTop: '1em' }}
+        variant='contained'
         color='primary'
         onClick={handleUpdate}>
         Speichern
