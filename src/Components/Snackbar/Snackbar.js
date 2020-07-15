@@ -16,37 +16,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SnackBar = ({ message, severity, isOpen }) => {
+const SnackBar = ({ message, severity, isOpen, closeSnackbar }) => {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
 
-    setOpen(false);
+    closeSnackbar();
   };
 
   useEffect(() => {
-    setOpen(isOpen);
-
     return () => {
-      handleClose();
     };
   }, [message, severity, isOpen]);
 
   return (
     <div className={classes.root}>
-      <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+      <Snackbar open={isOpen} autoHideDuration={2000} onClose={handleClose}>
         <Alert onClose={handleClose} severity={severity}>
           {message}
         </Alert>
       </Snackbar>
-      {/* <Alert severity='error'>This is an error message!</Alert> */}
-      {/* <Alert severity='warning'>This is a warning message!</Alert> */}
-      {/* <Alert severity='info'>This is an information message!</Alert> */}
-      {/* <Alert severity='success'>This is a success message!</Alert> */}
     </div>
   );
 };

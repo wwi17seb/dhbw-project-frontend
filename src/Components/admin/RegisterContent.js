@@ -34,6 +34,10 @@ const RegisterContent = () => {
     setSnackbarOpen(true);
   };
 
+  const closeSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
   const handleUpdate = () => {
     APICall('PUT', 'registerKey', { registerKey }).then((res) => {
       if (res.status === 200) {
@@ -70,7 +74,7 @@ const RegisterContent = () => {
           onChange={handleRegisterKey}
           label='Registrierungsschlüssel'
           variant='outlined'
-          margin="dense"
+          margin='dense'
           fullWidth
         />
       </Grid>
@@ -88,7 +92,7 @@ const RegisterContent = () => {
         onClick={handleDisable}>
         Deaktivieren
       </Button>
-      <SnackBar isOpen={snackbarOpen} message={message} severity={severity} />
+      <SnackBar isOpen={snackbarOpen} message={message} severity={severity} closeSnackbar={closeSnackbar} />
     </Fragment>
   );
 };

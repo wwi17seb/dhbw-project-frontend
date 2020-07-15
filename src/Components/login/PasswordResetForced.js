@@ -16,7 +16,7 @@ const PasswordResetForced = (props) => {
   const [passwordRepeat, setPasswordRepeat] = useState('');
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
     const { location } = props.history;
@@ -26,7 +26,11 @@ const PasswordResetForced = (props) => {
   const showSnackbar = (message, severity) => {
     setMessage(message);
     setSeverity(severity);
-    setIsOpen(true);
+    setSnackbarOpen(true);
+  };
+
+  const closeSnackbar = () => {
+    setSnackbarOpen(false);
   };
 
   const history = useHistory();
@@ -108,7 +112,7 @@ const PasswordResetForced = (props) => {
           </form>
         </Paper>
       </main>
-      <SnackBar message={message} severity={severity} isOpen={isOpen} />
+      <SnackBar isOpen={snackbarOpen} message={message} severity={severity} closeSnackbar={closeSnackbar} />
     </div>
   );
 };

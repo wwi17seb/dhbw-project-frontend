@@ -13,6 +13,7 @@ import Nav from '../nav/Nav';
 import SnackBar from '../Snackbar/Snackbar';
 import AddKurs from './addkurs/addkurs';
 import AddTabContent from './addTabContent/addTabContent';
+import { SEVERITY } from '../Snackbar/SnackbarSeverity';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -70,6 +71,10 @@ export default function ScrollableTabsButtonAuto(props) {
     setSnackbarOpen(true);
   };
 
+  const closeSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -98,7 +103,7 @@ export default function ScrollableTabsButtonAuto(props) {
       if (res.data && res.status === 200) {
         setCourses(res.data.payload.Courses);
       } else {
-        //alert('Problem occurred: Not Loaded!'); // TODO: exchange with snackbar
+        showSnackbar('Kurse konnten nicht geladen werden!', SEVERITY.ERROR);
       }
     });
     return () => {};
@@ -143,7 +148,7 @@ export default function ScrollableTabsButtonAuto(props) {
           </Tabs>
         </Paper>
         {finalTabPanels}
-        <SnackBar isOpen={snackbarOpen} message={message} severity={severity} />
+        <SnackBar isOpen={snackbarOpen} message={message} severity={severity} closeSnackbar={closeSnackbar} />
       </main>
     </div>
   );

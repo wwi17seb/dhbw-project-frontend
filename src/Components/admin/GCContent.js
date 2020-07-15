@@ -61,6 +61,10 @@ const GoogleCalendar = () => {
     setSnackbarOpen(true);
   };
 
+  const closeSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
   return (
     <Fragment>
       <Grid item xs={12} style={{ margin: '0.5em 0' }}>
@@ -72,20 +76,16 @@ const GoogleCalendar = () => {
               value={getAttribute(attr.db) || ''}
               onChange={({ target: { value } }) => setAttribute(attr.db, value)}
               variant='outlined'
-              margin="dense"
+              margin='dense'
               fullWidth
             />
           </div>
         ))}
       </Grid>
-      <Button
-        style={{ marginTop: '1em' }}
-        variant='contained'
-        color='primary'
-        onClick={handleUpdate}>
+      <Button style={{ marginTop: '1em' }} variant='contained' color='primary' onClick={handleUpdate}>
         Speichern
       </Button>
-      <SnackBar isOpen={snackbarOpen} message={message} severity={severity} />
+      <SnackBar isOpen={snackbarOpen} message={message} severity={severity} closeSnackbar={closeSnackbar} />
     </Fragment>
   );
 };
