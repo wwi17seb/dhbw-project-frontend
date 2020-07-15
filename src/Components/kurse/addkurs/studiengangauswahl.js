@@ -8,7 +8,7 @@ import StudienrichtungAuswahl from './studienrichtungauswahl'
 
 const useStyles = makeStyles(theme => ({
     formControl: {
-        margin: 20,
+        marginRight: 20,
         minWidth: 150,
     },
 }));

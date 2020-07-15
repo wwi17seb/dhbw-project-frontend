@@ -79,7 +79,7 @@ const ModifyPresentation = ({
     APICall(
       presentationToEdit.presentation_id ? 'PUT' : 'POST',
       `presentations${
-        presentationToEdit.presentation_id ? `?presentationId=${presentationToEdit.presentation_id}` : ''
+      presentationToEdit.presentation_id ? `?presentationId=${presentationToEdit.presentation_id}` : ''
       }`,
       preparedPresentation
     ).then((res) => {
@@ -124,7 +124,7 @@ const ModifyPresentation = ({
       <DialogTitle id='form-dialog-title'>{edit ? 'Vorlesung editieren' : 'Vorlesung hinzufügen'} </DialogTitle>
       <DialogContent>
         <Form onSubmit={handleSavePresentation}>
-          <Form.Group as={Row} controlId='Vorlesung'>
+          <Form.Group as={Row} controlId='Vorlesung' style={{ marginBottom: 15 }}>
             <Col>
               <LectureDropdown
                 openDialog={open}
@@ -135,7 +135,7 @@ const ModifyPresentation = ({
               />
             </Col>
           </Form.Group>
-          <Form.Group as={Row} controlId='Dozent'>
+          <Form.Group as={Row} controlId='Dozent' style={{ marginBottom: 15 }}>
             <Col>
               <Autocomplete
                 id='combo-box-lecturer'
@@ -154,7 +154,7 @@ const ModifyPresentation = ({
               />
             </Col>
           </Form.Group>
-          <Form.Group as={Row} controlId='Prüfungsleistung'>
+          <Form.Group as={Row} controlId='Prüfungsleistung' style={{ marginBottom: 15 }}>
             <Col>
               <AcademicRecordDropdown
                 openDialog={open}
@@ -164,7 +164,7 @@ const ModifyPresentation = ({
               />
             </Col>
           </Form.Group>
-          <Form.Group as={Row} controlId='Status'>
+          <Form.Group as={Row} controlId='Status' style={{ marginBottom: 10 }}>
             <Col>
               <TextField
                 fullWidth

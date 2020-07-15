@@ -1,5 +1,6 @@
 import { Divider, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
 import React, { Fragment, useState } from 'react';
+import Button from '@material-ui/core/Button';
 
 import ModifyPresentation from './ModifyPresentation';
 import PresentationRow from './PresentationRow';
@@ -7,7 +8,7 @@ import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import ColorInfoDialog from './ColorInfoDialog';
 
 const COLOR_KEYWORDS = [
-  // the order of these objects is important for mapping 
+  // the order of these objects is important for mapping
   // -> if something matches with one of the first rows and one of the last rows it will have the color of the first match
   // e.g. "Anfrage ausstehend" will match with "ausstehend" and therefore be #FFA07A (orange) instead of #AFEEEE (blue)
   // therefore worse states have a higher importance than better ones with the following order
@@ -26,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     flexGrow: 1,
     padding: theme.spacing(3),
+    marginBottom: 20
   },
 }));
 
@@ -109,18 +111,14 @@ const MyTable = ({ presentations, loadData, course_id, semester, semester_id, sh
     <Fragment>
       {showColorInfoDialog ? getColorInfoDialog(handleClose) : null}
       {createPresentationDialog ? modifyPresentation(null, handleClose) : null}
-      <div style={{ textAlign: 'right' }}>
-        <button
-          style={{ color: '#ffffff', backgroundColor: '#e30613', marginBottom: '1rem' }}
-          className='btn'
-          onClick={() => {
-            createNewPresentation();
-          }}>
+      <div style={{ textAlign: 'right', marginBottom: 20 }}>
+        <Button variant="contained" color="primary" onClick={createNewPresentation}>
           Vorlesung planen
-        </button>
+        </Button>
       </div>
-      <Grid container spacing={2}>
-        <Paper className={classes.paper}>
+
+      <Paper className={classes.paper}>
+        <Grid container spacing={2}>
           {header()}
           {presentations.map((presentation, index) => (
             <PresentationRow
@@ -134,8 +132,9 @@ const MyTable = ({ presentations, loadData, course_id, semester, semester_id, sh
               COLOR_KEYWORDS={COLOR_KEYWORDS}
             />
           ))}
-        </Paper>
-      </Grid>
+        </Grid>
+      </Paper>
+
     </Fragment>
   );
 };

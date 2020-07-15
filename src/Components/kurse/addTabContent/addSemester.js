@@ -64,6 +64,7 @@ export default function ScrollableTabsButtonAuto(props) {
 
   const handleEdit = (event) => {
     setOpen(true)
+    setInterval(function () { setOpen(false); }, 1000);
   }
 
   const { Semesters } = props.selectedCourse;
