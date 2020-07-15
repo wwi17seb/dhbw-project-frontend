@@ -55,7 +55,6 @@ export default function AddKurs() {
             setSubjectData(data)
         }).catch(err => {
             setSubjectData({})
-            console.log("Failed to load subjects!")
         })
     }
 
@@ -215,15 +214,15 @@ export default function AddKurs() {
                 <Grid item xs={12}>
                     <Paper className={classes.paper}>
                         <div className={classes.block}>
-                            <Typography variant='h6'>Bitte geben Sie den Namen des Kurses an:</Typography>
-                            <TextField required value={nameValue} error={nameerror} onChange={NameOnChange} id="kursname-input" label="Kursname" variant="outlined" helperText={nametext} />
+                            <Typography style={{"font-weight": "bold"}} variant='subtitle1'>Bitte geben Sie den Namen des Kurses an:</Typography>
+                            <TextField required value={nameValue} error={nameerror} onChange={NameOnChange} id="kursname-input" label="Kursname" variant="outlined" margin="dense" helperText={nametext} />
                         </div>
                         <div className={classes.block}>
-                            <Typography variant='h6'>Bitte geben Sie den Studiengang und Studienrichtung an:</Typography>
+                            <Typography style={{"font-weight": "bold"}} variant='subtitle1'>Bitte geben Sie den Studiengang und Studienrichtung an:</Typography>
                             <StudiengangAuswahl data={subjectData}></StudiengangAuswahl>
                         </div>
                         <div className={classes.block}>
-                            <Typography variant='h6'>Bitte wählen Sie die Anzahl der Semester aus und geben Sie für jedes Semester die Zeiträume an:</Typography>
+                            <Typography style={{"font-weight": "bold"}} variant='subtitle1'>Bitte wählen Sie die Anzahl der Semester aus und geben Sie für jedes Semester die Zeiträume an:</Typography>
                             <Grid container direction="row" justify="flex-start" alignItems="center">
                                 <Grid item>
                                     6 Semester

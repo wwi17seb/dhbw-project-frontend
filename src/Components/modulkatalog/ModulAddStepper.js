@@ -134,7 +134,6 @@ export default function ModulAddStepper(props) {
                 }
             ]
         }).then((res) => {
-            console.log(res);
             if (res.data && res.status === 201) {
                 setAlertOpen(true)
                 setMessage('Modul wurde erfolgreich hinzugefügt')
@@ -217,7 +216,7 @@ export default function ModulAddStepper(props) {
 
     return (
         <div className={classes.root}>
-            <Button variant="contained" size="medium" onClick={handleClickOpen} className={classes.button}>Modul hinzufügen</Button>
+            <Button variant="contained" color="primary" size="medium" onClick={handleClickOpen} className={classes.button}>Modul hinzufügen</Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <Stepper activeStep={activeStep} orientation="vertical">
                     {steps.map((label, index) => (
@@ -287,8 +286,8 @@ export default function ModulAddStepper(props) {
                         </Collapse>
                     </div> : null}
                 <DialogActions>
-                    <Button onClick={handleClose}>Abbrechen</Button>
-                    <Button onClick={handleSend} disabled={disabled}>Modul hinzufügen</Button>
+                    <Button color="primary" onClick={handleClose}>Abbrechen</Button>
+                    <Button color="primary" onClick={handleSend} disabled={disabled}>Modul hinzufügen</Button>
                 </DialogActions>
             </Dialog>
         </div>

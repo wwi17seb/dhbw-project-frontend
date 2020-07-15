@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
@@ -12,6 +11,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import EditLecturer from "./editlecturer"
+import { APICall } from '../../helper/Api';
 
 export default function LecturerRow(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -22,6 +22,7 @@ export default function LecturerRow(props) {
 
     const handleCloseConfirm = () => {
         setOpen2(false);
+        setAnchorEl(null);
     };
 
     const handleClick = (event) => {
@@ -35,17 +36,20 @@ export default function LecturerRow(props) {
     const handleEdit = () => {
         setOpen(true)
         setInterval(function () { setOpen(false); }, 1000);
+        setAnchorEl(null);
     };
 
     const deleteLecturer = () => {
-        const url = "/api/lecturers?lecturerId=" + props.data["lecturer_id"] + "&token=" + localStorage.getItem("ExoplanSessionToken")
-        axios.delete(url).then(res => {
-            window.location.reload()
+        const url = "lecturers?lecturerId=" + props.data["lecturer_id"]
+        APICall('DELETE', url).then(res => {
+            props.reloadLecturers()
         })
     }
 
     const handleSubmit = () => {
         deleteLecturer()
+        setAnchorEl(null);
+        setOpen2(false)
     };
 
     const handleDelete = () => {
@@ -53,8 +57,7 @@ export default function LecturerRow(props) {
     };
 
     const loadDirector = () => {
-        const url = "/api/directorOfStudies?token=" + localStorage.getItem("ExoplanSessionToken")
-        axios.get(url).then(res => {
+        APICall('GET', 'directorOfStudies').then(res => {
             setCurrentDirector(res.data.payload["DirectorOfStudies"]["username"])
         })
     }
@@ -96,7 +99,7 @@ export default function LecturerRow(props) {
 
     for (var j = 0; j < mainFocus.length; j++) {
         temp2.push(
-            <Typography key={"mainfocus-" + mainFocus[j]["mainFocus_id"]} variant="h6">{mainFocus[j]["name"]}</Typography>
+            <Typography key={"mainfocus-" + mainFocus[j]["mainFocus_id"]} variant="subtitle1">{mainFocus[j]["name"]}</Typography>
         )
     }
 
@@ -111,10 +114,10 @@ export default function LecturerRow(props) {
                     <Typography variant="subtitle1">{email}</Typography>
                 </Grid>
                 <Grid item xs={3}>
-                    {temp2}
+                   {temp2}
                 </Grid>
                 <Grid item xs={3}>
-                    <Typography variant="h6">{director}</Typography>
+                    <Typography variant="subtitle1">{director}</Typography>
                 </Grid>
                 <Grid item xs={2}>
                     <Button disabled={disabled} variant="outlined" color="primary" onClick={handleClick}>
@@ -138,7 +141,7 @@ export default function LecturerRow(props) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">{"Dozent wirklich für alle löschen?"}</DialogTitle>
-                <DialogActions>
+                <DialogActions style={{ padding: 10 }}>
                     <Button onClick={handleCloseConfirm} color="primary" >
                         abbrechen
                     </Button>
@@ -147,7 +150,7 @@ export default function LecturerRow(props) {
                 </Button>
                 </DialogActions>
             </Dialog>
-            <EditLecturer data={props.data} open={open}></EditLecturer>
+            <EditLecturer reloadLecturers={props.reloadLecturers} data={props.data} open={open}></EditLecturer>
             <Divider style={{ marginBottom: 10 }}></Divider>
         </Grid>
     );

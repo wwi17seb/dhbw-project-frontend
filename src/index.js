@@ -15,10 +15,6 @@ import Modulkatalog from './Components/modulkatalog/Modulkatalog';
 import ModulkatalogDetail from './Components/modulkatalog/ModulkatalogDetail';
 import { NAV_ITEMS } from './shared/navConstants';
 
-import '../node_modules/bootstrap/dist/css/bootstrap.css';
-import '../node_modules/bootstrap/dist/js/bootstrap.js';
-import './index.css';
-
 // Color theme for whole app
 const theme = createMuiTheme({
   palette: {

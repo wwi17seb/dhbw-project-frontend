@@ -1,14 +1,10 @@
-import axios from 'axios';
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import { Grid } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
+import { APICall } from '../../../helper/Api';
 
 
 const useStyles = makeStyles(theme => ({
@@ -29,7 +25,6 @@ const useStyles = makeStyles(theme => ({
 export default function Notizen(props) {
     const classes = useStyles();
 
-    const [state, setState] = React.useState(null)
     const [comment, setComment] = React.useState(null)
     const [disabled, setDisabled] = React.useState(true)
     const [data, setData] = React.useState(props.data);
@@ -52,15 +47,15 @@ export default function Notizen(props) {
             setDisabled(true)
         }
 
-    }, [comment])
+    }, [comment, data])
 
     const updateComment = () => {
-        const url = "/api/lecturers?lecturerId=" + props.data["lecturer_id"] + "&token=" + localStorage.getItem("ExoplanSessionToken")
+        const url = "lecturers?lecturerId=" + props.data["lecturer_id"]
         var data = props.data
         delete data["lecturer_id"]
         data["comment"] = comment
-        axios.put(url, data).then(res => {
-            window.location.reload()
+        APICall('PUT', url, data).then(res => {
+            props.reloadData()
         })
     }
 

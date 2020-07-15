@@ -1,28 +1,27 @@
-import axios from 'axios';
 import React, { useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import * as testdata from "./dozententestdata.json";
 import LecturerRow from "./lecturerrow"
 import AddLecturer from "./addlecturer"
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Link1 from '@material-ui/core/Link';
+import { Link } from "react-router-dom";
+import { APICall } from '../../helper/Api';
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-  }, 
+  },
   toolbar: theme.mixins.toolbar,
   paper: {
     flexGrow: 1,
     padding: theme.spacing(3),
-    marginTop: 10
-  },
-  btn_align: {
-    textAlign: 'right',
+    marginTop: "2rem"
   }
 }));
 export default function LecturerList() {
@@ -42,8 +41,7 @@ export default function LecturerList() {
   };
 
   const loadData = () => {
-    const url = "api/lecturers?token=" + localStorage.getItem("ExoplanSessionToken")
-    axios.get(url).then(res => {
+    APICall('GET', 'lecturers').then(res => {
       setLecturers(res.data.payload);
     })
   }
@@ -79,7 +77,7 @@ export default function LecturerList() {
       for (var i = 0; i < lecturers["Lecturers"].length; i++) {
         if (checkName(searchTerm, lecturers["Lecturers"][i]["lastname"]) || checkFocus(searchTerm, lecturers["Lecturers"][i]["MainFocuses"])) {
           temp.push(
-            <LecturerRow key={"lecturerrow-" + lecturers["Lecturers"][i]["lecturer_id"]} data={lecturers["Lecturers"][i]}></LecturerRow>
+            <LecturerRow key={"lecturerrow-" + lecturers["Lecturers"][i]["lecturer_id"]} reloadLecturers={loadData} data={lecturers["Lecturers"][i]}></LecturerRow>
           )
         }
       }
@@ -89,25 +87,24 @@ export default function LecturerList() {
 
   if (lecturers === null) {
     loadData()
-    //setLecturers(testdata)
   }
 
   return (
     <React.Fragment>
-      <Typography variant="h5" noWrap>
-        Dozenten
-      </Typography>
-      <div style={{ marginTop: 10 }}>
-        <Typography variant='h6'>
+      <div>
+        <Breadcrumbs style={{ marginBottom: 10 }}>
+           <Link1 color="inherit" to="/dozenten" component={Link}>
+               Dozenten
+           </Link1>
+        </Breadcrumbs>
+        <Typography style={{"font-weight": "bold"}} variant='subtitle1'>
           Grenzen Sie hier die Liste mit Kriterien ein: </Typography>
-        <Grid container spacing={4} alignItems="center">
+        <Grid container spacing={4}>
           <Grid item sm={8}>
             <TextField fullWidth={true} label="Suchen Sie nach dem Nachnamen oder Schwerpunkt" value={searchTerm} onChange={handleSearch} id="searchLecturer" variant="filled" />
           </Grid>
           <Grid item sm={4}>
-            <div className={classes.btn_align}> 
-              <Button variant="contained" color="primary" onClick={ClickSubmit.bind(this)}>Dozent hinzufügen</Button>
-            </div>
+            <Button variant="contained" color="primary" size="large" onClick={ClickSubmit.bind(this)}>Dozent hinzufügen</Button>
           </Grid>
         </Grid>
       </div>
@@ -131,7 +128,7 @@ export default function LecturerList() {
           {output}
         </Paper>
 
-        <AddLecturer open={open}></AddLecturer>
+        <AddLecturer reloadLecturers={loadData} open={open}></AddLecturer>
       </Grid>
     </React.Fragment>
 

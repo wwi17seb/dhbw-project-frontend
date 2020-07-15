@@ -9,6 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -18,7 +19,6 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Alert from '@material-ui/lab/Alert';
 import axios from 'axios';
 import React, { Component, Fragment } from 'react';
-import { Link } from 'react-router-dom';
 import Background from '../../images/dhbw_campus2.jpg';
 import Logo from '../../images/ExoPlanLogo_transparent.png';
 import { NAV_ITEMS } from '../../shared/navConstants';
@@ -162,7 +162,7 @@ class Login extends Component {
   };
 
   handleEmail = (event) => {
-    this.setState({ email: event.target.value });
+    this.setState({ email: event.target.value.trim() });
   };
 
   handlePassword = (event) => {
@@ -325,7 +325,9 @@ class Login extends Component {
               {register ? this.renderRegistrationFields() : null}
               <Grid container justify='flex-start'>
                 <Grid item>
-                  <Link onClick={() => this.setState({ openResetPasswordDialog: true })}>Passwort vergessen?</Link>
+                  <Link href='#' onClick={() => this.setState({ openResetPasswordDialog: true })}>
+                    Passwort vergessen?
+                  </Link>
                 </Grid>
               </Grid>
               <Button type='submit' variant='contained' color='primary' fullWidth className={classes.submit}>
