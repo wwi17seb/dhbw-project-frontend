@@ -18,6 +18,7 @@ import Kurszusammenfassung from './Kurszusammenfassung';
 import SemesterEntry from './SemesterEntry';
 import StudiengangAuswahl from './studiengangauswahl';
 import SubmitFeedback from './submitfeedback';
+import DialogSummary from './DialogSummary';
 
 //css klassen, welche hier genutzt werden
 const useStyles = makeStyles((theme) => ({
@@ -104,12 +105,11 @@ export default function AddKurs() {
   const getMajorSubjectId = (name) => {
     if (subjectData !== null) {
       var id = null;
-      for (var i = 0; i < subjectData['payload']['FieldsOfStudy'].length; i++) {
-        var richtungen = subjectData['payload']['FieldsOfStudy'][i]['MajorSubjects'];
+      for (var i = 0; i < subjectData.length; i++) {
+        var richtungen = subjectData[i]['MajorSubjects'];
         for (var j = 0; j < richtungen.length; j++) {
           if (name === richtungen[j]['name']) {
-            id = richtungen[j]['majorSubject_id'];
-            break;
+            return richtungen[j]['majorSubject_id'];
           }
         }
       }
@@ -259,26 +259,13 @@ export default function AddKurs() {
               {loading}
             </div>
           </Paper>
-          <Dialog
+          <DialogSummary
             open={open}
-            onClose={handleClose}
-            aria-labelledby='alert-dialog-title'
-            aria-describedby='alert-dialog-description'>
-            <DialogTitle id='alert-dialog-title'>{'Kurs mit folgenden Daten hinzufügen?'}</DialogTitle>
-            <DialogContent>
-              <DialogContentText id='alert-dialog-description'>
-                <Kurszusammenfassung checked={checked} semesters={semesters} nameValue={nameValue} />
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} color='primary' autoFocus>
-                Nein
-              </Button>
-              <Button onClick={handlePost} color='primary' autoFocus>
-                Ja
-              </Button>
-            </DialogActions>
-          </Dialog>
+            handleClose={handleClose}
+            semesters={semesters}
+            nameValue={nameValue}
+            handlePost={handlePost}
+          />
         </Grid>
       </Grid>
       <SubmitFeedback submit={status} text={statusText} />
