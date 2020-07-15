@@ -26,7 +26,6 @@ import Button from '@material-ui/core/Button';
 import {syncGoogleCalendar} from './apiHandlerGoogleCalendar';
 import AppointmentFormContainerBasic from './gcAppointmentForm';
 import SnackBar from '../../Snackbar/Snackbar';
-import { SEVERITY } from '../../Snackbar/SnackbarSeverity';
 let appointments = [];
 
 function formatData(calendarData) {
@@ -213,27 +212,18 @@ class GoogleCalendar extends React.PureComponent {
   componentDidMount(){
     this.loadData(); 
   }
-  
-  showSnackbar = (message, severity) => {
-    this.setState({message: message, severity:severity, snackbarOpen: true});
-  };
-
 
   handleResponse = (response) => {
-    if(response == "failedLoad"){
+    if(response === "failedLoad"){
       this.setState({
         dataReady: "failedLoad"
       })  
-    }else if(response == "successSnackbar"){
-      this.showSnackbar('Aktion erfolgreich.', SEVERITY.SUCCESS)
-    }else if(response == "errorSnackbar"){
-      this.showSnackbar('Aktion fehlgeschlagen.', SEVERITY.ERROR)
-    }else{
-    this.setState({
-      data : formatData(response),
-      dataReady: "ready"
-    })
-  }
+    } else {
+      this.setState({
+        data : formatData(response),
+        dataReady: "ready"
+      })
+    }
   }
 
   reloadAfterResponse = (response) => {
@@ -242,12 +232,12 @@ class GoogleCalendar extends React.PureComponent {
 
 
   loadData() {
-    syncGoogleCalendar("load", " ", this.state.googleCalendar, this.state.gcId, this.handleResponse); 
+    syncGoogleCalendar("load", " ", this.state.googleCalendar, this.state.gcId, this.handleResponse, this.props.showSnackbar); 
   }
 
   componentDidUpdate() {
     this.appointmentForm.update();
-    console.log(this.appointmentForm)
+    // console.log(this.appointmentForm)
   }
 
   onEditingAppointmentChange(editingAppointment) {
@@ -285,7 +275,7 @@ class GoogleCalendar extends React.PureComponent {
     this.setState((state) => {
       const { data, deletedAppointmentId } = state;
       const nextData = data.filter((appointment) => appointment.id !== deletedAppointmentId);
-      syncGoogleCalendar('delete', data[deletedAppointmentId].gcId, this.state.googleCalendar, this.state.gcId, this.reloadAfterResponse);
+      syncGoogleCalendar('delete', data[deletedAppointmentId].gcId, this.state.googleCalendar, this.state.gcId, this.reloadAfterResponse, this.props.showSnackbar);
 
       return { data: nextData, deletedAppointmentId: null };
     });
@@ -298,7 +288,7 @@ class GoogleCalendar extends React.PureComponent {
       if (added) {
         const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0;
         data = [...data, { id: startingAddedId, ...added }];
-        syncGoogleCalendar('insert', added, this.state.googleCalendar, this.state.gcId, this.reloadAfterResponse);
+        syncGoogleCalendar('insert', added, this.state.googleCalendar, this.state.gcId, this.reloadAfterResponse, this.props.showSnackbar);
       }
       if (changed) {
         data = data.map((appointment) =>
@@ -308,9 +298,9 @@ class GoogleCalendar extends React.PureComponent {
         if (changed[state.editingAppointment.id].title === undefined) {
           data[state.editingAppointment.id].startDate = changed[state.editingAppointment.id].startDate;
           data[state.editingAppointment.id].endDate = changed[state.editingAppointment.id].endDate;
-          syncGoogleCalendar('change', data[state.editingAppointment.id], this.state.googleCalendar, this.state.gcId, this.reloadAfterResponse);
+          syncGoogleCalendar('change', data[state.editingAppointment.id], this.state.googleCalendar, this.state.gcId, this.reloadAfterResponse, this.props.showSnackbar);
         } else {
-          syncGoogleCalendar('change', changed[state.editingAppointment.id], this.state.googleCalendar, this.state.gcId, this.reloadAfterResponse);
+          syncGoogleCalendar('change', changed[state.editingAppointment.id], this.state.googleCalendar, this.state.gcId, this.reloadAfterResponse, this.props.showSnackbar);
         }
       }
       if (deleted !== undefined) {

@@ -1,5 +1,5 @@
 import GoogleCalendar from "../../admin/GCContent";
-import showSnackbar from "./addCalendar";
+import { SEVERITY } from '../../Snackbar/SnackbarSeverity';
 
 const creds = {
   scope: "https://www.googleapis.com/auth/calendar",
@@ -7,53 +7,53 @@ const creds = {
   calenderID: 'iq90i34lq6v196rqs4986dp370@group.calendar.google.com' //"cefk6hvf4f82ltu9pnnr31rd1o@group.calendar.google.com" // '
 }
 
-export async function syncGoogleCalendar(action, appointmentData, googleCalendar, gcID, handleResponse) {
+export async function syncGoogleCalendar(action, appointmentData, googleCalendar, gcID, handleResponse, showSnackbar) {
   const gapi = window.gapi ;
   gapi.load('client:auth2', () => {
       gapi.client.init({
         apiKey: googleCalendar.apiKey,
         clientId: googleCalendar.clientId,
         discoveryDocs: creds.discoveryDocs,
-        scope: creds.scope
+        scope: creds.scope,
       })
       gapi.client.load('calendar', 'v3')
 
 
     if (action != "load") {
       if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
-        handleAction(action, appointmentData, gapi, handleResponse, googleCalendar, gcID);
+        handleAction(action, appointmentData, gapi, handleResponse, googleCalendar, gcID, showSnackbar);
       } else {
         gapi.auth2.getAuthInstance().signIn().then(function (response) {
-          handleAction(action, appointmentData, gapi, handleResponse, googleCalendar, gcID);
+          handleAction(action, appointmentData, gapi, handleResponse, googleCalendar, gcID, showSnackbar);
         }, function (error) {
           handleResponse();
         });
 
       }
     } else {
-      handleAction(action, appointmentData, gapi, handleResponse, googleCalendar, gcID);
+      handleAction(action, appointmentData, gapi, handleResponse, googleCalendar, gcID, showSnackbar);
     }
   })
 }
 
-function handleAction(action, appointmentData, gapi, handleResponse, googleCalendar, gcID) {
+function handleAction(action, appointmentData, gapi, handleResponse, googleCalendar, gcID, showSnackbar) {
   switch (action) {
     case "delete":
-      handleAppointmentDelete(appointmentData, gapi, gcID);
+      handleAppointmentDelete(appointmentData, gapi, gcID, showSnackbar);
       break;
     case "change":
-      handleAppointmentChange(appointmentData, gapi, gcID);
+      handleAppointmentChange(appointmentData, gapi, gcID, showSnackbar);
       break;
     case "insert":
-      handleAppointmentInsert(appointmentData, gapi, handleResponse, gcID);
+      handleAppointmentInsert(appointmentData, gapi, handleResponse, gcID, showSnackbar);
       break;
     case "load":
-      handleAppointmentsLoad(gapi, handleResponse, googleCalendar, gcID);
+      handleAppointmentsLoad(gapi, handleResponse, googleCalendar, gcID, showSnackbar);
       break;
   }
 }
 
-function handleAppointmentsLoad(gapi, handleResponse, googleCalendar, gcID) {
+function handleAppointmentsLoad(gapi, handleResponse, googleCalendar, gcID, showSnackbar) {
   let success = false; 
 
   const PUBLIC_KEY = googleCalendar.apiKey,//googleCalendar.apiKey,
@@ -76,13 +76,14 @@ function handleAppointmentsLoad(gapi, handleResponse, googleCalendar, gcID) {
     setTimeout(() => {
       if(success === true){
         handleResponse(appointments.items);
+        showSnackbar('Aktion erfolgreich.', SEVERITY.SUCCESS);
         return (appointments.items);        
       }
     }, 600);
   })
 }
 
-function handleAppointmentDelete(deleteAppointmentId, gapi, gcID) {
+function handleAppointmentDelete(deleteAppointmentId, gapi, gcID, showSnackbar) {
 
   var request = gapi.client.calendar.events.delete({
     'calendarId': gcID,
@@ -91,14 +92,14 @@ function handleAppointmentDelete(deleteAppointmentId, gapi, gcID) {
 
   request.execute(function (response) {
     if (response.error || response == false) {
-      alert('Error'); // TODO: exchange with snackbar
+      showSnackbar('Aktion fehlgeschlagen.', SEVERITY.ERROR);
     } else {
-      alert('Success'); // TODO: exchange with snackbar
+      showSnackbar('Aktion erfolgreich.', SEVERITY.SUCCESS);
     }
   });
 }
 
-function handleAppointmentInsert(insertAppointmentData, gapi, handleResponse, gcID) {
+function handleAppointmentInsert(insertAppointmentData, gapi, handleResponse, gcID, showSnackbar) {
   let event = {
     'summary': insertAppointmentData.title,
     'location': insertAppointmentData.location,
@@ -120,15 +121,14 @@ function handleAppointmentInsert(insertAppointmentData, gapi, handleResponse, gc
 
   request.execute(function (response) {
     if (response.error || response == false) {
-      handleResponse("errorSnackbar");
+      showSnackbar('Aktion fehlgeschlagen.', SEVERITY.ERROR);
     } else {
-      handleResponse();
-      handleResponse("successSnackbar");
+      showSnackbar('Aktion erfolgreich.', SEVERITY.SUCCESS);
     }
   });
 }
 
-function handleAppointmentChange(changedAppointmentData, gapi, gcID) {
+function handleAppointmentChange(changedAppointmentData, gapi, gcID, showSnackbar) {
   var event1 = {
     'summary': changedAppointmentData.title,
     'location': changedAppointmentData.location,
@@ -151,9 +151,9 @@ function handleAppointmentChange(changedAppointmentData, gapi, gcID) {
 
   request.execute(function (response) {
     if (response.error || response == false) {
-      alert('Error'); // TODO: exchange with snackbar
+      showSnackbar('Aktion fehlgeschlagen.', SEVERITY.ERROR);
     } else {
-      alert('Success'); // TODO: exchange with snackbar
+      showSnackbar('Aktion erfolgreich.', SEVERITY.SUCCESS);
     }
   });
 }
