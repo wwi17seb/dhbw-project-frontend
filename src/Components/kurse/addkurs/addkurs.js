@@ -44,7 +44,6 @@ export default function AddKurs() {
   const [semesters, setSemesters] = useState([]);
   const [studiengang, setStudiengang] = useState(undefined);
   const [studienrichtung, setStudienrichtung] = useState(undefined);
-  const [errorMessages, setErrorMessages] = useState([]);
 
   const loadSubjects = () => {
     APICall('GET', 'fieldsOfStudy?withMajorSubjects=true').then((res) => {
@@ -108,21 +107,6 @@ export default function AddKurs() {
     setOpen(false);
   };
 
-  const getMajorSubjectId = (name) => {
-    if (subjectData !== null) {
-      var id = null;
-      for (var i = 0; i < subjectData.length; i++) {
-        var richtungen = subjectData[i]['MajorSubjects'];
-        for (var j = 0; j < richtungen.length; j++) {
-          if (name === richtungen[j]['name']) {
-            return richtungen[j]['majorSubject_id'];
-          }
-        }
-      }
-      return id;
-    }
-  };
-
   const handlePost = (event) => {
     event.preventDefault();
     if (loading === null) {
@@ -132,7 +116,7 @@ export default function AddKurs() {
     const data = {
       name: nameValue,
       google_calendar_id: gcId,
-      majorSubject_id: getMajorSubjectId(document.getElementById('studienrichtung-select').innerHTML),
+      majorSubject_id: studienrichtung.majorSubject_id,
       Semesters: semesters,
     };
 
