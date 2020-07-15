@@ -5,9 +5,11 @@ import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
+import Button from '@material-ui/core/Button';
 
 import { APICall } from '../../../helper/Api';
 import AddSemesterContent from '../addSemesterContent/addSemesterContent';
+import EditKurs from '../editkurs/editkurs';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -40,6 +42,7 @@ function a11yProps(index) {
 
 export default function ScrollableTabsButtonAuto(props) {
   const [value, setValue] = useState(0);
+  const [open, setOpen] = useState(false);
   const [moduleCatalog, setModuleCatalog] = useState();
 
   const loadModuleCatalog = async () => {
@@ -58,6 +61,11 @@ export default function ScrollableTabsButtonAuto(props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const handleEdit = (event) => {
+    setOpen(true)
+    setInterval(function () { setOpen(false); }, 1000);
+  }
 
   const { Semesters } = props.selectedCourse;
   Semesters.sort((sem1, sem2) => {
@@ -93,6 +101,10 @@ export default function ScrollableTabsButtonAuto(props) {
           {finalTabLabels}
         </Tabs>
       </Paper>
+      <Button variant="outlined" color="primary" onClick={handleEdit}>
+        kurs bearbeiten
+      </Button>
+      <EditKurs open={open} selectedCourse={props.selectedCourse}></EditKurs>
       {finalTabPanels}
     </Fragment>
   );

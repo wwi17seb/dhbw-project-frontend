@@ -8,7 +8,7 @@ import StudienrichtungAuswahl from './studienrichtungauswahl'
 
 const useStyles = makeStyles(theme => ({
     formControl: {
-        margin: 20,
+        marginRight: 20,
         minWidth: 150,
     },
 }));
@@ -32,10 +32,13 @@ export default function StudiengangAuswahl({ data }) {
         setStudiengang(event.target.value);
     };
     //hinzufügen der MenuItems anhand der List mit Studiengängen
-    for (var i = 0; i < data["default"]["payload"]["fieldOfStudies"].length; i++) {
-        var gang = data["default"]["payload"]["fieldOfStudies"][i]["name"]
-        studiengangAuswahl.push(<MenuItem key={i} value={gang}>{gang}</MenuItem>);
+    if (data !== null) {
+        for (var i = 0; i < data["payload"]["FieldsOfStudy"].length; i++) {
+            var gang = data["payload"]["FieldsOfStudy"][i]["name"]
+            studiengangAuswahl.push(<MenuItem key={i} value={gang}>{gang}</MenuItem>);
+        }
     }
+
 
     return (
         <React.Fragment>
