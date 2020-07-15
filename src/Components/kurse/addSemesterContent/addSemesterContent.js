@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { APICall } from '../../../helper/Api';
 import MyTable from './myTable';
+import { SEVERITY } from '../../Snackbar/SnackbarSeverity';
 
 // Funktion, welche das Auswahlmenü für einen Studiengang zurück gibt
 const AddSemesterContent = (props) => {
@@ -17,7 +18,7 @@ const AddSemesterContent = (props) => {
         if (res.data && res.status === 200) {
           setPresentations(res.data.payload.Presentations);
         } else {
-          //alert('Problem occurred: Not Loaded!'); // TODO: exchange with snackbar
+          props.showSnackbar('Semester konnten nicht geladen werden!', SEVERITY.ERROR);
         }
       });
     }

@@ -31,6 +31,10 @@ const UserContent = () => {
     setSnackbarOpen(true);
   };
 
+  const closeSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
   const getUsers = async () => {
     APICall('GET', 'users').then((res) => {
       if (res.data && res.status === 200) {
@@ -95,7 +99,7 @@ const UserContent = () => {
           ))}
         </Paper>
       </Grid>
-      <SnackBar isOpen={snackbarOpen} message={message} severity={severity} />
+      <SnackBar isOpen={snackbarOpen} message={message} severity={severity} closeSnackbar={closeSnackbar} />
     </Fragment>
   );
 };

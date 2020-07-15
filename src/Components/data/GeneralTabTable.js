@@ -53,6 +53,10 @@ const GeneralTabTable = ({
     setSnackbarOpen(true);
   };
 
+  const closeSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
   const getData = async () => {
     APICall('GET', route).then((res) => {
       if (res.data && res.status === 200) {
@@ -107,7 +111,7 @@ const GeneralTabTable = ({
           ))}
         </Paper>
       </Grid>
-      <SnackBar isOpen={snackbarOpen} message={message} severity={severity} />
+      <SnackBar isOpen={snackbarOpen} message={message} severity={severity} closeSnackbar={closeSnackbar} />
       <AddEntityDialog
         addDialog={addDialog}
         handleClose={handleClose}
