@@ -55,17 +55,15 @@ export default function AddKurs() {
     const [snackbarOpen, setSnackbarOpen] = React.useState(false);
 
     const loadSubjects = () => {
-        axios.get("/api/fieldOfStudies", { params: { withMajorSubjects: true } }).then(res => {
+        APICall("GET", 'fieldsOfStudy?withMajorSubjects=true').then(res => {
             var data = res.data
             setSubjectData(data)
-        }).catch(err => {
-            setSubjectData({})
         })
     }
 
     if (subjectData === null) {
-        //loadSubjects()
-        setSubjectData(testdata)
+        loadSubjects()
+        //setSubjectData(testdata)
     }
     const ClickSubmit = () => {
         var kursname = document.getElementById("kursname-input").value
@@ -140,7 +138,7 @@ export default function AddKurs() {
 
             output.push({
                 name: semName,
-                number: i,
+                number: i - 1,
                 start_date: dateBegin,
                 end_date: dateEnd
             })
@@ -148,12 +146,22 @@ export default function AddKurs() {
         return output
     }
 
-    
-    const showSnackbar = (message, severity) => {
-        setMessage(message);
-        setSeverity(severity);
-        setSnackbarOpen(true);
-    };
+    const getMajorSubjectId = (name) => {
+        if (subjectData !== null) {
+            var id = null
+            for (var i = 0; i < subjectData["payload"]["FieldsOfStudy"].length; i++) {
+                var richtungen = subjectData["payload"]["FieldsOfStudy"][i]["MajorSubjects"]
+                for (var j = 0; j < richtungen.length; j++) {
+                    if (name == richtungen[j]["name"]) {
+                        id = richtungen[j]["majorSubject_id"]
+                        break;
+                    }
+                }
+            }
+
+            return (id)
+        }
+    }
 
     const handlePost = (event) => {
         event.preventDefault();
@@ -165,45 +173,28 @@ export default function AddKurs() {
 
         let data = {
             name: nameValue,
-            google_calendar_id: gcId, 
-            majorSubject_id: document.getElementById("studiengang-select").innerHTML,
-            directorOfStudies_ids: "",
-            semesters: semesterList
-            
+            google_calendar_id: gcId,
+            majorSubject_id: getMajorSubjectId(document.getElementById("studienrichtung-select").innerHTML),
+            Semesters: semesterList
         };
 
-
-        APICall("POST",'courses', data).then((res) =>
-        {
-            if (res.data && res.status === 200) {
-                const data = res.data.payload;
+        APICall("POST", 'courses', data).then((res) => {
+            if (res.data && (res.status === 200 || res.status === 201)) {
                 setStatusText(res.statusText)
                 setStatus(res.status)
                 setTimeout(() => { setStatus(null) }, 2000)
                 setLoading(null)
                 setButton(false)
-              } else {
-                showSnackbar('Beim Speichern der Anfrage ist ein Fehler aufgetreten.', SEVERITY.ERROR);
-              }
+                window.location.reload()
+            } else {
+                setStatusText("Kurs konnte nicht hinzugefügt werden")
+                setStatus(400)
+                setTimeout(() => { setStatus(null) }, 3000)
+                setLoading(null)
+                setButton(false)
+            }
         });
-        /*axios.post('/api/courses', data)
-            .then(res => {
-                setStatusText(res.statusText)
-                setStatus(res.status)
-                setTimeout(() => { setStatus(null) }, 2000)
-                setLoading(null)
-                setButton(false)
-            })
-            .catch(err => {
-                if (err.response) {
-                    setStatusText(err.response.statusText)
-                    setStatus(err.response.status)
-                    setTimeout(() => { setStatus(null) }, 3000)
-                    setLoading(null)
-                    setButton(false)
-                }
-            });
-        setOpen(false);*/
+        setOpen(false);
     };
 
     const NameOnChange = event => {
@@ -224,7 +215,7 @@ export default function AddKurs() {
         }
     }
 
-    const GCIdOnChange = event =>{
+    const GCIdOnChange = event => {
         var value = event.target.value;
         setGCId(value);
     }
@@ -248,15 +239,15 @@ export default function AddKurs() {
                 <Grid item xs={12}>
                     <Paper className={classes.paper}>
                         <div className={classes.block}>
-                            <Typography style={{"font-weight": "bold"}} variant='subtitle1'>Bitte geben Sie den Namen des Kurses an:</Typography>
-                            <TextField required value={nameValue} error={nameerror} onChange={NameOnChange} id="kursname-input" label="Kursname" variant="outlined" margin="dense" helperText={nametext} />
+                            <Typography variant='h6'>Bitte geben Sie den Namen des Kurses an:</Typography>
+                            <TextField required value={nameValue} error={nameerror} onChange={NameOnChange} id="kursname-input" label="Kursname" variant="outlined" helperText={nametext} />
                         </div>
                         <div className={classes.block}>
-                            <Typography style={{"font-weight": "bold"}} variant='subtitle1'>Bitte geben Sie den Studiengang und Studienrichtung an:</Typography>
+                            <Typography variant='h6'>Bitte geben Sie den Studiengang und Studienrichtung an:</Typography>
                             <StudiengangAuswahl data={subjectData}></StudiengangAuswahl>
                         </div>
                         <div className={classes.block}>
-                            <Typography style={{"font-weight": "bold"}} variant='subtitle1'>Bitte wählen Sie die Anzahl der Semester aus und geben Sie für jedes Semester die Zeiträume an:</Typography>
+                            <Typography variant='h6'>Bitte wählen Sie die Anzahl der Semester aus und geben Sie für jedes Semester die Zeiträume an:</Typography>
                             <Grid container direction="row" justify="flex-start" alignItems="center">
                                 <Grid item>
                                     6 Semester
@@ -272,7 +263,7 @@ export default function AddKurs() {
                         </div>
                         <div className={classes.block}>
                             <Typography variant='h6'>Bitte geben Sie die Google Calendar ID an:</Typography>
-                            <TextField required value={gcId} onChange={GCIdOnChange} id="gcId-input" label="Google Calendar ID" variant="outlined"/>
+                            <TextField required value={gcId} onChange={GCIdOnChange} id="gcId-input" label="Google Calendar ID" variant="outlined" />
                         </div>
                         <div className={classes.block}>
                             <Button onClick={ClickSubmit.bind(this)} disabled={button} id="submit-kurs" variant="contained" color="primary">

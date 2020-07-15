@@ -90,7 +90,7 @@ export default function SemesterAuswahl({ handleValues, anzahlSemester }) {
             <Grid item xs={12}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <Grid container spacing={3} alignItems="center">
-                        <Grid item>
+                        <Grid item xs={12}>
                             <Typography variant="subtitle1">{"Semester 1:"}</Typography>
                         </Grid>
                         <Grid item>
@@ -123,7 +123,7 @@ export default function SemesterAuswahl({ handleValues, anzahlSemester }) {
             <Grid item xs={12}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <Grid container spacing={3} alignItems="center">
-                        <Grid item>
+                        <Grid item xs={12}>
                             <Typography variant="subtitle1">{"Semester 2:"}</Typography>
                         </Grid>
                         <Grid item>
@@ -156,7 +156,7 @@ export default function SemesterAuswahl({ handleValues, anzahlSemester }) {
             <Grid item xs={12}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <Grid container spacing={3} alignItems="center">
-                        <Grid item>
+                        <Grid item xs={12}>
                             <Typography variant="subtitle1">{"Semester 3:"}</Typography>
                         </Grid>
                         <Grid item>
@@ -189,7 +189,7 @@ export default function SemesterAuswahl({ handleValues, anzahlSemester }) {
             <Grid item xs={12}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <Grid container spacing={3} alignItems="center">
-                        <Grid item>
+                        <Grid item xs={12}>
                             <Typography variant="subtitle1">{"Semester 4:"}</Typography>
                         </Grid>
                         <Grid item>
@@ -222,7 +222,7 @@ export default function SemesterAuswahl({ handleValues, anzahlSemester }) {
             <Grid item xs={12}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <Grid container spacing={3} alignItems="center">
-                        <Grid item>
+                        <Grid item xs={12}>
                             <Typography variant="subtitle1">{"Semester 5:"}</Typography>
                         </Grid>
                         <Grid item>
@@ -255,7 +255,7 @@ export default function SemesterAuswahl({ handleValues, anzahlSemester }) {
             <Grid item xs={12}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <Grid container spacing={3} alignItems="center">
-                        <Grid item>
+                        <Grid item xs={12}>
                             <Typography variant="subtitle1">{"Semester 6:"}</Typography>
                         </Grid>
                         <Grid item>
@@ -289,7 +289,7 @@ export default function SemesterAuswahl({ handleValues, anzahlSemester }) {
                 <Grid item xs={12}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <Grid container spacing={3} alignItems="center">
-                            <Grid item>
+                            <Grid item xs={12}>
                                 <Typography variant="subtitle1">{"Semester 7:"}</Typography>
                             </Grid>
                             <Grid item>
