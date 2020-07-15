@@ -42,6 +42,9 @@ export default function AddKurs() {
   const [subjectData, setSubjectData] = React.useState([]);
 
   const [semesters, setSemesters] = useState([]);
+  const [studiengang, setStudiengang] = useState(undefined);
+  const [studienrichtung, setStudienrichtung] = useState(undefined);
+  const [errorMessages, setErrorMessages] = useState([]);
 
   const loadSubjects = () => {
     APICall('GET', 'fieldsOfStudy?withMajorSubjects=true').then((res) => {
@@ -76,12 +79,23 @@ export default function AddKurs() {
   }, []);
 
   const ClickSubmit = () => {
-    var kursname = setNameValue;
-    var studiengang = document.getElementById('studiengang-select').innerHTML;
-    var studienrichtung = document.getElementById('studienrichtung-select').innerHTML;
-    if (kursname === '' || studiengang === '<span>​</span>' || studienrichtung === '<span>​</span>') {
-      setStatusText('Nicht alles ausgefüllt');
+    const errorMessages = [];
+
+    if (nameValue === '') {
+      errorMessages.push('Es wurde kein Kursname vergeben!');
+    }
+    if (!studienrichtung || studienrichtung === '' || studienrichtung === '<span>​</span>') {
+      errorMessages.push('Es wurde keine Studienrichtung ausgewählt!');
+    }
+    if (!studiengang || studiengang === '' || studiengang === '<span>​</span>') {
+      errorMessages.push('Es wurde kein Studiengang ausgewählt!');
+    }
+
+    if (errorMessages.length > 0) {
+      const textToRender = errorMessages.map((em) => em + '\n\n');
+      setStatusText('Nicht alles ausgefüllt \n' + textToRender);
       setStatus('Halt: ');
+      // FIXME: Implement correct snackbar
       setTimeout(() => {
         setStatus(null);
       }, 2000);
@@ -211,7 +225,13 @@ export default function AddKurs() {
             </div>
             <div className={classes.block}>
               <Typography variant='h6'>Bitte geben Sie den Studiengang und Studienrichtung an:</Typography>
-              <StudiengangAuswahl data={subjectData} />
+              <StudiengangAuswahl
+                data={subjectData}
+                studiengang={studiengang}
+                setStudiengang={setStudiengang}
+                studienrichtung={studienrichtung}
+                setStudienrichtung={setStudienrichtung}
+              />
             </div>
             <div className={classes.block}>
               <Typography variant='h6'>

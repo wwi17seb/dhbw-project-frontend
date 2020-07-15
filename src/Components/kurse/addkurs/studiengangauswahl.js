@@ -13,11 +13,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-//Funktion, welche das Auswahlmenü für einen Studiengang zurück gibt
-export default function StudiengangAuswahl({ data }) {
+export default function StudiengangAuswahl({ data, studiengang, setStudiengang, studienrichtung, setStudienrichtung }) {
   const classes = useStyles();
 
-  const [studiengang, setStudiengang] = useState('');
+  const setCurrentValue = (fieldOfStudy_id) => {
+    const foundFieldOfStudy = data.find((fos) => fos.fieldOfStudy_id === fieldOfStudy_id) || '';
+    setStudiengang(foundFieldOfStudy);
+  };
 
   return (
     <Fragment>
@@ -26,8 +28,8 @@ export default function StudiengangAuswahl({ data }) {
         <Select
           labelId='studiengang-label'
           id='studiengang-select'
-          value={studiengang || ''}
-          onChange={({ target: { value } }) => setStudiengang(value)}>
+          value={studiengang ? studiengang.fieldOfStudy_id : ''}
+          onChange={({ target: { value } }) => setCurrentValue(value)}>
           {data.map((entry, index) => (
             <MenuItem key={index} value={entry.fieldOfStudy_id}>
               {entry.name}
@@ -35,7 +37,12 @@ export default function StudiengangAuswahl({ data }) {
           ))}
         </Select>
       </FormControl>
-      <StudienrichtungAuswahl fieldOfStudyId={studiengang} data={data}></StudienrichtungAuswahl>
+      <StudienrichtungAuswahl
+        fieldOfStudy={studiengang}
+        data={data}
+        studienrichtung={studienrichtung}
+        setStudienrichtung={setStudienrichtung}
+      />
     </Fragment>
   );
 }
