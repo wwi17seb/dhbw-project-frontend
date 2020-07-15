@@ -45,7 +45,6 @@ export default function AddKurs() {
 
   const loadSubjects = () => {
     APICall('GET', 'fieldsOfStudy?withMajorSubjects=true').then((res) => {
-      console.log('payload', res.data.payload);
       if (res && res.status === 200) {
         setSubjectData(res.data.payload.FieldsOfStudy);
       }
