@@ -1,39 +1,34 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Typography } from '@material-ui/core';
+import moment from 'moment';
 
-const Kurszusammenfassung = ({ nameValue, checked, state }) => {
+const Kurszusammenfassung = ({ nameValue, checked, semesters }) => {
   var kursname = nameValue;
   var studiengang = document.getElementById('studiengang-select').innerHTML;
   var studienrichtung = document.getElementById('studienrichtung-select').innerHTML;
-  var semesterAnzahl;
-  semesterAnzahl = checked ? 7 : 6;
-  var semesterlist = [];
 
-  for (var i = 1; i <= semesterAnzahl; i++) {
-    var text =
-      'Semester ' +
-      i +
-      ': Von ' +
-      state['B' + i].toLocaleDateString('de-DE') +
-      ' Bis ' +
-      state['E' + i].toLocaleDateString('de-DE');
-
-    console.log('text', text);
-    semesterlist.push(<Typography>{text}</Typography>);
-  }
+  const DisplaySemester = ({ start_date, end_date, name, counter }) => {
+    return (
+      <Typography>{`Semester ${counter}: ${moment(start_date).format('DD.MM.YYYY')} - ${moment(end_date).format(
+        'DD.MM.YYYY'
+      )}`}</Typography>
+    );
+  };
 
   return (
-    <div>
+    <Fragment>
       Kursname: {kursname}
       <br />
       Studiengang: {studiengang}
       <br />
       Studienrichtung: {studienrichtung}
       <br />
-      Semesteranzahl: {semesterAnzahl}
+      Semesteranzahl: {semesters.length}
       <br />
-      {semesterlist}
-    </div>
+      {semesters.map((semester, index) => (
+        <DisplaySemester semester={semester} counter={index + 1} key={index} />
+      ))}
+    </Fragment>
   );
 };
 

@@ -269,7 +269,7 @@ export default function AddKurs() {
             <DialogTitle id='alert-dialog-title'>{'Kurs mit folgenden Daten hinzufügen?'}</DialogTitle>
             <DialogContent>
               <DialogContentText id='alert-dialog-description'>
-                <Kurszusammenfassung checked={checked} state={state} nameValue={nameValue} />
+                <Kurszusammenfassung checked={checked} semesters={semesters} nameValue={nameValue} />
               </DialogContentText>
             </DialogContent>
             <DialogActions>
