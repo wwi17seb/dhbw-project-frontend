@@ -103,37 +103,6 @@ export default function AddKurs() {
     setOpen(false);
   };
 
-  //returns array with semester objects
-  const getSemesterList = () => {
-    var anz = checked ? 7 : 6;
-    var output = [];
-
-    for (var i = 1; i <= anz; i++) {
-      var semName = '';
-      var dateBegin =
-        state['B' + i].getFullYear() + '-' + (state['B' + i].getMonth() + 1) + '-' + state['B' + i].getDate();
-      var dateEnd =
-        state['E' + i].getFullYear() + '-' + (state['E' + i].getMonth() + 1) + '-' + state['E' + i].getDate();
-      if (state['B' + i].getFullYear() !== state['E' + i].getFullYear()) {
-        semName =
-          'WS' +
-          state['B' + i].getFullYear().toString().substring(2) +
-          '/' +
-          state['E' + i].getFullYear().toString().substring(2);
-      } else {
-        semName = 'SS' + state['B' + i].getFullYear().toString().substring(2);
-      }
-
-      output.push({
-        name: semName,
-        number: i - 1,
-        start_date: dateBegin,
-        end_date: dateEnd,
-      });
-    }
-    return output;
-  };
-
   const getMajorSubjectId = (name) => {
     if (subjectData !== null) {
       var id = null;
@@ -156,13 +125,11 @@ export default function AddKurs() {
       setLoading(<LinearProgress />);
     }
     setButton(true);
-    var semesterList = getSemesterList();
-
-    let data = {
+    const data = {
       name: nameValue,
       google_calendar_id: gcId,
       majorSubject_id: getMajorSubjectId(document.getElementById('studienrichtung-select').innerHTML),
-      Semesters: semesterList,
+      Semesters: semesters,
     };
 
     APICall('POST', 'courses', data).then((res) => {
