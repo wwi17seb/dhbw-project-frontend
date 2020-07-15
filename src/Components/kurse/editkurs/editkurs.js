@@ -10,7 +10,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { Typography } from '@material-ui/core';
+import { Typography, Grid } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     textfield: {
@@ -153,18 +153,26 @@ export default function EditKurs(props) {
                 <DialogTitle id="alert-dialog-title">{"Kurs bearbeiten:"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        <div className={classes.block}>
-                            <Typography variant='h6'>Bitte geben Sie den Namen des Kurses an:</Typography>
-                            <TextField required value={nameValue} error={nameerror} onChange={NameOnChange} id="kursname-input" label="Kursname" variant="outlined" helperText={nametext} />
-                        </div>
-                        <div className={classes.block}>
-                            <Typography variant='h6'>Bitte geben Sie den Studiengang und Studienrichtung an:</Typography>
-                            <StudiengangAuswahl data={subjectData}></StudiengangAuswahl>
-                        </div>
-                        <div className={classes.block}>
-                            <Typography variant='h6'>Bitte geben Sie die Google Calendar ID an:</Typography>
-                            <TextField required value={gcId} onChange={GCIdOnChange} id="gcId-input" label="Google Calendar ID" variant="outlined" />
-                        </div>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <Typography variant='h6'>Bitte geben Sie den Namen des Kurses an:</Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField required value={nameValue} error={nameerror} onChange={NameOnChange} id="kursname-input" label="Kursname" variant="outlined" helperText={nametext} />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Typography variant='h6'>Bitte geben Sie den Studiengang und Studienrichtung an:</Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <StudiengangAuswahl data={subjectData}></StudiengangAuswahl>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Typography variant='h6'>Bitte geben Sie die Google Calendar ID an:</Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField required value={gcId} onChange={GCIdOnChange} id="gcId-input" label="Google Calendar ID" variant="outlined" />
+                            </Grid>
+                        </Grid>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions style={{ padding: 10 }}>
