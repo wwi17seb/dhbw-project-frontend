@@ -76,7 +76,7 @@ function handleAppointmentsLoad(gapi, handleResponse, googleCalendar, gcID, show
     setTimeout(() => {
       if(success === true){
         handleResponse(appointments.items);
-        showSnackbar('Aktion erfolgreich.', SEVERITY.SUCCESS);
+        showSnackbar('Kalender erfolgreich geladen.', SEVERITY.SUCCESS);
         return (appointments.items);        
       }
     }, 600);
@@ -92,9 +92,9 @@ function handleAppointmentDelete(deleteAppointmentId, gapi, gcID, showSnackbar) 
 
   request.execute(function (response) {
     if (response.error || response == false) {
-      showSnackbar('Aktion fehlgeschlagen.', SEVERITY.ERROR);
+      showSnackbar('Löschen fehlgeschlagen. Neuladen der Seite erforderlich.', SEVERITY.ERROR);
     } else {
-      showSnackbar('Aktion erfolgreich.', SEVERITY.SUCCESS);
+      showSnackbar('Vorlesung erfolgreich gelöscht.', SEVERITY.SUCCESS);
     }
   });
 }
@@ -121,9 +121,9 @@ function handleAppointmentInsert(insertAppointmentData, gapi, handleResponse, gc
 
   request.execute(function (response) {
     if (response.error || response == false) {
-      showSnackbar('Aktion fehlgeschlagen.', SEVERITY.ERROR);
+      showSnackbar('Einfügen fehlgeschlagen. Neuladen der Seite erforderlich.', SEVERITY.ERROR);
     } else {
-      showSnackbar('Aktion erfolgreich.', SEVERITY.SUCCESS);
+      showSnackbar('Vorlesung erfolgreich eingefügt.', SEVERITY.SUCCESS);
     }
   });
 }
@@ -151,9 +151,9 @@ function handleAppointmentChange(changedAppointmentData, gapi, gcID, showSnackba
 
   request.execute(function (response) {
     if (response.error || response == false) {
-      showSnackbar('Aktion fehlgeschlagen.', SEVERITY.ERROR);
+      showSnackbar('Änderung fehlgeschlagen. Neuladen der Seite erforderlich.', SEVERITY.ERROR);
     } else {
-      showSnackbar('Aktion erfolgreich.', SEVERITY.SUCCESS);
+      showSnackbar('Vorlesung erfolgreich geändert.', SEVERITY.SUCCESS);
     }
   });
 }
