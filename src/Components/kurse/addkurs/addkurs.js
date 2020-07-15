@@ -42,7 +42,6 @@ export default function AddKurs() {
   const [gcId, setGCId] = React.useState('');
   const [nametext, setNameText] = React.useState('');
   const [nameerror, setNameError] = React.useState(false);
-  const [state, setState] = React.useState({});
   const [status, setStatus] = React.useState(null);
   const [statusText, setStatusText] = React.useState(null);
   const [loading, setLoading] = React.useState(null);
@@ -70,9 +69,8 @@ export default function AddKurs() {
   };
 
   const initalizeSemsters = () => {
-    var anz = checked ? 7 : 6;
     const semesters = [];
-    for (var i = 1; i <= anz; i++) {
+    for (var i = 1; i <= 6; i++) {
       semesters.push(initialSemesterContentToAdd(i));
     }
     setSemesters(semesters);
