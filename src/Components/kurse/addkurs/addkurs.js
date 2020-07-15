@@ -11,14 +11,13 @@ import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
-import React, { useEffect, useState, useReducer } from 'react';
+import React, { useEffect, useState } from 'react';
 import { APICall } from '../../../helper/Api';
-import SemesterAuswahl from './semesterauswahl';
-import StudiengangAuswahl from './studiengangauswahl';
-import SubmitFeedback from './submitfeedback';
 import { uuidv4 } from '../../../helper/uuid';
 import Kurszusammenfassung from './Kurszusammenfassung';
 import SemesterEntry from './SemesterEntry';
+import StudiengangAuswahl from './studiengangauswahl';
+import SubmitFeedback from './submitfeedback';
 
 //css klassen, welche hier genutzt werden
 const useStyles = makeStyles((theme) => ({
