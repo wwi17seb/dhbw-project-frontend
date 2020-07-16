@@ -6,7 +6,6 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import ExpansionPanels from './ExpansionPanels'
 import ApiHandler from '../../helper/Api';
-import ModulAdd from './ModulAdd'
 import ModulAddStepper from './ModulAddStepper';
 
 const useStyles = makeStyles(theme => ({
@@ -23,9 +22,8 @@ const useStyles = makeStyles(theme => ({
 function ModulkatalogDetail(props) {
 
     const [moduleGroups, setModuleGroups] = React.useState([]);
-    const [majorSubjectId, setMajorSubjectId] = React.useState(props.match.params.name) ; //the majorSubjectId is passed in the url 
+    const [majorSubjectId, setMajorSubjectId] = React.useState(props.match.params.id); //the majorSubjectId is passed in the url 
     const [studyName, setStudyName] = React.useState('');
-    const [lectureSample, setLectureSample] = React.useState([]);
 
 
     const classes = useStyles();
@@ -54,7 +52,7 @@ function ModulkatalogDetail(props) {
                         {studyName}
                     </Typography>
                 </Breadcrumbs>
-                <ExpansionPanels studyName={studyName} moduleGroups={moduleGroups} majorSubjectId={majorSubjectId}/>
+                <ExpansionPanels studyName={studyName} moduleGroups={moduleGroups} majorSubjectId={majorSubjectId} />
                 <ModulAddStepper majorSubjectId={majorSubjectId} />
             </main>
         </div>
