@@ -36,7 +36,7 @@ const LectureDropdown = ({ moduleCatalog, currentSemesterNumber, Lecture, setLec
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
       }}
-      renderInput={(params) => <TextField {...params} label='Vorlesung' variant='outlined' />}
+      renderInput={(params) => <TextField {...params} label='Vorlesung' variant='outlined' margin='dense'/>}
     />
   );
 };

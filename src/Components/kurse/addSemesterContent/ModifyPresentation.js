@@ -124,7 +124,7 @@ const ModifyPresentation = ({
       <DialogTitle id='form-dialog-title'>{edit ? 'Vorlesung editieren' : 'Vorlesung hinzufügen'} </DialogTitle>
       <DialogContent>
         <Form onSubmit={handleSavePresentation}>
-          <Form.Group as={Row} controlId='Vorlesung' style={{ marginBottom: 15 }}>
+          <Form.Group as={Row} controlId='Vorlesung' style={{ marginBottom: 10 }}>
             <Col>
               <LectureDropdown
                 openDialog={open}
@@ -135,7 +135,7 @@ const ModifyPresentation = ({
               />
             </Col>
           </Form.Group>
-          <Form.Group as={Row} controlId='Dozent' style={{ marginBottom: 15 }}>
+          <Form.Group as={Row} controlId='Dozent' style={{ marginBottom: 10 }}>
             <Col>
               <Autocomplete
                 id='combo-box-lecturer'
@@ -150,11 +150,11 @@ const ModifyPresentation = ({
                 onInputChange={(event, newInputValue) => {
                   setInputLecturer(newInputValue);
                 }}
-                renderInput={(params) => <TextField {...params} label='Dozent' variant='outlined' />}
+                renderInput={(params) => <TextField {...params} label='Dozent' variant='outlined' margin='dense' />}
               />
             </Col>
           </Form.Group>
-          <Form.Group as={Row} controlId='Prüfungsleistung' style={{ marginBottom: 15 }}>
+          <Form.Group as={Row} controlId='Prüfungsleistung' style={{ marginBottom: 10 }}>
             <Col>
               <AcademicRecordDropdown
                 openDialog={open}
@@ -179,14 +179,14 @@ const ModifyPresentation = ({
           <DialogActions>
             <Form.Group as={Row}>
               <Col sm={{ span: 8, offset: 0 }}>
-                <Button variant='outlined' color='primary' type='reset' onClick={handleClose}>
+                <Button color='primary' type='reset' onClick={handleClose}>
                   Abbrechen
                 </Button>
               </Col>
             </Form.Group>
             <Form.Group as={Row}>
               <Col sm={{ span: 8, offset: 0 }}>
-                <Button variant='outlined' color='primary' type='submit'>
+                <Button color='primary' type='submit'>
                   Speichern
                 </Button>
               </Col>
