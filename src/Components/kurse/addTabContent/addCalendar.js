@@ -237,7 +237,6 @@ class GoogleCalendar extends React.PureComponent {
 
   componentDidUpdate() {
     this.appointmentForm.update();
-    // console.log(this.appointmentForm)
   }
 
   onEditingAppointmentChange(editingAppointment) {
