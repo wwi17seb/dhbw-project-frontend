@@ -27,6 +27,10 @@ const useStyles = makeStyles(theme => ({
     chips: {
         display: 'flex',
         flexWrap: 'wrap',
+    },
+    dialogActions: {
+        paddingRight: "16px",
+        paddingBottom: "10px"
     }
 }));
 
@@ -300,7 +304,7 @@ export default function AddLecturer(props) {
                         </Grid>
                     </DialogContentText>
                 </DialogContent>
-                <DialogActions style={{ padding: 10 }}>
+                <DialogActions className={classes.dialogActions}>
                     <Button onClick={handleCloseMenu} color="primary" >
                         abbrechen
                 </Button>
