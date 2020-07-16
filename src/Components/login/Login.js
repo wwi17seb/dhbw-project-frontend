@@ -349,10 +349,10 @@ class Login extends Component {
           <DialogTitle>Passwort zurücksetzen</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Kontaktiere bitte einen Administator, um dein Passwort zurücksetzen zu lassen.
+              Kontaktieren Sie bitte einen Administator, um Ihr Passwort zurücksetzen zu lassen.
             </DialogContentText>
           </DialogContent>
-          <DialogActions>
+          <DialogActions className={classes.dialogActions}>
             <Button onClick={this.handleResetPasswordDialogClose} color='primary' autoFocus>
               Schließen
             </Button>

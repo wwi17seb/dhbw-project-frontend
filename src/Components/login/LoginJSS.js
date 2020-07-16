@@ -55,6 +55,10 @@ const loginStyles = (theme) => ({
   submit: {
     marginTop: theme.spacing.unit * 3,
   },
+  dialogActions: {
+    paddingRight: "16px",
+    paddingBottom: "10px"
+  }
 });
 
 export default loginStyles;
