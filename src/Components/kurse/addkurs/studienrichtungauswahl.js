@@ -57,7 +57,6 @@ export default function StudienrichtungAuswahl({ studiengang, data }) {
             <Select
                 labelId="studienrichtung-label"
                 id="studienrichtung-select"
-
                 value={studienrichtung}
                 onChange={handleChange}
             >

@@ -24,7 +24,7 @@ const AcademicRecordDropdown = ({ possibleAcademicRecords, academicRecord, setAc
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
       }}
-      renderInput={(params) => <TextField {...params} label='Prüfungsleistung' variant='outlined' />}
+      renderInput={(params) => <TextField {...params} label='Prüfungsleistung' variant='outlined' margin='dense'/>}
     />
   );
 };

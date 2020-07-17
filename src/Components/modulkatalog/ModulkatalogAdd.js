@@ -24,6 +24,10 @@ export default function FormDialog() {
             margin: theme.spacing(1),
             minWidth: 120,
             maxWidth: 300,
+        },
+        dialogActions: {
+            paddingRight: "16px",
+            paddingBottom: "10px"
         }
     }));
 
@@ -118,13 +122,13 @@ export default function FormDialog() {
                         />
                     </FormControl>
                 </DialogContent>
-                <DialogActions>
+                <DialogActions className={classes.dialogActions}>
                     <Button onClick={handleClose} color="primary">
                         Abbrechen
-          </Button>
+                    </Button>
                     <Button onClick={handleAddClick} color="primary">
                         Hinzufügen
-          </Button>
+                    </Button>
                 </DialogActions>
             </Dialog>
         </div>

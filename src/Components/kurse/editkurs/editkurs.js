@@ -23,6 +23,10 @@ const useStyles = makeStyles(theme => ({
     chips: {
         display: 'flex',
         flexWrap: 'wrap',
+    },
+    dialogActions: {
+        paddingRight: "16px",
+        paddingBottom: "10px"
     }
 }));
 
@@ -150,32 +154,32 @@ export default function EditKurs(props) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{"Kurs bearbeiten:"}</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{"Kurs bearbeiten"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
-                                <Typography variant='h6'>Bitte geben Sie den Namen des Kurses an:</Typography>
+                                <Typography variant='h7'>Bitte geben Sie den Namen des Kurses an:</Typography>
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField required value={nameValue} error={nameerror} onChange={NameOnChange} id="kursname-input" label="Kursname" variant="outlined" helperText={nametext} />
+                                <TextField required value={nameValue} error={nameerror} onChange={NameOnChange} id="kursname-input" label="Kursname" variant="outlined"  margin="dense" helperText={nametext} />
                             </Grid>
                             <Grid item xs={12}>
-                                <Typography variant='h6'>Bitte geben Sie den Studiengang und Studienrichtung an:</Typography>
+                                <Typography variant='h7'>Bitte geben Sie den Studiengang und Studienrichtung an:</Typography>
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item xs={12} style={{"padding-top": 0, "padding-bottom": "26px"}}>
                                 <StudiengangAuswahl data={subjectData}></StudiengangAuswahl>
                             </Grid>
                             <Grid item xs={12}>
-                                <Typography variant='h6'>Bitte geben Sie die Google Calendar ID an:</Typography>
+                                <Typography variant='h7'>Bitte geben Sie die Google Calendar ID an:</Typography>
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField required value={gcId} onChange={GCIdOnChange} id="gcId-input" label="Google Calendar ID" variant="outlined" />
+                                <TextField required value={gcId} onChange={GCIdOnChange} id="gcId-input" label="Google Calendar ID" variant="outlined" margin="dense"/>
                             </Grid>
                         </Grid>
                     </DialogContentText>
                 </DialogContent>
-                <DialogActions style={{ padding: 10 }}>
+                <DialogActions className={classes.dialogActions}>
                     <Button onClick={handleCloseMenu} color="primary" >
                         Abbrechen
                     </Button>
@@ -190,7 +194,7 @@ export default function EditKurs(props) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">{"Sind sie sich sicher?"}</DialogTitle>
-                <DialogActions style={{ padding: 10 }}>
+                <DialogActions className={classes.dialogActions}>
                     <Button onClick={handleCloseConfirm} color="primary" >
                         Abbrechen
                 </Button>

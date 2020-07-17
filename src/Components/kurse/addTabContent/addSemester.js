@@ -101,7 +101,7 @@ export default function ScrollableTabsButtonAuto(props) {
           {finalTabLabels}
         </Tabs>
       </Paper>
-      <Button variant="outlined" color="primary" onClick={handleEdit}>
+      <Button style={{ marginBottom: "-55px" }} variant="contained" color="primary" onClick={handleEdit}>
         kurs bearbeiten
       </Button>
       <EditKurs open={open} selectedCourse={props.selectedCourse}></EditKurs>
