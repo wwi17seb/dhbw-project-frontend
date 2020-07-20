@@ -134,7 +134,7 @@ export default function AddKurs() {
 
             output.push({
                 name: semName,
-                number: i - 1,
+                number: i,
                 start_date: dateBegin,
                 end_date: dateEnd
             })
