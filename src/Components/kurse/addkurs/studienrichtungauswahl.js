@@ -47,8 +47,10 @@ export default function StudienrichtungAuswahl({ studiengang, data }) {
     }
 
     for (var i = 0; i < richtungen.length; i++) {
+        var effectiveFrom = richtungen[i]["catalog_effective_from"]
         var richtung = richtungen[i]["name"]
-        studienrichtungAuswahl.push(<MenuItem key={i} value={richtung}>{richtung}</MenuItem>)
+        var value = richtung + "-" + effectiveFrom
+        studienrichtungAuswahl.push(<MenuItem key={i} value={value}>{value}</MenuItem>)
     }
 
     return (
