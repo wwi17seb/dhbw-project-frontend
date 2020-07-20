@@ -134,7 +134,7 @@ export default function AddKurs() {
 
             output.push({
                 name: semName,
-                number: i - 1,
+                number: i,
                 start_date: dateBegin,
                 end_date: dateEnd
             })
@@ -143,18 +143,19 @@ export default function AddKurs() {
     }
 
     const getMajorSubjectId = (name) => {
+        var values = name.split("-")
+
         if (subjectData !== null) {
             var id = null
             for (var i = 0; i < subjectData["payload"]["FieldsOfStudy"].length; i++) {
                 var richtungen = subjectData["payload"]["FieldsOfStudy"][i]["MajorSubjects"]
                 for (var j = 0; j < richtungen.length; j++) {
-                    if (name == richtungen[j]["name"]) {
+                    if (values[0] == richtungen[j]["name"] && values[1] == richtungen[j]["catalog_effective_from"]) {
                         id = richtungen[j]["majorSubject_id"]
                         break;
                     }
                 }
             }
-
             return (id)
         }
     }
@@ -235,15 +236,15 @@ export default function AddKurs() {
                 <Grid item xs={12}>
                     <Paper className={classes.paper}>
                         <div className={classes.block}>
-                            <Typography style={{"font-weight": "bold"}} variant='subtitle1'>Bitte geben Sie den Namen des Kurses an:</Typography>
+                            <Typography style={{ "font-weight": "bold" }} variant='subtitle1'>Bitte geben Sie den Namen des Kurses an:</Typography>
                             <TextField required value={nameValue} error={nameerror} onChange={NameOnChange} id="kursname-input" label="Kursname" variant="outlined" margin="dense" helperText={nametext} />
                         </div>
                         <div className={classes.block}>
-                            <Typography style={{"font-weight": "bold"}} variant='subtitle1'>Bitte geben Sie den Studiengang und Studienrichtung an:</Typography>
+                            <Typography style={{ "font-weight": "bold" }} variant='subtitle1'>Bitte geben Sie den Studiengang und Studienrichtung an:</Typography>
                             <StudiengangAuswahl data={subjectData}></StudiengangAuswahl>
                         </div>
                         <div className={classes.block}>
-                            <Typography style={{"font-weight": "bold"}} variant='subtitle1'>Bitte wählen Sie die Anzahl der Semester aus und geben Sie für jedes Semester die Zeiträume an:</Typography>
+                            <Typography style={{ "font-weight": "bold" }} variant='subtitle1'>Bitte wählen Sie die Anzahl der Semester aus und geben Sie für jedes Semester die Zeiträume an:</Typography>
                             <Grid container direction="row" justify="flex-start" alignItems="center">
                                 <Grid item>
                                     6 Semester
@@ -258,8 +259,8 @@ export default function AddKurs() {
                             <SemesterAuswahl handleValues={handleValues} anzahlSemester={checked}></SemesterAuswahl>
                         </div>
                         <div className={classes.block}>
-                            <Typography style={{"font-weight": "bold"}} variant='subtitle1'>Bitte geben Sie die Google Calendar ID an:</Typography>
-                            <TextField required value={gcId} onChange={GCIdOnChange} id="gcId-input" label="Google Calendar ID" variant="outlined" margin="dense"/>
+                            <Typography style={{ "font-weight": "bold" }} variant='subtitle1'>Bitte geben Sie die Google Calendar ID an:</Typography>
+                            <TextField required value={gcId} onChange={GCIdOnChange} id="gcId-input" label="Google Calendar ID" variant="outlined" margin="dense" />
                         </div>
                         <div className={classes.block}>
                             <Button onClick={ClickSubmit.bind(this)} disabled={button} id="submit-kurs" variant="contained" color="primary">
