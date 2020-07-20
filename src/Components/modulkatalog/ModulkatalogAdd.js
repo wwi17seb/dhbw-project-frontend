@@ -16,6 +16,7 @@ export default function FormDialog() {
     const [fieldOfStudy, setFieldOfStudy] = React.useState("");
     const [fieldOfStudyList, setFieldOfStudyList] = React.useState([]);
     const [majorSubject, setMajorSubject] = React.useState("");
+    const [buttonDisabled, setButtonDisabled] = React.useState(true);
     const [year, setYear] = React.useState();
 
     let history = useHistory()
@@ -76,6 +77,11 @@ export default function FormDialog() {
     };
     const handleMajorSubjectChange = (event) => {
         setMajorSubject(event.target.value);
+        if (event.target.value !== "") {
+            setButtonDisabled(false)
+        } else {
+            setButtonDisabled(true)
+        }
     };
     const handleYearChange = (event) => {
         setYear(event.target.value);
@@ -136,7 +142,7 @@ export default function FormDialog() {
                     <Button onClick={handleClose} color="primary">
                         Abbrechen
                     </Button>
-                    <Button onClick={handleAddClick} color="primary">
+                    <Button disabled={buttonDisabled} onClick={handleAddClick} color="primary">
                         Hinzufügen
                     </Button>
                 </DialogActions>
