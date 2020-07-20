@@ -57,7 +57,6 @@ const useStyles = makeStyles((theme) => ({
 export default function ModulAddStepper(props) {
     const history = useHistory();
     const STEPS = ['Modul', 'Modulinfo', 'Lehr- und Lerninhalte (Vorlesung)']
-    const PRÜFUNGSLEISTUNGEN = ['Klausur', 'Seminararbeit', 'Mündliche Prüfung']
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const [disabled, setDisabled] = React.useState(true);
@@ -237,7 +236,7 @@ export default function ModulAddStepper(props) {
     }
 
     const getSemesterInterval = () => {
-        let semesters = [1, 2, 3, 4, 5, 6];
+        let semesters = [1, 2, 3, 4, 5, 6, 7];
         return ((semesters).map((semester) => (
             <MenuItem key={semester} value={semester}>{semester}</MenuItem>
         ))
@@ -455,6 +454,7 @@ export default function ModulAddStepper(props) {
                             multiple
                             margin='dense'
                             fullWidth
+                            style={{ minWidth: 150 }}
                             placeholder="mehrfach auswählen"
                             value={data.prüfungsleistungen}
                             onChange={updateSelect}
