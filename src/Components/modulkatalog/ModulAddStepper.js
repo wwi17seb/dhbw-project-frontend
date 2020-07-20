@@ -61,6 +61,7 @@ export default function ModulAddStepper(props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const [disabled, setDisabled] = React.useState(true);
+    const [records, setRecords] = React.useState([]);
     const [activeStep, setActiveStep] = React.useState(0);
     const [steps, setSteps] = React.useState(STEPS);
     const [vorlesungen, setVorlesungen] = React.useState([]);
@@ -69,7 +70,7 @@ export default function ModulAddStepper(props) {
     const [alertOpen, setAlertOpen] = React.useState(false);
     const initialData = {
         'wahlmodul': false,
-        'prüfungsleistungen': ["Klausur"],
+        'prüfungsleistungen': [],
         'Modul': "",
         'benotet': true,
         'Beschreibung': "",
@@ -104,7 +105,34 @@ export default function ModulAddStepper(props) {
 
     };
 
+    const loadRecords = () => {
+        APICall("GET", "/academicRecords").then((res) => {
+            var temp = []
+            var records = res.data.payload.AcademicRecords
+
+            for (var i = 0; i < records.length; i++) {
+                temp.push(
+                    <MenuItem key={records[i].academicRecord_id} value={records[i].academicRecord_id + "-" + records[i].type}>{records[i].type}</MenuItem>
+                )
+            }
+            setRecords(temp)
+        })
+    }
+
+    if (records.length === 0) {
+        loadRecords()
+    }
+
     const handleSend = () => {
+        var recordIds = []
+
+        for (var i = 0; i < data.prüfungsleistungen.length; i++) {
+            var split = data.prüfungsleistungen[i].split("-")
+            recordIds.push(split[0])
+        }
+
+        console.log(recordIds)
+
         APICall("POST", "/moduleGroups", {
             "majorSubject_id": props.majorSubjectId,
             "name": data.Modul,
@@ -117,7 +145,7 @@ export default function ModulAddStepper(props) {
                     "description": data.Beschreibung,
                     "ects": data.ECTS,
                     "catalog_id": data.ModulKatalogID,
-                    "academicRecord_ids": [1, 2], //this is static right now -> Klausur, Seminararbeit
+                    "academicRecord_ids": recordIds,
                     "number_of_lectures_to_attend": vorlesungen.length,
                     "rated": data.benotet,
                     "requirements": data.Voraussetzung,
@@ -140,6 +168,8 @@ export default function ModulAddStepper(props) {
                 setTimeout(() => {
                     handleClose()
                 }, 2000)
+
+                window.location.reload()
 
             } else {
                 setAlertOpen(true)
@@ -407,7 +437,7 @@ export default function ModulAddStepper(props) {
                             label="Benotet"
                             control={
                                 <Switch
-                                    id='Benotet'
+                                    id='benotet'
                                     checked={data.benotet}
                                     onChange={updateSwitch}
                                     name="checkedB"
@@ -436,9 +466,7 @@ export default function ModulAddStepper(props) {
                                 </div>
                             )}
                             MenuProps={MenuProps}
-                        >{PRÜFUNGSLEISTUNGEN.map((name) => (
-                            <MenuItem key={name} value={name}>{name}</MenuItem>
-                        ))}
+                        >{records}
                         </Select>
                     </FormControl>
 
@@ -454,7 +482,7 @@ export default function ModulAddStepper(props) {
                     <TextField
                         margin="dense"
                         id="ModulKatalogID"
-                        label="Katalog-ID"
+                        label="Kennzeichnung aus dem Modulkatalog der DHBW"
                         type="text"
                         fullWidth
                         value={data.ModulKatalogID == undefined ? "" : data.ModulKatalogID}
@@ -493,7 +521,7 @@ export default function ModulAddStepper(props) {
                     <TextField
                         margin="dense"
                         id="VorlesungKatalogID"
-                        label="Katalog-ID"
+                        label="Kennzeichnung aus dem Modulkatalog der DHBW"
                         type="text"
                         fullWidth
                         onChange={(e) => handleVorlesungen(e, step - 1)}
