@@ -130,8 +130,6 @@ export default function ModulAddStepper(props) {
             recordIds.push(split[0])
         }
 
-        console.log(recordIds)
-
         APICall("POST", "/moduleGroups", {
             "majorSubject_id": props.majorSubjectId,
             "name": data.Modul,
