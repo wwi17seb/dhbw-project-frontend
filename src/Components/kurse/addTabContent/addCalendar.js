@@ -30,12 +30,12 @@ let appointments = [];
 
 function formatData(calendarData) {
   appointments = [];
-
   for (let i = 0; i < calendarData.length; i++) {
     let appointment = {
       title: 'No title given',
       startDate: undefined,
       endDate: undefined,
+      notes: 'No description given',
       location: 'No location given',
       id: i,
       gcId: 'test',
@@ -43,6 +43,10 @@ function formatData(calendarData) {
 
     if (calendarData[i].location) {
       appointment.location = calendarData[i].location;
+    }
+
+    if (calendarData[i].description) {
+      appointment.notes = calendarData[i].description;
     }
 
     if (calendarData[i].summary) {
