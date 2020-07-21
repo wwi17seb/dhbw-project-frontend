@@ -9,7 +9,6 @@ const GoogleCalendar = () => {
   const attributes = [
     { db: 'clientId', name: 'Client-ID' },
     { db: 'apiKey', name: 'API-Key' },
-    { db: 'secret', name: 'Client-Schlüssel' },
   ];
   const [attributeState, setAttributeState] = useState({});
 
