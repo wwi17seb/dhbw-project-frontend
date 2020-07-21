@@ -1,4 +1,3 @@
-import GoogleCalendar from "../../admin/GCContent";
 import { SEVERITY } from '../../Snackbar/SnackbarSeverity';
 
 const creds = {
@@ -18,7 +17,7 @@ export async function syncGoogleCalendar(action, appointmentData, googleCalendar
       gapi.client.load('calendar', 'v3')
 
 
-    if (action != "load") {
+    if (action !== "load") {
       if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
         handleAction(action, appointmentData, gapi, handleResponse, googleCalendar, gcID, showSnackbar);
       } else {
@@ -90,7 +89,7 @@ function handleAppointmentDelete(deleteAppointmentId, gapi, gcID, showSnackbar) 
   });
 
   request.execute(function (response) {
-    if (response.error || response == false) {
+    if (response.error || response === false) {
       showSnackbar('Löschen fehlgeschlagen. Neuladen der Seite erforderlich.', SEVERITY.ERROR);
     } else {
       showSnackbar('Vorlesung erfolgreich gelöscht.', SEVERITY.SUCCESS);
@@ -119,7 +118,7 @@ function handleAppointmentInsert(insertAppointmentData, gapi, handleResponse, gc
   });
 
   request.execute(function (response) {
-    if (response.error || response == false) {
+    if (response.error || response === false) {
       showSnackbar('Einfügen fehlgeschlagen. Neuladen der Seite erforderlich.', SEVERITY.ERROR);
     } else {
       showSnackbar('Vorlesung erfolgreich eingefügt.', SEVERITY.SUCCESS);
@@ -128,6 +127,7 @@ function handleAppointmentInsert(insertAppointmentData, gapi, handleResponse, gc
 }
 
 function handleAppointmentChange(changedAppointmentData, gapi, gcID, showSnackbar) {
+
   var event1 = {
     'summary': changedAppointmentData.title,
     'location': changedAppointmentData.location,
@@ -149,7 +149,7 @@ function handleAppointmentChange(changedAppointmentData, gapi, gcID, showSnackba
   });
 
   request.execute(function (response) {
-    if (response.error || response == false) {
+    if (response.error || response === false) {
       showSnackbar('Änderung fehlgeschlagen. Neuladen der Seite erforderlich.', SEVERITY.ERROR);
     } else {
       showSnackbar('Vorlesung erfolgreich geändert.', SEVERITY.SUCCESS);
