@@ -16,8 +16,6 @@ import {
   AllDayPanel,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { connectProps } from '@devexpress/dx-react-core';
-import { KeyboardDateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import MomentUtils from '@date-io/moment';
 import { withStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -25,52 +23,48 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
-import LocationOn from '@material-ui/icons/LocationOn';
-import Notes from '@material-ui/icons/Notes';
-import Close from '@material-ui/icons/Close';
-import CalendarToday from '@material-ui/icons/CalendarToday';
-import Create from '@material-ui/icons/Create';
-import {syncGoogleCalendar, handleAppointmentsLoad} from './apiHandlerGoogleCalendar';
-
- let appointments = [];
+import {syncGoogleCalendar} from './apiHandlerGoogleCalendar';
+import AppointmentFormContainerBasic from './gcAppointmentForm';
+import SnackBar from '../../Snackbar/Snackbar';
+let appointments = [];
 
 function formatData(calendarData) {
   appointments = [];
-
   for (let i = 0; i < calendarData.length; i++) {
-    let test = {
+    let appointment = {
       title: 'No title given',
       startDate: undefined,
       endDate: undefined,
+      notes: 'No description given',
       location: 'No location given',
       id: i,
       gcId: 'test',
     };
 
     if (calendarData[i].location) {
-      test.location = calendarData[i].location;
+      appointment.location = calendarData[i].location;
+    }
+
+    if (calendarData[i].description) {
+      appointment.notes = calendarData[i].description;
     }
 
     if (calendarData[i].summary) {
-      test.title = calendarData[i].summary;
+      appointment.title = calendarData[i].summary;
     }
 
     if (calendarData[i].id) {
-      test.gcId = calendarData[i].id;
+      appointment.gcId = calendarData[i].id;
     }
-    //test.id = calendarData[i].id;
 
     let startDateString = calendarData[i].start.dateTime;
-    test.startDate = new Date(startDateString);
+    appointment.startDate = new Date(startDateString);
 
     let endDateString = calendarData[i].end.dateTime;
-    test.endDate = new Date(endDateString);
+    appointment.endDate = new Date(endDateString);
 
-    appointments.push(test);
+    appointments.push(appointment);
   }
-  console.log(appointments);
   return appointments;
 }
 
@@ -120,165 +114,6 @@ const containerStyles = (theme) => ({
   },
 });
 
-class AppointmentFormContainerBasic extends React.PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      appointmentChanges: {},
-    };
-
-    this.getAppointmentData = () => {
-      const { appointmentData } = this.props;
-      return appointmentData;
-    };
-    this.getAppointmentChanges = () => {
-      const { appointmentChanges } = this.state;
-      return appointmentChanges;
-    };
-
-    this.changeAppointment = this.changeAppointment.bind(this);
-    this.commitAppointment = this.commitAppointment.bind(this);
-  }
-
-  changeAppointment({ field, changes }) {
-    const nextChanges = {
-      ...this.getAppointmentChanges(),
-      [field]: changes,
-    };
-    this.setState({
-      appointmentChanges: nextChanges,
-    });
-  }
-
-  commitAppointment(type) {
-    const { commitChanges } = this.props;
-    const appointment = {
-      ...this.getAppointmentData(),
-      ...this.getAppointmentChanges(),
-    };
-    if (type === 'deleted') {
-      commitChanges({ [type]: appointment.id });
-    } else if (type === 'changed') {
-      commitChanges({ [type]: { [appointment.id]: appointment } });
-    } else {
-      commitChanges({ [type]: appointment });
-    }
-    this.setState({
-      appointmentChanges: {},
-    });
-  }
-
-  render() {
-    const { classes, visible, visibleChange, appointmentData, cancelAppointment, target, onHide } = this.props;
-    const { appointmentChanges } = this.state;
-
-    const displayAppointmentData = {
-      ...appointmentData,
-      ...appointmentChanges,
-    };
-
-    /*aktuelles Appointment
-        console.log(appointmentData)*/
-    const isNewAppointment = appointmentData.id === undefined;
-    const applyChanges = isNewAppointment
-      ? () => this.commitAppointment('added')
-      : () => this.commitAppointment('changed');
-
-    const textEditorProps = (field) => ({
-      variant: 'outlined',
-      onChange: ({ target: change }) =>
-        this.changeAppointment({
-          field: [field],
-          changes: change.value,
-        }),
-      value: displayAppointmentData[field] || '',
-      label: field[0].toUpperCase() + field.slice(1),
-      className: classes.textField,
-    });
-
-    const pickerEditorProps = (field) => ({
-      className: classes.picker,
-      // keyboard: true,
-      ampm: false,
-      value: displayAppointmentData[field],
-      onChange: (date) =>
-        this.changeAppointment({
-          field: [field],
-          changes: date ? date.toDate() : new Date(displayAppointmentData[field]),
-        }),
-      inputVariant: 'outlined',
-      format: 'DD/MM/YYYY HH:mm',
-      onError: () => null,
-    });
-
-    const cancelChanges = () => {
-      this.setState({
-        appointmentChanges: {},
-      });
-      visibleChange();
-      cancelAppointment();
-    };
-
-    return (
-      <AppointmentForm.Overlay visible={visible} target={target} fullSize onHide={onHide}>
-        <div>
-          <div className={classes.header}>
-            <IconButton className={classes.closeButton} onClick={cancelChanges}>
-              <Close color='action' />
-            </IconButton>
-          </div>
-          <div className={classes.content}>
-            <div className={classes.wrapper}>
-              <Create className={classes.icon} color='action' />
-              <TextField {...textEditorProps('title')} />
-            </div>
-            <div className={classes.wrapper}>
-              <CalendarToday className={classes.icon} color='action' />
-              <MuiPickersUtilsProvider utils={MomentUtils}>
-                <KeyboardDateTimePicker label='Start Date' {...pickerEditorProps('startDate')} />
-                <KeyboardDateTimePicker label='End Date' {...pickerEditorProps('endDate')} />
-              </MuiPickersUtilsProvider>
-            </div>
-            <div className={classes.wrapper}>
-              <LocationOn className={classes.icon} color='action' />
-              <TextField {...textEditorProps('location')} />
-            </div>
-            <div className={classes.wrapper}>
-              <Notes className={classes.icon} color='action' />
-              <TextField {...textEditorProps('notes')} multiline rows='6' />
-            </div>
-          </div>
-          <div className={classes.buttonGroup}>
-            {!isNewAppointment && (
-              <Button
-                variant='outlined'
-                color='secondary'
-                className={classes.button}
-                onClick={() => {
-                  visibleChange();
-                  this.commitAppointment('deleted');
-                }}>
-                Delete
-              </Button>
-            )}
-            <Button
-              variant='outlined'
-              color='primary'
-              className={classes.button}
-              onClick={() => {
-                visibleChange();
-                applyChanges();
-              }}>
-              {isNewAppointment ? 'Create' : 'Save'}
-            </Button>
-          </div>
-        </div>
-      </AppointmentForm.Overlay>
-    );
-  }
-}
-
 const AppointmentFormContainer = withStyles(containerStyles, { name: 'AppointmentFormContainer' })(
   AppointmentFormContainerBasic
 );
@@ -324,13 +159,16 @@ class GoogleCalendar extends React.PureComponent {
       editingAppointment: undefined,
       previousAppointment: undefined,
       addedAppointment: {},
-      startDayHour: 9,
-      endDayHour: 19,
+      startDayHour: 8,
+      endDayHour: 20,
       isNewAppointment: false,
-      dataReady: false,
-      googleCalender: props.calendar
+      dataReady: "loading",
+      googleCalendar: props.googleCalendar,
+      message: '',
+      severity: '',
+      snackbarOpen: false, 
+      gcId: props.selectedCourse.google_calendar_id,
     };
-
     this.loadData = this.loadData.bind(this);
     this.toggleConfirmationVisible = this.toggleConfirmationVisible.bind(this);
     this.commitDeletedAppointment = this.commitDeletedAppointment.bind(this);
@@ -380,14 +218,25 @@ class GoogleCalendar extends React.PureComponent {
   }
 
   handleResponse = (response) => {
-    this.setState({
-      data : formatData(response),
-      dataReady: true
-    })
+    if(response === "failedLoad"){
+      this.setState({
+        dataReady: "failedLoad"
+      })  
+    } else {
+      this.setState({
+        data : formatData(response),
+        dataReady: "ready"
+      })
+    }
   }
 
+  reloadAfterResponse = (response) => {
+    this.loadData(); 
+  }
+
+
   loadData() {
-    syncGoogleCalendar("load", " ", this.handleResponse); 
+    syncGoogleCalendar("load", " ", this.state.googleCalendar, this.state.gcId, this.handleResponse, this.props.showSnackbar); 
   }
 
   componentDidUpdate() {
@@ -429,8 +278,8 @@ class GoogleCalendar extends React.PureComponent {
     this.setState((state) => {
       const { data, deletedAppointmentId } = state;
       const nextData = data.filter((appointment) => appointment.id !== deletedAppointmentId);
-      /** Google Calendar Delete */
-      syncGoogleCalendar('delete', data[deletedAppointmentId].gcId);
+      syncGoogleCalendar('delete', data[deletedAppointmentId].gcId, this.state.googleCalendar, this.state.gcId, this.reloadAfterResponse, this.props.showSnackbar);
+
       return { data: nextData, deletedAppointmentId: null };
     });
     this.toggleConfirmationVisible();
@@ -442,7 +291,7 @@ class GoogleCalendar extends React.PureComponent {
       if (added) {
         const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0;
         data = [...data, { id: startingAddedId, ...added }];
-        syncGoogleCalendar('insert', added);
+        syncGoogleCalendar('insert', added, this.state.googleCalendar, this.state.gcId, this.reloadAfterResponse, this.props.showSnackbar);
       }
       if (changed) {
         data = data.map((appointment) =>
@@ -452,9 +301,9 @@ class GoogleCalendar extends React.PureComponent {
         if (changed[state.editingAppointment.id].title === undefined) {
           data[state.editingAppointment.id].startDate = changed[state.editingAppointment.id].startDate;
           data[state.editingAppointment.id].endDate = changed[state.editingAppointment.id].endDate;
-          syncGoogleCalendar('change', data[state.editingAppointment.id]);
+          syncGoogleCalendar('change', data[state.editingAppointment.id], this.state.googleCalendar, this.state.gcId, this.reloadAfterResponse, this.props.showSnackbar);
         } else {
-          syncGoogleCalendar('change', changed[state.editingAppointment.id]);
+          syncGoogleCalendar('change', changed[state.editingAppointment.id], this.state.googleCalendar, this.state.gcId, this.reloadAfterResponse, this.props.showSnackbar);
         }
       }
       if (deleted !== undefined) {
@@ -474,21 +323,26 @@ class GoogleCalendar extends React.PureComponent {
       editingFormVisible,
       startDayHour,
       endDayHour,
+      message,
+      snackbarOpen,
+      severity
     } = this.state;
     const { classes } = this.props;
 
-    if (!dataReady) {
+    if (dataReady == "loading") {
       return <p>Loading...</p>;
-    } else {
+    } else if(dataReady=="failedLoad"){
+      return <p>Laden des Google Kalenders fehlgeschlagen, bitte geben Sie die benötigten Informationen im Admin-Bereich unter dem Tab "Google Calendar" an.</p>;
+    }else {
       return (
         <Paper>
           <Scheduler
             data={data}
-            height={700}
             firstDayOfWeek={1}
+            height={700}
           >
             <ViewState
-              currentDate={currentDate}
+              currentDate={currentDate} /** TODO: set current date to date of semester start */
               onCurrentDateChange={this.currentDateChange}
             />
             <EditingState
@@ -550,6 +404,7 @@ class GoogleCalendar extends React.PureComponent {
           >
             Vorlesung im Kalender eintragen
           </Button>
+          <SnackBar isOpen={snackbarOpen} message={message} severity={severity} />
         </Paper>
       );
     }

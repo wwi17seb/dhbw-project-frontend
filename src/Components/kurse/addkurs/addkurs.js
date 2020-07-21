@@ -50,6 +50,10 @@ export default function AddKurs() {
     const [loading, setLoading] = React.useState(null);
     const [subjectData, setSubjectData] = React.useState(null);
 
+    const [message, setMessage] = React.useState('');
+    const [severity, setSeverity] = React.useState('');
+    const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+
     const loadSubjects = () => {
         APICall("GET", 'fieldsOfStudy?withMajorSubjects=true').then(res => {
             var data = res.data
