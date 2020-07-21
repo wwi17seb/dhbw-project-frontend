@@ -14,7 +14,9 @@ import { useHistory } from "react-router-dom";
 export default function FormDialog() {
     const [open, setOpen] = React.useState(false);
     const [fieldOfStudy, setFieldOfStudy] = React.useState("");
+    const [fieldOfStudyList, setFieldOfStudyList] = React.useState([]);
     const [majorSubject, setMajorSubject] = React.useState("");
+    const [buttonDisabled, setButtonDisabled] = React.useState(true);
     const [year, setYear] = React.useState();
 
     let history = useHistory()
@@ -38,24 +40,35 @@ export default function FormDialog() {
     const handleClose = () => {
         setOpen(false);
     };
-    const handleAddClick = () => {
-        APICall("POST", "/fieldsOfStudy", {
-            "name": fieldOfStudy
-        }).then((res) => {
-            APICall("POST", "/majorSubjects", {
-                "fieldOfStudy_id": res.data.payload.fieldOfStudy_id,
-                "name": majorSubject,
-                "catalog_effective_from": year.toString()
-            }).then((res) => {
-                let id = res.data.payload.majorSubject_id
-                history.push("/modulkatalog/details/" + id);
-            }).catch((err) => {
 
-            })
-        }).catch((err) => {
+    const loadFieldOfStudies = () => {
+        APICall("GET", "/fieldsOfStudy").then((res) => {
+            var temp = []
+            var fieldsofstudies = res.data.payload.FieldsOfStudy
 
+            for (var i = 0; i < fieldsofstudies.length; i++) {
+                temp.push(
+                    <MenuItem key={fieldsofstudies[i].fieldOfStudy_id} value={fieldsofstudies[i].fieldOfStudy_id}>{fieldsofstudies[i].name}</MenuItem>
+                )
+            }
+            setFieldOfStudyList(temp)
         })
+    }
 
+    if (fieldOfStudyList.length === 0) {
+        loadFieldOfStudies()
+    }
+
+    const handleAddClick = () => {
+        var data = {
+            "fieldOfStudy_id": fieldOfStudy,
+            "name": majorSubject,
+            "catalog_effective_from": year.toString()
+        }
+        APICall("POST", "/majorSubjects", data).then((res) => {
+            let id = res.data.payload.majorSubject_id
+            history.push("/modulkatalog/details/" + id);
+        })
         setOpen(false);
     };
 
@@ -64,6 +77,11 @@ export default function FormDialog() {
     };
     const handleMajorSubjectChange = (event) => {
         setMajorSubject(event.target.value);
+        if (event.target.value !== "") {
+            setButtonDisabled(false)
+        } else {
+            setButtonDisabled(true)
+        }
     };
     const handleYearChange = (event) => {
         setYear(event.target.value);
@@ -93,9 +111,7 @@ export default function FormDialog() {
                             value={fieldOfStudy}
                             onChange={handleFieldOfStudyChange}
                         >
-                            <MenuItem value={"BWL"}>BWL</MenuItem>
-                            <MenuItem value={"Digitale Medien"}>Digitale Medien</MenuItem>
-                            <MenuItem value={"Wirtschaftsinformatik"}>Wirtschaftsinformatik</MenuItem>
+                            {fieldOfStudyList}
                         </Select>
                     </FormControl>
                     <FormControl className={classes.formControl}>
@@ -126,7 +142,7 @@ export default function FormDialog() {
                     <Button onClick={handleClose} color="primary">
                         Abbrechen
                     </Button>
-                    <Button onClick={handleAddClick} color="primary">
+                    <Button disabled={buttonDisabled} onClick={handleAddClick} color="primary">
                         Hinzufügen
                     </Button>
                 </DialogActions>
