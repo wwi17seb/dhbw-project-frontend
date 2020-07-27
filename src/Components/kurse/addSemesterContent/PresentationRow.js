@@ -82,7 +82,6 @@ const PresentationRow = ({ presentation, showSnackbar, loadData, modifyPresentat
             )})`}
           </Grid>
           <Grid item xs={2} style={getStatusStyle(status)}>
-            {/* Add Color to specific status - how about: angeschrieben - yellow | - - red | bestätigt - blue | termine eingetragen - green */}
             {status}
           </Grid>
           <Grid item xs={1}>
@@ -104,8 +103,11 @@ const PresentationRow = ({ presentation, showSnackbar, loadData, modifyPresentat
               </Tooltip>
             ) : null}
           </Grid>
+          <Grid item xs={12}>
+            <Divider />
+          </Grid>
         </Grid>
-        <Divider style={{ marginBottom: 10 }} />
+
       </Grid>
     </Fragment>
   );
