@@ -1,7 +1,6 @@
 {
     "name": "project-frontend",
     "version": "0.1.0",
-    "private": true,
     "dependencies": {
         "@devexpress/dx-core": "^2.3.2",
         "@devexpress/dx-react-core": "^2.3.2",
@@ -50,16 +49,15 @@
         ]
     },
     "proxy": "https://localhost",
-    "description": "Please create feature branches and then use pull requests to merge to master branch.\r Read more on https://guides.github.com/introduction/flow/.",
+    "description": "",
     "main": "index.js",
     "devDependencies": {},
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/nikolockenvitz/dhbw-project-frontend.git"
+        "url": "git+https://github.com/wwi17seb/dhbw-project-frontend.git"
     },
     "author": "",
-    "license": "ISC",
     "bugs": {
-        "url": "https://github.com/nikolockenvitz/dhbw-project-frontend/issues"
+        "url": "https://github.com/wwi17seb/dhbw-project-frontend/issues"
     }
 }
