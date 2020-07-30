@@ -48,7 +48,6 @@
             "last 1 safari version"
         ]
     },
-    "proxy": "https://localhost",
     "description": "",
     "main": "index.js",
     "devDependencies": {},
