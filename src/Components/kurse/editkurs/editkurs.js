@@ -74,18 +74,19 @@ export default function EditKurs(props) {
     }
 
     const getMajorSubjectId = (name) => {
+        var values = name.split("-")
+
         if (subjectData !== null) {
             var id = null
             for (var i = 0; i < subjectData["payload"]["FieldsOfStudy"].length; i++) {
                 var richtungen = subjectData["payload"]["FieldsOfStudy"][i]["MajorSubjects"]
                 for (var j = 0; j < richtungen.length; j++) {
-                    if (name == richtungen[j]["name"]) {
+                    if (values[0] == richtungen[j]["name"] && values[1] == richtungen[j]["catalog_effective_from"]) {
                         id = richtungen[j]["majorSubject_id"]
                         break;
                     }
                 }
             }
-
             return (id)
         }
     }
