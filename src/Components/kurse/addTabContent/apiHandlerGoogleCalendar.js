@@ -123,6 +123,7 @@ function handleAppointmentInsert(insertAppointmentData, gapi, handleResponse, gc
     } else {
       showSnackbar('Vorlesung erfolgreich eingefügt.', SEVERITY.SUCCESS);
     }
+    handleResponse();
   });
 }
 
